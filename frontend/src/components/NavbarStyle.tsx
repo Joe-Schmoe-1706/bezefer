@@ -1,4 +1,4 @@
-import { styled, Toolbar } from "@mui/material";
+import { Drawer, ListItemText, styled, Toolbar } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import { ThemeContextType } from "../Types/types";
@@ -45,4 +45,15 @@ export const ColorChangeIcon = styled(LoyaltyIcon)({
     height: "2vw",
     marginLeft : "1vw",
     cursor: "pointer"
+})
+
+export const NavigationDrawer = styled(Drawer)({
+    alignItems: "center"
+})
+
+export const NavigationOption = styled(ListItemText)({
+    fontWeight: "600",
+    fontSize: "1.5rem",
+    width: "7vw",
+    paddingLeft : "3vw"
 })
