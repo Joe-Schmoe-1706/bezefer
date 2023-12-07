@@ -1,5 +1,5 @@
 import React, {useContext, useState} from "react"
-import { ThemeContextType, ContextProps } from "./Types/types";
+import { ThemeContextType, ContextProps } from "../Types/types";
 
 
 
@@ -18,6 +18,7 @@ const ThempeProvider : React.FC<ContextProps> = ({ children }) => {
     const [theme, setTheme] = useState<ThemeContextType>("blue")
 
     const toggleTheme = () : void => {
+        console.log(theme);
         setTheme((prevTheme) => {
             return prevTheme === "red" ? "blue" : "red"
         })
@@ -30,7 +31,6 @@ const ThempeProvider : React.FC<ContextProps> = ({ children }) => {
             </UpdateThemeContext.Provider>
         </ThemeContext.Provider>
     )
-
 }
 
 export default ThempeProvider;

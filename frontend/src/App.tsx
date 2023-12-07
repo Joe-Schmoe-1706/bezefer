@@ -1,9 +1,10 @@
-import './App.css'
-import ThempeProvider from './ThemeContext'
+import ThempeProvider from './Context/ThemeContext'
+import Navbar from './components/Navbar'
 
-function App() {
+const App : React.FC = () => {
   return (
     <ThempeProvider>
+      <Navbar />
     </ThempeProvider>
   )
 }
