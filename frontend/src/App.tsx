@@ -1,10 +1,10 @@
 import './App.css'
+import ThempeProvider from './ThemeContext'
 
 function App() {
   return (
-    <div>
-      karlo
-    </div>
+    <ThempeProvider>
+    </ThempeProvider>
   )
 }
 
