@@ -54,6 +54,6 @@ export const NavigationDrawer = styled(Drawer)({
 export const NavigationOption = styled(ListItemText)({
     fontWeight: "600",
     fontSize: "1.5rem",
-    width: "7vw",
-    paddingLeft : "3vw"
+    width: "6vw",
+    textAlign: "center"
 })

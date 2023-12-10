@@ -1,10 +1,12 @@
-
+import React from "react";
+import * as S from "./Classes.style";
+import ClassCard from "./ClassCard";
 
 const Classes : React.FC = () => {
     return (
-        <div>
-            classes
-        </div>
+        <S.classesContainer>
+            <ClassCard />
+        </S.classesContainer>
     )
 }
 
