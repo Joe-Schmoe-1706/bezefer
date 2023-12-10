@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import * as S from "./ClassCard.style"
 import { useTheme } from "../Context/ThemeContext"
-import StudentsModal from "./StudentsModal";
+import StudentsModal from "./PopupList";
 import * as DeleteStyle from "./DeleteIcon.style"
 
 const ClassCard : React.FC = () => {
@@ -17,6 +17,27 @@ const ClassCard : React.FC = () => {
         setIsOpen(true);
     }
 
+    const classInSchool = {
+        subject : "physics",
+        teacher : "karlo",
+        capacity : 45,
+        seatsLeft : 22,
+        students : [
+            {
+                id : 1,
+                name : "מתן גולדברג"
+            },
+            {
+                id : 2,
+                name : "פיונה פנג"
+            }
+        ]
+    };
+
+    const deleteStudent = (id : number) : void => {
+        console.log("student deleted with id " + id);
+    }
+
     return (
         <div>
             <S.ClassCard>
@@ -30,7 +51,12 @@ const ClassCard : React.FC = () => {
                     </S.DeleteClassButton>
                 </S.Footer>
             </S.ClassCard>
-            <StudentsModal isOpen={isOpen} closeModal={closeModal}></StudentsModal>
+            <StudentsModal
+             isOpen={isOpen}
+             closeModal={closeModal}
+             items={classInSchool.students}
+             listType="classes"
+             handleClick={deleteStudent}></StudentsModal>
         </div>
     )
 }

@@ -2,7 +2,7 @@ import { styled, IconButton } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
 import { ThemeContextType } from "../Types/types";
 
-export const DeleteButton = styled(IconButton)({
+export const ButtonIcon = styled(IconButton)({
     height: "5vh",
     width: "5vh",
     marginLeft: "1vw"

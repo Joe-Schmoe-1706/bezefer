@@ -6,5 +6,11 @@ export interface ContextProps {
 
 export interface StudentsModalProps {
     isOpen : boolean,
-    closeModal : () => void
+    closeModal : () => void,
+    items : {
+        id : number,
+        name : string
+    }[],
+    handleClick: (id : number) => void,
+    listType : 'students' | 'classes'
 }

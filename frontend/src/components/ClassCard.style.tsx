@@ -1,5 +1,5 @@
 import { Card, IconButton, styled } from "@mui/material";
-import { DeleteButton } from "./DeleteIcon.style";
+import { ButtonIcon } from "./DeleteIcon.style";
 
 export const ClassCard = styled(Card)({
     width: "12vw",
@@ -42,6 +42,6 @@ export const OpenStudentList = styled("div")({
     marginTop: "5vh"
 })
 
-export const DeleteClassButton = styled(DeleteButton)({
+export const DeleteClassButton = styled(ButtonIcon)({
     marginTop: "3.75vh",
 })
