@@ -2,7 +2,7 @@ import React, {useContext, useState} from "react"
 import { ThemeContextType, ContextProps } from "../Types/types";
 
 const ThemeContext = React.createContext<ThemeContextType | null>(null);
-const UpdateThemeContext = React.createContext<(() => void) | null>(null);
+const UpdateThemeContext = React.createContext<(() => void)>(() => {});
 
 export const useTheme = () => {
     return useContext(ThemeContext);
