@@ -1,9 +1,9 @@
 import React from "react";
 import { StudentsModalProps } from "../Types/types";
-import * as S from "./PopupList.style";
+import * as S from "../Style/PopupList.style";
 import { List, Avatar, ListItem} from "@mui/material";
 import { useTheme } from "../Context/ThemeContext";
-import * as DeleteStyle from "./DeleteIcon.style"
+import * as DeleteStyle from "../Style/DeleteIcon.style"
 
 const StudentsModal : React.FC<StudentsModalProps> = ({isOpen, closeModal, items, listType, handleClick}) => {
     const theme = useTheme();
