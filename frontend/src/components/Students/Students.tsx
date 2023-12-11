@@ -3,31 +3,32 @@ import React, {useState} from "react"
 import { useTheme } from "../../Context/ThemeContext";
 import * as S from "./Students.style"
 import PopupList from "../PopupList/PopupList"
+import { Student } from "./Students.types";
 
 const Students : React.FC = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
 
-    const students = [
+    const students : Student[] = [
         {
             id: "326570330",
             firstName: "מתן",
             lastName: "גולדברג",
             age: 19,
-            proffestion: "ראפר"
+            proffesion: "ראפר"
         },
         {
             id: "333222111",
             firstName: "קווין",
             lastName: "דה בריינה",
             age: 33,
-            proffestion: "כדורגלן"
+            proffesion: "כדורגלן"
         },
         {
             id: "777888999",
             firstName: "טיילור",
             lastName: "סוויפט",
             age: 32,
-            proffestion: "זמרת"
+            proffesion: "זמרת"
         }
     ];
 
@@ -57,14 +58,18 @@ const Students : React.FC = () => {
     const theme = useTheme();
     console.log(theme)
 
-    const renderedRows = students.map(studnet => {
+    const renderedStudentValues = (student : Student) : JSX.Element[] => {
+        return Object.values(student).map((value) => {
+            return (
+                <S.StyledTableCell>{value}</S.StyledTableCell>
+            )
+        })
+    } 
+
+    const renderedRows : JSX.Element[] = students.map(studnet => {
         return (
             <TableRow>
-                <S.StyledTableCell>{studnet.id}</S.StyledTableCell>
-                <S.StyledTableCell>{studnet.firstName}</S.StyledTableCell>
-                <S.StyledTableCell>{studnet.lastName}</S.StyledTableCell>
-                <S.StyledTableCell>{studnet.age}</S.StyledTableCell>
-                <S.StyledTableCell>{studnet.proffestion}</S.StyledTableCell>
+                {renderedStudentValues(studnet)}
                 <S.StyledTableCell>
                     <S.DynamicButton variant="outlined" projectTheme={theme} onClick={openPopup}>ASSIGN TO CLASS</S.DynamicButton>
                 </S.StyledTableCell>
@@ -72,6 +77,33 @@ const Students : React.FC = () => {
                     <S.DynamicButton variant="outlined" projectTheme={theme}>DELETE</S.DynamicButton>
                 </S.StyledTableCell>
             </TableRow>
+        )
+    });
+
+    const getCapitalPosition = (string : string) => {
+        for (let index = 0; index < string.length; index++) {
+            if (string.charAt(index) !== string.charAt(index).toLocaleLowerCase()) {
+                return index;
+            }
+        }
+
+        return -1;
+    }
+
+    const renderedHeaders : JSX.Element[] = Object.keys(students[0]).map((key) => {
+        let header = key;
+        const capitalLetterPosition = getCapitalPosition(header);
+
+        if (capitalLetterPosition === -1) {
+            header = header.charAt(0).toLocaleUpperCase() + header.substring(1);
+        } else {
+            header = header.charAt(0).toLocaleUpperCase() + 
+            header.substring(1, capitalLetterPosition) + 
+            ' ' + header.substring(capitalLetterPosition);
+        }
+        
+        return (
+            <S.StyledTableCell>{header}</S.StyledTableCell>
         )
     })
 
@@ -81,11 +113,7 @@ const Students : React.FC = () => {
             <S.StudentTable>
                 <TableHead>
                     <TableRow>
-                        <S.StyledTableCell>ID</S.StyledTableCell>
-                        <S.StyledTableCell>First Name</S.StyledTableCell>
-                        <S.StyledTableCell>Last Name</S.StyledTableCell>
-                        <S.StyledTableCell>Age</S.StyledTableCell>
-                        <S.StyledTableCell>Proffestion</S.StyledTableCell>
+                        {renderedHeaders}
                         <S.StyledTableCell>Assign</S.StyledTableCell>
                         <S.StyledTableCell>Delete</S.StyledTableCell>
                     </TableRow>
