@@ -14,3 +14,17 @@ export interface StudentsModalProps {
     handleClick: (id : number) => void,
     listType : 'students' | 'classes'
 }
+
+export interface Student {
+    id: string,
+    firstName: string,
+    lastName: string,
+    age: number,
+    profession: string
+}
+
+export interface Class {
+    id: string,
+    name: string,
+    capacity: number
+}

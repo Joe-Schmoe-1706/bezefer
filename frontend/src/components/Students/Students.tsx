@@ -14,21 +14,21 @@ const Students : React.FC = () => {
             firstName: "מתן",
             lastName: "גולדברג",
             age: 19,
-            proffesion: "ראפר"
+            profession: "ראפר"
         },
         {
             id: "333222111",
             firstName: "קווין",
             lastName: "דה בריינה",
             age: 33,
-            proffesion: "כדורגלן"
+            profession: "כדורגלן"
         },
         {
             id: "777888999",
             firstName: "טיילור",
             lastName: "סוויפט",
             age: 32,
-            proffesion: "זמרת"
+            profession: "זמרת"
         }
     ];
 
