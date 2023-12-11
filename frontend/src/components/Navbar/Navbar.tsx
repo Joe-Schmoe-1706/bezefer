@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import { useTheme, useUpdateTheme } from "../Context/ThemeContext";
-import * as S from "../Style/Navbar.style";
+import { useTheme, useUpdateTheme } from "../../Context/ThemeContext";
+import * as S from "./Navbar.style";
 import { Drawer, List, ListItemButton } from "@mui/material";
 import { useNavigate } from "react-router-dom"
 

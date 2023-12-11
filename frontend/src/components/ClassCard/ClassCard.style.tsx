@@ -1,5 +1,5 @@
 import { Card, styled } from "@mui/material";
-import { ButtonIcon } from "./DeleteIcon.style";
+import { ButtonIcon } from "../../Style/DeleteIcon.style";
 
 export const ClassCard = styled(Card)({
     width: "12vw",

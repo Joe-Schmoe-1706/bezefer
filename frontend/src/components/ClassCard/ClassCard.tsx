@@ -1,8 +1,8 @@
 import React, {useState} from "react";
-import * as S from "../Style/ClassCard.style"
-import { useTheme } from "../Context/ThemeContext"
-import StudentsModal from "./PopupList";
-import * as DeleteStyle from "../Style/DeleteIcon.style"
+import * as S from "./ClassCard.style"
+import { useTheme } from "../../Context/ThemeContext"
+import StudentsModal from "../PopupList/PopupList";
+import * as DeleteStyle from "../../Style/DeleteIcon.style"
 
 const ClassCard : React.FC = () => {
     const theme = useTheme();

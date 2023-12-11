@@ -1,7 +1,7 @@
 import { Drawer, ListItemText, styled, Toolbar } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
-import { ThemeContextType } from "../Types/types";
+import { ThemeContextType } from "../../Types/types";
 import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import MenuIcon from '@mui/icons-material/Menu';
 

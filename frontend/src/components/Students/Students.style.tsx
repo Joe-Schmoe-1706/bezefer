@@ -1,5 +1,5 @@
 import { Button, Table, TableCell, TableContainer, styled } from "@mui/material";
-import { ThemeContextType } from "../Types/types";
+import { ThemeContextType } from "../../Types/types";
 
 export const StudentTable = styled(Table)({
     width: "70vw",
@@ -20,5 +20,5 @@ export const StyledTableCell = styled(TableCell)({
 export const DynamicButton = styled(Button)<{projectTheme : ThemeContextType | null}>(({projectTheme}) => ({
     color: projectTheme === "blue" ? "#3F50B5" : "#F50057",
     borderColor:  projectTheme === "blue" ? "#3F50B5" : "#F50057",
-    cursor: "pointer",
+    cursor: "pointer"
 }))

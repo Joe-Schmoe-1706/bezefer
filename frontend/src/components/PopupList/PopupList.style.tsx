@@ -1,7 +1,7 @@
 import {ListItemAvatar, ListItemText, Modal, styled} from "@mui/material"
 import PersonIcon from '@mui/icons-material/Person';
 import SchoolIcon from '@mui/icons-material/School';
-import { ThemeContextType } from "../Types/types";
+import { ThemeContextType } from "../../Types/types";
 import AddIcon from '@mui/icons-material/Add';
 
 export const StudentModal = styled(Modal)({

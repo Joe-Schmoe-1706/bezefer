@@ -1,8 +1,8 @@
 import {TableBody, TableHead, TableRow } from "@mui/material";
 import React, {useState} from "react"
-import { useTheme } from "../Context/ThemeContext";
-import * as S from "../Style/Students.style"
-import PopupList from "../components/PopupList"
+import { useTheme } from "../../Context/ThemeContext";
+import * as S from "./Students.style"
+import PopupList from "../PopupList/PopupList"
 
 const Students : React.FC = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
