@@ -1,4 +1,4 @@
-import React, {FormEventHandler, MouseEventHandler, useState} from "react"
+import React, {FormEventHandler, useState} from "react"
 import { Props } from "./Form.types"
 import * as S from "./Form.style"
 import { useTheme } from "../../Context/ThemeContext"
@@ -14,6 +14,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
     })
 
     const [formData, setFormData] = useState<Student | Class>(initialFormData);
+    const [showError, setShowError] = useState<boolean>(false);
 
     const handleChange = (event : React.ChangeEvent<HTMLInputElement>) : void => {
         if (event.target !== null)
@@ -33,10 +34,11 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
     const renderedFields = fields.map((field) => {
         return (
             <S.InputField 
+             error={!field.validation(formData[field.name].toString()) && formData[field.name].toString() !== ''}
              required={field.required}
              label={field.placeHolder}  
              name={field.name}
-             value={formData[field.name.toString()]}
+             value={formData[field.name]}
              onChange={handleChange}
             />
         )
@@ -47,7 +49,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
 
         Object.keys(data).forEach((key) => {
             const formField = fields.find((field) => field.name === key);
-            if (!formField?.validation(formData[key])) {
+            if (!formField?.validation(formData[key].toString())) {
                 validated = false;
             }
         })
@@ -60,7 +62,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
         if (validateData(formData)) {
             handleClick(formData);
         } else {
-            console.log("ליצן");
+            setShowError(true);
         }
     };
 
@@ -72,10 +74,12 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
                 <S.SubmitBtn 
                  projectTheme={theme} 
                  type="submit"
+                 disabled={validateData(formData) === false}
                  >
                     {btnText}
                 </S.SubmitBtn>
             </S.StyledForm>
+            <S.ErrorMessage showError={showError}>Form did not pass validation check! fix it and try</S.ErrorMessage>
         </S.FormContainer>
     )
 }

@@ -1,4 +1,4 @@
-import { TextField, styled } from "@mui/material";
+import { Button, TextField, styled } from "@mui/material";
 import { ThemeContextType } from "../../Types/types";
 
 export const FormContainer = styled("div")({
@@ -25,17 +25,30 @@ export const InputField = styled(TextField)({
     // borderRadius: "10px"
 })
 
-export const SubmitBtn = styled("button")<{ projectTheme : ThemeContextType | null}>(({projectTheme}) => ({
+export const SubmitBtn = styled(Button, {
+    shouldForwardProp: (prop) => prop !== "projectTheme"
+})<{ projectTheme : ThemeContextType | null}>(({projectTheme}) => ({
     width: "16vw",
     height: "4vh",
     border: "none",
     backgroundColor: projectTheme === "blue" ? "#3F50B5" : "#F50057",
     fontSize: "1.1rem",
     color: "#FFFFFF",
-    cursor: "pointer"
+    cursor: "pointer",
+    "&:hover" : {
+        background : "transperent"
+    }
 }))
 
 export const StyledForm = styled("form")({
     display: "flex",
     flexDirection:"column"
 })
+
+export const ErrorMessage = styled("div", {
+    shouldForwardProp: (prop) => prop !== "showError"
+})<{showError : boolean}>(({showError}) => ({
+    color: "#fc0303",
+    marginTop: "2vh",
+    visibility: showError ? "visible" : "hidden"
+}))

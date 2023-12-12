@@ -42,7 +42,9 @@ export const ListAvatar = styled(ListItemAvatar)({
     marginLeft: "1vw"
 })
 
-export const PlusIcon = styled(AddIcon)<{projectTheme : ThemeContextType | null}>(({ projectTheme }) => ({
+export const PlusIcon = styled(AddIcon, {
+    shouldForwardProp: (prop) => prop !== "projectTheme"
+})<{projectTheme : ThemeContextType | null}>(({ projectTheme }) => ({
     width: "2vw",
     height: "2vw",
     color: projectTheme === "blue" ? "#3F50B5" : "#F50057"

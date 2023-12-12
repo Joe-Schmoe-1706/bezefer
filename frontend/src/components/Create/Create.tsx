@@ -1,7 +1,6 @@
 import React from "react"
 import Form from "../Form/Form";
 import { Class } from "../../Types/types";
-import { FormField } from "../Form/Form.types";
 import * as S from "./Create.style"
 import * as Constants from "./Create.consts";
 import { Student } from "../Students/Students.types";

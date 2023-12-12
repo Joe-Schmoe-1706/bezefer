@@ -6,7 +6,9 @@ import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import MenuIcon from '@mui/icons-material/Menu';
 
 
-export const Appbar = styled(MuiAppBar)<{projectTheme : ThemeContextType | null}>(({ projectTheme }) => ({
+export const Appbar = styled(MuiAppBar, {
+    shouldForwardProp: (prop) => prop !== "projectTheme"
+})<{projectTheme : ThemeContextType | null}>(({ projectTheme }) => ({
     width : "100vw",
     height : "10vh",
     backgroundColor: projectTheme === "blue" ? "#3F50B5" : "#F50057",

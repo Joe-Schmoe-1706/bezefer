@@ -82,7 +82,7 @@ export const studentFields : FormField[] = [
         placeHolder: "Age",
         validation: (age : string) => {
             if (age.match(/^[\d]*$/)) {
-                if (parseInt(age) >= 8 && parseInt(age) <= 19) {
+                if (parseInt(age) >= 8 && parseInt(age) <= 120) {
                     return true;
                 }
             }
