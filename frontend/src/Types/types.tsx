@@ -21,10 +21,12 @@ export interface Student {
     lastName: string,
     age: number,
     profession: string
+    [key: string]: string | number
 }
 
 export interface Class {
     id: string,
     name: string,
     capacity: number
+    [key: string]: string | number
 }

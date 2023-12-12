@@ -1,11 +1,11 @@
-import React, {MouseEventHandler, useState} from "react"
+import React, {FormEventHandler, MouseEventHandler, useState} from "react"
 import { Props } from "./Form.types"
 import * as S from "./Form.style"
 import { useTheme } from "../../Context/ThemeContext"
 import { Class, Student } from "../../Types/types"
 
 const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
-    const initialFormData : any = {}
+    const initialFormData : Student | Class =  {} as Student | Class;
 
     const theme = useTheme();
 
@@ -33,23 +33,45 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
     const renderedFields = fields.map((field) => {
         return (
             <S.InputField 
-             type="text" 
-             placeholder={`  ${field.placeHolder} ${field.required ? "*" : ""}`}  
+             required={field.required}
+             label={field.placeHolder}  
              name={field.name}
-             value={formData[field.name]}
+             value={formData[field.name.toString()]}
              onChange={handleChange}
             />
         )
     })
 
+    const validateData = (data : Student | Class) : boolean => {
+        let validated = true;
+
+        Object.keys(data).forEach((key) => {
+            const formField = fields.find((field) => field.name === key);
+            if (!formField?.validation(formData[key])) {
+                validated = false;
+            }
+        })
+
+        return validated;
+    }
+
+    const submit = (e : Event, formData : Student | Class) : void => {
+        e.preventDefault();
+        if (validateData(formData)) {
+            handleClick(formData);
+        } else {
+            console.log("ליצן");
+        }
+    };
+
     return (
         <S.FormContainer>
             <S.FormHeader>{header}</S.FormHeader>
-            <S.StyledForm>
+            <S.StyledForm onSubmit={(e: Event) => submit(e, formData)}>
                 {renderedFields}
                 <S.SubmitBtn 
                  projectTheme={theme} 
-                 onClick={(e: Event) => handleClick(e, formData)}
+                 type="submit"
                  >
                     {btnText}
                 </S.SubmitBtn>

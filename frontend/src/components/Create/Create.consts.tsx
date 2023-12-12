@@ -1,47 +1,101 @@
+import { capitalize } from "@mui/material";
 import { FormField } from "../Form/Form.types";
+import { TurnLeft } from "@mui/icons-material";
 
 export const classesFields : FormField[] = [
     {
         name: "id",
         required: true,
-        placeHolder: "Class ID"
+        placeHolder: "Class ID",
+        validation: (id : string) => {
+            return true;
+        }
     },
     {
         name: "name",
         required: true,
-        placeHolder: "Name"
+        placeHolder: "Name",
+        validation: (name : string) => {
+            if (name.match(/^[a-zA-z][a-zA-Z\s\d]*$/)) {
+                return true;
+            }
+
+            return false;
+        }
     },
     {
         name: "capacity",
         required: true,
-        placeHolder: "Max Seats"
+        placeHolder: "Max Seats",
+        validation: (capacity : string) => {
+            if (capacity.match(/^[\d]*$/)) {
+                if (parseInt(capacity) > 0 && parseInt(capacity) < 1000) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 ];
+
+const onlyLetters = (string : string) : boolean  => {
+    if (string.match(/^[a-zA-z]*$/)) {
+        return true;
+    }
+
+    return false;
+}
 
 export const studentFields : FormField[] = [
     {
         name: "id",
         required: true,
-        placeHolder: "ID"
+        placeHolder: "ID",
+        validation: (id : String) => {
+            if (id.match(/^[\d]{9}$/)) {
+                return true;
+            }
+
+            return false;
+        }
     },
     {
         name: "firstName",
         required: true,
-        placeHolder: "First Name"
+        placeHolder: "First Name",
+        validation: (firstName: string) => {
+           return onlyLetters(firstName)
+        }
     },
     {
         name: "lastName",
         required: true,
-        placeHolder: "Last Name"
+        placeHolder: "Last Name",
+        validation: (lastName: string) => {
+            return onlyLetters(lastName)
+        }
     },
     {
         name: "age",
         required: false,
-        placeHolder: "Age"
+        placeHolder: "Age",
+        validation: (age : string) => {
+            if (age.match(/^[\d]*$/)) {
+                if (parseInt(age) >= 8 && parseInt(age) <= 19) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     },
     {
         name: "profession",
         required: true,
-        placeHolder: "Profession"
+        placeHolder: "Profession",
+        validation: (profession: string) => {
+            return onlyLetters(profession)
+        }
     }
 ]

@@ -7,15 +7,13 @@ import * as Constants from "./Create.consts";
 import { Student } from "../Students/Students.types";
 
 const Create : React.FC = () => {
-
-    const addClass = (event : Event, dataToAdd : Class): void => {
-        event.preventDefault();
+    
+    const addClass = (dataToAdd : Class): void => {
         console.log("added a class");
         console.log(dataToAdd);
     };
 
-    const addStudent = (event : Event, dataToAdd : Student): void => {
-        event.preventDefault();
+    const addStudent = (dataToAdd: Student): void => {
         console.log("added a student");
         console.log(dataToAdd);
     };
