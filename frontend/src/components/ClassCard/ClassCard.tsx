@@ -55,7 +55,7 @@ const ClassCard : React.FC = () => {
              isOpen={isOpen}
              closeModal={closeModal}
              items={classInSchool.students}
-             listType="classes"
+             listType="students"
              handleClick={deleteStudent}></StudentsModal>
         </div>
     )

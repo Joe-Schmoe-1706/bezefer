@@ -1,3 +1,4 @@
+import { MouseEventHandler } from "react"
 import { Class, Student } from "../../Types/types"
 
 export interface FormField {

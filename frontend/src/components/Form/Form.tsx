@@ -1,4 +1,4 @@
-import React, {useState} from "react"
+import React, {MouseEventHandler, useState} from "react"
 import { Props } from "./Form.types"
 import * as S from "./Form.style"
 import { useTheme } from "../../Context/ThemeContext"
@@ -15,25 +15,27 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
 
     const [formData, setFormData] = useState<Student | Class>(initialFormData);
 
-    const handleChange = (event : Event) : void => {
-        const name = event.target.name;
-        const value = event.target.value;
+    const handleChange = (event : React.ChangeEvent<HTMLInputElement>) : void => {
+        if (event.target !== null)
+        {
+            const name = event.target.name;
+            const value = event.target.value;
 
-        setFormData(prevData => {
-            return {
-                ...prevData,
-                [name] : value
-            }
-        });
+            setFormData(prevData => {
+                return {
+                    ...prevData,
+                    [name] : value
+                }
+            });
+        }
     }
 
     const renderedFields = fields.map((field) => {
         return (
             <S.InputField 
              type="text" 
-             placeholder={field.placeHolder} 
+             placeholder={`  ${field.placeHolder} ${field.required ? "*" : ""}`}  
              name={field.name}
-             fieldRequired={field.required}
              value={formData[field.name]}
              onChange={handleChange}
             />
@@ -42,15 +44,15 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
 
     return (
         <S.FormContainer>
-            <S.formHeader>{header}</S.formHeader>
+            <S.FormHeader>{header}</S.FormHeader>
             <S.StyledForm>
                 {renderedFields}
-                <S.submitBtn 
+                <S.SubmitBtn 
                  projectTheme={theme} 
-                 onClick={() => handleClick(event, formData)}
+                 onClick={(e: Event) => handleClick(e, formData)}
                  >
                     {btnText}
-                </S.submitBtn>
+                </S.SubmitBtn>
             </S.StyledForm>
         </S.FormContainer>
     )
