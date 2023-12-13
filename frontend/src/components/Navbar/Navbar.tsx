@@ -1,9 +1,8 @@
 import React, {useState} from "react";
-import { useTheme, useUpdateTheme } from "../Context/ThemeContext";
-import LoyaltyIcon from '@mui/icons-material/Loyalty';
-import MenuIcon from '@mui/icons-material/Menu';
-import * as S from "./NavbarStyle";
-import { Drawer, List, ListItemButton, ListItemText, Toolbar } from "@mui/material";
+import { useTheme, useUpdateTheme } from "../../Context/ThemeContext";
+import * as S from "./Navbar.style";
+import { Drawer, List, ListItemButton } from "@mui/material";
+import { useNavigate } from "react-router-dom"
 
 const Navbar : React.FC = () => {
     const [open, setOpen] = useState<boolean>(false); 
@@ -12,18 +11,34 @@ const Navbar : React.FC = () => {
 
     const theme = useTheme();
     const toggleTheme = useUpdateTheme();
+    const navigate = useNavigate();
+
+    const openNav = () : void => {
+        setOpen(true);
+    }
+
+    const closeNav = () : void => {
+        setOpen(false);
+    }
+
+    const handleNavigation = (selectedOption : string) : void => {
+        setOpen(false);
+
+        if (selectedOption === "Classes") {
+            navigate('/')
+        } else {
+            const path = `/${selectedOption.toLocaleLowerCase()}`
+            navigate(path);
+        }
+    } 
 
     const renderedNavigationOptions = navigationOptions.map((option) => {
         return (
-            <ListItemButton key={option}>
+            <ListItemButton key={option} onClick={() => handleNavigation(option)}>
                 <S.NavigationOption primary={option}/>
             </ListItemButton>
         )
     })
-
-    const openNav = () => {
-        setOpen(true);
-    }
 
     return (
         <S.Appbar projectTheme={theme}>
@@ -36,6 +51,7 @@ const Navbar : React.FC = () => {
                 <Drawer
                 open = {open}
                 anchor="left"
+                onClose={closeNav}
                 >
                     <List>
                         {renderedNavigationOptions}
