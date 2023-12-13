@@ -16,7 +16,7 @@ export const classesFields : FormField[] = [
         required: true,
         placeHolder: "Name",
         validation: (name : string) => {
-            if (name.match(/^[a-zA-z][a-zA-Z\s\d]*$/)) {
+            if (name.match(/^[\u0590-\u05fe][\u0590-\u05fe\s\d]*$/)) {
                 return true;
             }
 
@@ -40,7 +40,7 @@ export const classesFields : FormField[] = [
 ];
 
 const onlyLetters = (string : string) : boolean  => {
-    if (string.match(/^[a-zA-z]*$/)) {
+    if (string.match(/^[a-z\u0590-\u05fe\s]+$/)) {
         return true;
     }
 

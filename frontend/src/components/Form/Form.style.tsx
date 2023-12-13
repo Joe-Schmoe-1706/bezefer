@@ -35,8 +35,9 @@ export const SubmitBtn = styled(Button, {
     fontSize: "1.1rem",
     color: "#FFFFFF",
     cursor: "pointer",
-    "&:hover" : {
-        background : "transperent"
+    '&:hover' : {
+        backgroundColor: projectTheme === "blue" ? "#3F50B5" : "#F50057",
+        color: "#FFFFFF"
     }
 }))
 
