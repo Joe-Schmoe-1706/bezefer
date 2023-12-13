@@ -1,6 +1,4 @@
-import { capitalize } from "@mui/material";
 import { FormField } from "../Form/Form.types";
-import { TurnLeft } from "@mui/icons-material";
 
 export const classesFields : FormField[] = [
     {
