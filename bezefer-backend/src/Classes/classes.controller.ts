@@ -15,17 +15,21 @@ export class ClassesController {
     }
 
     @Post()
-    async addProduct(
-        @Body('id') _id: string,
+    async addClassroom(
+        @Body('_id') _id: string,
         @Body('name') name: string,
         @Body('numberOfSeats') numberOfSeats: number
     ) {
-        const returnedId = await this.classesService.addClass(_id, name, numberOfSeats);
-        return returnedId;
+        return await this.classesService.addClass(_id, name, numberOfSeats);
     }
 
     @Delete(':id')
     async removeClassroom(@Param('id') classroomId: string) {
         await this.classesService.deleteClass(classroomId);
+    }
+
+    @Get('/available')
+    async getAvailableClassroom() {
+        return await this.classesService.findAvailableClassrooms();
     }
 }

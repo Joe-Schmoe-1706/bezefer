@@ -16,9 +16,14 @@ export class ClassesService {
         return classes;
     }
 
-    async addClass(_id: string, name: string, numberOfSeats: number) : Promise<string> {
+    async findClassById(classroomId: string): Promise<Classroom> {
+        return await this.classModel.findById(classroomId).exec();
+    }
+
+    async addClass(id: string, name: string, numberOfSeats: number) : Promise<string> {
+        console.log(name);
         const newClassroom = new this.classModel({
-            _id,
+            _id: id,
             name,
             numberOfSeats,
             numberOfSeatsLeft: numberOfSeats
@@ -28,7 +33,26 @@ export class ClassesService {
     }
 
     async deleteClass(classroomId: string): Promise<void> {
-        await this.classModel.deleteOne({_id : classroomId}).exec();
+        const classroomToDelete = await this.classModel.findById(classroomId).exec();
+        if (classroomToDelete.numberOfSeats === classroomToDelete.numberOfSeatsLeft) {
+            await this.classModel.deleteOne({_id : classroomId}).exec();
+        } else {
+            throw new Error("class is not empty");
+        }
+    }
+
+    async changeNumberOfSeats(classroomId: string, action: string): Promise<void> {
+        const updatedClassroom = await this.classModel.findById(classroomId).exec();
+        updatedClassroom.numberOfSeatsLeft = action === "add" ?
+         updatedClassroom.numberOfSeatsLeft - 1 :
+         updatedClassroom.numberOfSeatsLeft + 1;
+
+        await updatedClassroom.save();
+    }
+
+    async findAvailableClassrooms(): Promise<Classroom[]> {
+        const availableClassrooms = await this.classModel.find({numberOfSeatsLeft: {$gte: 1}}).exec();
+        return availableClassrooms;
     }
 
 }

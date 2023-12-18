@@ -8,5 +8,6 @@ import { ClassesService } from "./classes.service";
     imports: [MongooseModule.forFeature([{name : Classroom.name, schema: ClassroomSchema}])],
     controllers: [ClassesController],
     providers: [ClassesService],
+    exports: [ClassesService]
 })
 export class ClassesModule {};
