@@ -24,13 +24,27 @@ const StudentsModal : React.FC<StudentsModalProps> = ({isOpen, closeModal, items
                     {avatar}
                 </Avatar>
             </S.ListAvatar>
-            <S.Name primary={`${item.firstName} ${item.lastName}`}/>
+            <S.Name>{listType === "students" ? `${item.firstName} ${item.lastName}` : item.name}</S.Name>
             <DeleteStyle.ButtonIcon edge="end" onClick={() => handleClick(item._id)}>
                 {actionButton}
             </DeleteStyle.ButtonIcon>
         </ListItem>
         )
     })
+
+    if (items.length === 0) {
+        return (
+            <S.StudentModal open={isOpen} onClose={closeModal}>
+                <S.ModalContent>
+                    <S.ModalHeader>
+                        {listType === "students" ?
+                        "there are no students in this class" :
+                        "there aren't available classes"}
+                    </S.ModalHeader>
+                </S.ModalContent>
+            </S.StudentModal>
+        )
+    }
 
     return (
         <S.StudentModal open={isOpen} onClose={closeModal} >
