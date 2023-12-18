@@ -1,5 +1,5 @@
 import React from "react";
-import { StudentsModalProps } from "../../Types/types";
+import { StudentsModalProps } from "./PopupList.types";
 import * as S from "./PopupList.style";
 import { List, Avatar, ListItem} from "@mui/material";
 import { useTheme } from "../../Context/ThemeContext";
@@ -24,8 +24,8 @@ const StudentsModal : React.FC<StudentsModalProps> = ({isOpen, closeModal, items
                     {avatar}
                 </Avatar>
             </S.ListAvatar>
-            <S.Name primary={item.name}/>
-            <DeleteStyle.ButtonIcon edge="end" onClick={() => handleClick(item.id)}>
+            <S.Name primary={`${item.firstName} ${item.lastName}`}/>
+            <DeleteStyle.ButtonIcon edge="end" onClick={() => handleClick(item._id)}>
                 {actionButton}
             </DeleteStyle.ButtonIcon>
         </ListItem>

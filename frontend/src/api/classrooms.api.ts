@@ -1,21 +1,22 @@
 import { Classroom } from "../Types/types";
 
-const BASE_URL = "http://localhost:5000/"
+const BASE_URL = "http://localhost:5000"
 
-export default class ClassroomAPI {
-    async getAllClassrooms(): Promise<Classroom[]> {
-        const result = await fetch(`${BASE_URL}/classes`);
+    export const getAllClassrooms = async (): Promise<Classroom[]> => {
+        const result = await fetch(`${BASE_URL}/classes`,{
+            method: "GET"
+        });
         const classrooms = await result.json();
         return classrooms;
     }
 
-    async deleteClassroom(classroomId: string): Promise<void> {
+    export const deleteClassroom = async (classroomId: string): Promise<void> => {
         await fetch (`${BASE_URL}/classes/${classroomId}`, {
             method: "DELETE"
         });
     }
 
-    async addClassroom(classroomId: string, name: string, numberOfSeats: number): Promise<void> {
+    export const addClassroom = async (classroomId: string, name: string, numberOfSeats: number): Promise<void> => {
         await fetch(`${BASE_URL}/classes`, {
             method: "POST",
             body: JSON.stringify({
@@ -26,9 +27,8 @@ export default class ClassroomAPI {
         });
     }
 
-    async getAvailableClassrooms(): Promise<Classroom[]> {
+    export const getAvailableClassrooms = async (): Promise<Classroom[]> => {
         const result = await fetch(`${BASE_URL}/classes/available`);
         const classrooms = result.json();
         return classrooms;
     }
-}
