@@ -1,14 +1,15 @@
 import { Model } from "mongoose";
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Classroom } from "./classes.model";
+import { StudentsService } from "src/Students/students.service";
 
 @Injectable()
 export class ClassesService {
 
 
     constructor(
-        @InjectModel(Classroom.name) private readonly classModel : Model<Classroom> 
+        @InjectModel(Classroom.name) private readonly classModel : Model<Classroom>
     ) {}
 
     async findAll(): Promise<Classroom[]> {

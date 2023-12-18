@@ -45,4 +45,8 @@ export class StudentsService {
         await Promise.all(promises);
     }
 
+    async getStudentsInClass(classroomId: string): Promise<Student[]> {
+        return this.studentModel.find({classroom: classroomId}).exec();
+    }
+
 }

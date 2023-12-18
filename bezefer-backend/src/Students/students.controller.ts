@@ -39,4 +39,9 @@ export class StudentsController {
     async removeStudentToClass(@Param('id') studentId: string, @Param('classroomId') classroomId: string) {
         this.studentsService.changeStudentClassStatus(studentId, classroomId, "remove");
     }
+
+    @Get('/classroom/:id')
+    async getStudentsInClassroom(@Param('id') classroomId: string) {
+        return this.studentsService.getStudentsInClass(classroomId);
+    }
 } 

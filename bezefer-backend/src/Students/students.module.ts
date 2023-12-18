@@ -9,6 +9,6 @@ import { ClassesModule } from "src/Classes/classes.module";
     imports: [MongooseModule.forFeature([{name : Student.name, schema: StudentSchema}]),
                 ClassesModule],
     controllers: [StudentsController],
-    providers: [StudentsService],
+    providers: [StudentsService]
 })
 export class StudentModule {};
