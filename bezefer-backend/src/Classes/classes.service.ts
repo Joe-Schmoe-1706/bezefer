@@ -20,16 +20,14 @@ export class ClassesService {
         return await this.classModel.findById(classroomId).exec();
     }
 
-    async addClass(id: string, name: string, numberOfSeats: number) : Promise<string> {
-        console.log(name);
+    async addClass(id: string, name: string, numberOfSeats: number) : Promise<void> {
         const newClassroom = new this.classModel({
             _id: id,
             name,
             numberOfSeats,
             numberOfSeatsLeft: numberOfSeats
         });
-        const result= await newClassroom.save();
-        return result.id;
+        await newClassroom.save();
     }
 
     async deleteClass(classroomId: string): Promise<void> {
