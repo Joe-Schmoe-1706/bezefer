@@ -30,3 +30,10 @@ export interface Class {
     capacity: number
     [key: string]: string | number
 }
+
+export interface Classroom {
+    _id: string,
+    name: string,
+    numberOfSeats: number,
+    numberOfSeatsLeft: number
+}
