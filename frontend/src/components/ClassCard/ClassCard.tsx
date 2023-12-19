@@ -49,7 +49,7 @@ const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
                 return prevStudents.filter((student) => student._id != id)
             });
             classroom.numberOfSeatsLeft = classroom.numberOfSeatsLeft + 1;
-            alertify.success("student successfully removed from class")
+            alertify.success("student successfully removed from class");
         } catch (error) {
             Swal.fire({
                 title: 'error',

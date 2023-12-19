@@ -3,9 +3,8 @@ import React, {useEffect, useState} from "react"
 import { useTheme } from "../../Context/ThemeContext";
 import * as S from "./Students.style"
 import PopupList from "../PopupList/PopupList"
-import { Student } from "./Students.types";
-import { Classroom } from "../../Types/types";
-import { getStudentsDTO } from "../../api/students.api";
+import { Classroom, Student } from "../../Types/types";
+import { getStudentsDTO, deleteStudent, addStudentToClass } from "../../api/students.api";
 import Swal from "sweetalert2";
 import { getAvailableClassrooms } from "../../api/classrooms.api";
 import { tableHeaders } from "./Students.consts";
@@ -14,6 +13,7 @@ const Students : React.FC = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [availableClassrooms, setAvailableClassroom] = useState<Classroom[]>([]);
     const [students, setStudents] = useState<Student[]>([]);
+    const [chosenStudentId, setChosenStudentId] = useState<string>('');
 
     useEffect(() => {
         const initializeStudents = async (): Promise<void> => {
@@ -49,13 +49,53 @@ const Students : React.FC = () => {
         initializeAvialableClasses();
     }, [])
 
-    const openPopup = () : void => {
+    const openPopup = (studentId : string) : void => {
+        setChosenStudentId(studentId);
         setIsPopupOpen(true);
     }
 
     const closePopup = () : void => {
         setIsPopupOpen(false);
     }
+
+    const assignToClass = async (classroomId: string) : Promise<void> => {
+        try {
+            await addStudentToClass(chosenStudentId, classroomId);
+            setStudents((prevStudents) => {
+                return prevStudents.map((student) => {
+                    return student._id === chosenStudentId ?
+                    {
+                        ...student,
+                        classroom: classroomId
+                    } :
+                    student
+                })
+            })
+        } catch (error) {
+            Swal.fire({
+                title: 'error',
+                text: 'could not assign student to class',
+                icon: 'error'
+            })
+        }
+
+        closePopup();
+    }
+
+    const deleteSelectedStudent = async (studentId: string) => {
+        try {
+            await deleteStudent(studentId);
+            setStudents((prevStudents) => {
+                return prevStudents.filter((student) => student._id !== studentId)
+            });
+        } catch (error) {
+            Swal.fire({
+                title: 'error',
+                text: 'could not delete student',
+                icon: 'error'
+            })
+        }
+    };
 
     const theme = useTheme();
 
@@ -70,15 +110,15 @@ const Students : React.FC = () => {
         return renderedValues;
     } 
 
-    const renderedRows : JSX.Element[] = students.map((studnet) => {
+    const renderedRows : JSX.Element[] = students.map((student) => {
         return (
             <TableRow>
-                {renderedStudentValues(studnet)}
+                {renderedStudentValues(student)}
                 <S.StyledTableCell>
-                    <S.DynamicButton variant="outlined" projectTheme={theme} onClick={openPopup} disabled={studnet.classroom != ''}>ASSIGN TO CLASS</S.DynamicButton>
+                    <S.DynamicButton variant="outlined" projectTheme={theme} onClick={() => openPopup(student._id)} disabled={student.classroom != ''}>ASSIGN TO CLASS</S.DynamicButton>
                 </S.StyledTableCell>
                 <S.StyledTableCell>
-                    <S.DynamicButton variant="outlined" projectTheme={theme}>DELETE</S.DynamicButton>
+                    <S.DynamicButton variant="outlined" projectTheme={theme} onClick={() => deleteSelectedStudent(student._id)}>DELETE</S.DynamicButton>
                 </S.StyledTableCell>
             </TableRow>
         )
@@ -107,7 +147,7 @@ const Students : React.FC = () => {
             closeModal={closePopup}
             items={availableClassrooms}
             listType="classes"
-            handleClick={() => console.log("click")}
+            handleClick={assignToClass}
             />
        </div>
     )
