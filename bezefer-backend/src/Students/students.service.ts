@@ -38,7 +38,7 @@ export class StudentsService {
             _id: _id,
             firstName,
             lastName,
-            age,
+            age, 
             profession,
             classroom: ""
         });
@@ -48,7 +48,15 @@ export class StudentsService {
     }
 
     async deleteStudent(studentId: string): Promise<void> {
-        await this.studentModel.deleteOne({_id : studentId}).exec();
+        const studentToDelete = await this.studentModel.findById(studentId).exec();
+        if (studentToDelete.classroom != "") {
+            const promises = [];
+            promises.push(this.studentModel.deleteOne({ _id : studentId}));
+            promises.push(this.classroomService.changeNumberOfSeats(studentToDelete.classroom, "remove"));
+            await Promise.all(promises);
+        } else {
+            await this.studentModel.deleteOne({ _id : studentId});
+        }
     }
 
     async changeStudentClassStatus(studentId: string, classroomId: string, action: string): Promise<void> {

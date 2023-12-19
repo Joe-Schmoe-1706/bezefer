@@ -40,7 +40,7 @@ export class ClassesService {
         }
     }
 
-    async changeNumberOfSeats(classroomId: string, action: string): Promise<void> {
+    async changeNumberOfSeats(classroomId: String, action: string): Promise<void> {
         const updatedClassroom = await this.classModel.findById(classroomId).exec();
         updatedClassroom.numberOfSeatsLeft = action === "add" ?
          updatedClassroom.numberOfSeatsLeft - 1 :
