@@ -1,6 +1,4 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import mongoose from "mongoose";
-import { Classroom } from "src/Classes/classes.model";
 
 @Schema()
 export class Student {
@@ -24,3 +22,5 @@ export class Student {
 };
 
 export const StudentSchema = SchemaFactory.createForClass(Student);
+
+export type StudentDocument = Student & Document

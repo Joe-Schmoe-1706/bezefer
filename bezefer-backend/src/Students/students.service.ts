@@ -1,7 +1,7 @@
 import mongoose, { Model } from "mongoose";
 import { Inject, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Student } from "./students.model";
+import { Student, StudentDocument } from "./students.model";
 import { ClassesService } from "src/Classes/classes.service";
 import { StudentDTO } from "./StudentDTO";
 
@@ -33,6 +33,10 @@ export class StudentsService {
         });
     }
 
+    async getStudentById(studentId: string): Promise<StudentDocument> {
+        return await this.studentModel.findById(studentId);
+    }
+
     async addStudent(_id: string, firstName: string,lastName: string, age: number, profession: string) : Promise<string> {
         try {
             console.log("trying")
@@ -53,7 +57,7 @@ export class StudentsService {
     }
 
     async deleteStudent(studentId: string): Promise<void> {
-        const studentToDelete = await this.studentModel.findById(studentId).exec();
+        const studentToDelete = await this.getStudentById(studentId);
         if (studentToDelete.classroom != "") {
             const promises = [];
             promises.push(this.studentModel.deleteOne({ _id : studentId}));
