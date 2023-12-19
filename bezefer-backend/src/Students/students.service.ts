@@ -3,6 +3,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Student } from "./students.model";
 import { ClassesService } from "src/Classes/classes.service";
+import { StudentDTO } from "./StudentDTO";
 
 @Injectable()
 export class StudentsService {
@@ -14,8 +15,22 @@ export class StudentsService {
     ) {}
 
     async findAll(): Promise<Student[]> {
-        const classes = await this.studentModel.find().exec();
-        return classes;
+        const students = await this.studentModel.find().exec();
+        return students;
+    }
+
+    async findAllDTO(): Promise<StudentDTO[]> {
+        const students = await this.studentModel.find().exec();
+        return students.map((student) => {
+            return {
+                _id: student._id,
+                firstName: student.firstName,
+                lsatName: student.lastName,
+                age: student.age,
+                profession: student.profession,
+                classroom: student.classroom
+            }
+        });
     }
 
     async addStudent(_id: string, firstName: string,lastName: string, age: number, profession: string) : Promise<string> {

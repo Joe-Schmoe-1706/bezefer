@@ -8,6 +8,11 @@ export const getAllStudents = async (): Promise<Student[]> => {
     return await result.json();
 }
 
+export const getStudentsDTO = async (): Promise<Student[]> => {
+    const result = await fetch(`${BASE_URL}/students/DTO`);
+    return await result.json();
+}
+
 export const deleteStudent = async (studentId: string): Promise<void> => {
     await fetch (`${BASE_URL}/students/${studentId}`,{
         method: "DELETE"

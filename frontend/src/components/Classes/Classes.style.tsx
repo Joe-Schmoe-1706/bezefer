@@ -1,5 +1,4 @@
 import {styled} from "@mui/material";
-import { ThemeContextType } from "../../Types/types";
 
 export const classesContainer = styled("div")({
     display: "grid",

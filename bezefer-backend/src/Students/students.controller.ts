@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from "@nestjs/common";
 import { StudentsService } from "./students.service";
 import { Student } from "./students.model";
+import { StudentDTO } from "./StudentDTO";
 
 @Controller('students')
 export class StudentsController {
@@ -12,6 +13,12 @@ export class StudentsController {
     async findAllStudents() : Promise<Student[]> {
         const classes = await this.studentsService.findAll();
         return classes;
+    }
+
+    @Get('/DTO')
+    async findAllStudentsDTO(): Promise<StudentDTO[]> {
+        const students = await this.studentsService.findAllDTO();
+        return students;
     }
 
     @Delete(':id')
