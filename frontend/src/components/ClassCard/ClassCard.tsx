@@ -54,7 +54,7 @@ const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
             Swal.fire({
                 title: 'error',
                 text: 'could not remove student from class',
-
+                icon: 'error'
             })
         }
     }
