@@ -38,9 +38,13 @@ export const getStudentsInClass = async (classroomId: string): Promise<Student[]
 }
 
 export const addStudentToClass = async (studentId: string, classroomId: string): Promise<void> => {
-    await fetch(`${BASE_URL}/students/${studentId}/classroom/${classroomId}/add`);
+    await fetch(`${BASE_URL}/students/${studentId}/classroom/${classroomId}/add`, {
+        method: "PATCH"
+    });
 }
 
 export const removeStudentFromClass = async (studentId: string, classroomId: string): Promise<void> => {
-    await fetch(`${BASE_URL}/students/${studentId}/classroom/${classroomId}/remove`);
+    await fetch(`${BASE_URL}/students/${studentId}/classroom/${classroomId}/remove`, {
+        method: "PATCH"
+    });
 }

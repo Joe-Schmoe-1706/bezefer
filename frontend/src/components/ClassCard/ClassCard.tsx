@@ -5,9 +5,13 @@ import StudentsModal from "../PopupList/PopupList";
 import * as DeleteStyle from "../../Style/DeleteIcon.style"
 import { Student } from "../../Types/types";
 import { Props } from "./ClassCard.types";
-import { getStudentsInClass } from "../../api/students.api";
+import { getStudentsInClass, removeStudentFromClass } from "../../api/students.api";
+import Swal from "sweetalert2";
+import alertify from "alertifyjs";
+import 'alertifyjs/build/css/alertify.css';
 
-const ClassCard : React.FC<Props> = ({classroom}) => {
+
+const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
     const theme = useTheme();
 
     const [isOpen, setIsOpen] = useState(false);
@@ -15,11 +19,15 @@ const ClassCard : React.FC<Props> = ({classroom}) => {
 
     useEffect(() => {
         const changeStudentsInClass = async () => {
-            const students = await getStudentsInClass(classroom._id);
-            if (students === undefined) {
-                setStudentsInClass([]);
-            } else {
+            try {
+                const students = await getStudentsInClass(classroom._id);
                 setStudentsInClass(students)
+            } catch (error) {
+                Swal.fire({
+                    title: 'error',
+                    text: 'could not load students in class',
+                    icon: 'error'
+                });
             }
         }
 
@@ -34,8 +42,21 @@ const ClassCard : React.FC<Props> = ({classroom}) => {
         setIsOpen(true);
     }
 
-    const deleteStudent = (id : string) : void => {
-        console.log("student deleted with id " + id);
+    const deleteStudent = async (id : string) : Promise<void> => {
+        try {
+            await removeStudentFromClass(id, classroom._id);
+            setStudentsInClass((prevStudents) => {
+                return prevStudents.filter((student) => student._id != id)
+            });
+            classroom.numberOfSeatsLeft = classroom.numberOfSeatsLeft + 1;
+            alertify.success("student successfully removed from class")
+        } catch (error) {
+            Swal.fire({
+                title: 'error',
+                text: 'could not remove student from class',
+
+            })
+        }
     }
 
     return (
@@ -46,7 +67,7 @@ const ClassCard : React.FC<Props> = ({classroom}) => {
                 <S.TotalSeats>out of <strong>{classroom.numberOfSeats}</strong></S.TotalSeats>
                 <S.Footer>
                     <S.OpenStudentList onClick={openModal}>STUDENT LIST</S.OpenStudentList>
-                    <S.DeleteClassButton>
+                    <S.DeleteClassButton onClick={() => deleteClass(classroom._id)}>
                         <DeleteStyle.CustomDeleteIcon projectTheme={theme}></DeleteStyle.CustomDeleteIcon>
                     </S.DeleteClassButton>
                 </S.Footer>

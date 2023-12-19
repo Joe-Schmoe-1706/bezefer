@@ -2,28 +2,62 @@ import React, {useState, useEffect} from "react";
 import * as S from "./Classes.style";
 import ClassCard from "../ClassCard/ClassCard";
 import { Classroom } from "../../Types/types";
-import { getAllClassrooms } from "../../api/classrooms.api";
+import { deleteClassroom, getAllClassrooms } from "../../api/classrooms.api";
+import Swal from "sweetalert2";
+import alertify from "alertifyjs";
+import 'alertifyjs/build/css/alertify.css';
 
 const Classes : React.FC = () => {
-    const [classrooms, setClassrooms] = useState<Classroom[]>();
+    const [classrooms, setClassrooms] = useState<Classroom[]>([]);
     
     useEffect(() => {
         const getClassrooms = async () => {
-            const newClassrooms = await getAllClassrooms();
-            setClassrooms(newClassrooms);
+            try {
+                const newClassrooms = await getAllClassrooms();
+                setClassrooms(newClassrooms);
+            } catch(error) {
+                Swal.fire({
+                    title: 'error',
+                    text: 'could not load classses',
+                    icon: 'error'
+                });
+            }
         };
 
         getClassrooms();
-    }, [classrooms]);
+    }, []);
+
+    const deleteClass = async (classroomId: string) => {
+        const selectedClass = classrooms?.find(classroom => classroom._id === classroomId);
+        if (selectedClass?.numberOfSeats === selectedClass?.numberOfSeatsLeft) {
+            await deleteClassroom(classroomId);
+
+            setClassrooms((oldClassrooms) => {
+                return oldClassrooms.filter(classroom => classroom._id !== classroomId)
+            });
+
+            alertify.success("class deleted successfully");
+        } else {
+            Swal.fire({
+                title: 'error',
+                text: 'cannot delete classroom that has student',
+                icon: 'error'
+            });
+        }
+    }
 
     const renderedClassrooms = classrooms?.map((oldClassroom) => {
-        return <ClassCard classroom={oldClassroom} />
+        return <ClassCard classroom={oldClassroom} deleteClass={deleteClass}/>
     })
 
     return (
-        <S.classesContainer>
-            {renderedClassrooms}
-        </S.classesContainer>
+        <div>
+            <S.classesContainer>
+                {renderedClassrooms}
+            </S.classesContainer>
+            <S.NoClassesMessage isShown={classrooms.length === 0}>There are no classrooms</S.NoClassesMessage>
+        </div>
+
     )
 }
 
