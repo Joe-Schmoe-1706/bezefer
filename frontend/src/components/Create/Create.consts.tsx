@@ -2,7 +2,7 @@ import { FormField } from "../Form/Form.types";
 
 export const classesFields : FormField[] = [
     {
-        name: "id",
+        name: "_id",
         required: true,
         placeHolder: "Class ID",
         validation: (id : string) => {
@@ -47,7 +47,7 @@ const onlyLetters = (string : string) : boolean  => {
 
 export const studentFields : FormField[] = [
     {
-        name: "id",
+        name: "_id",
         required: true,
         placeHolder: "ID",
         validation: (id : String) => {

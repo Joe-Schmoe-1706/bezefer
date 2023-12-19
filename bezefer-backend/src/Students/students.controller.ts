@@ -28,13 +28,17 @@ export class StudentsController {
 
     @Post()
     async addStudent(
-      @Body("_id") _id: string,
+      @Body('_id') _id: string,
       @Body("firstName") firstName: string,
       @Body("lastName") lastName: string,
       @Body("age") age: number,
       @Body("profession") profession: string  
     ) {
-        await this.studentsService.addStudent(_id, firstName, lastName, age, profession);
+        try {
+            await this.studentsService.addStudent(_id, firstName, lastName, age, profession);
+        } catch (error) {
+            throw (error);
+        }
     }
 
     @Patch(':id/classroom/:classroomId/add')

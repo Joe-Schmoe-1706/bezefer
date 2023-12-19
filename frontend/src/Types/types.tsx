@@ -25,4 +25,5 @@ export interface Classroom {
     name: string,
     numberOfSeats: number,
     numberOfSeatsLeft: number
+    [key: string]: string | number
 }

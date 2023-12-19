@@ -2,10 +2,10 @@ import React, {FormEventHandler, useState} from "react"
 import { Props } from "./Form.types"
 import * as S from "./Form.style"
 import { useTheme } from "../../Context/ThemeContext"
-import { Class, Student } from "../../Types/types"
+import { Classroom, Student } from "../../Types/types"
 
 const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
-    const initialFormData : Student | Class =  {} as Student | Class;
+    const initialFormData : Student | Classroom =  {} as Student | Classroom;
 
     const theme = useTheme();
 
@@ -13,7 +13,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
         initialFormData[field.name] = ''
     })
 
-    const [formData, setFormData] = useState<Student | Class>(initialFormData);
+    const [formData, setFormData] = useState<Student | Classroom>(initialFormData);
     const [showError, setShowError] = useState<boolean>(false);
 
     const handleChange = (event : React.ChangeEvent<HTMLInputElement>) : void => {
@@ -44,7 +44,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
         )
     })
 
-    const validateData = (data : Student | Class) : boolean => {
+    const validateData = (data : Student | Classroom) : boolean => {
         let validated = true;
 
         Object.keys(data).forEach((key) => {
@@ -57,7 +57,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
         return validated;
     }
 
-    const submit = (e : Event, formData : Student | Class) : void => {
+    const submit = (e : Event, formData : Student | Classroom) : void => {
         e.preventDefault();
         if (validateData(formData)) {
             handleClick(formData);

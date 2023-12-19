@@ -23,7 +23,10 @@ const BASE_URL = "http://localhost:5000"
                 _id: classroomId,
                 name: name,
                 numberOfSeats: numberOfSeats
-            })
+            }),
+            headers: {
+                "Content-Type": "application/json"
+            }
         });
     }
 

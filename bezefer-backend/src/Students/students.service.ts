@@ -34,17 +34,22 @@ export class StudentsService {
     }
 
     async addStudent(_id: string, firstName: string,lastName: string, age: number, profession: string) : Promise<string> {
-        const newStudent = new this.studentModel({
-            _id: _id,
-            firstName,
-            lastName,
-            age, 
-            profession,
-            classroom: ""
-        });
-
-        const result= await newStudent.save();
-        return result.id;
+        try {
+            console.log("trying")
+            const newStudent = new this.studentModel({
+                _id: _id,
+                firstName,
+                lastName,
+                age, 
+                profession,
+                classroom: ""
+            });
+    
+            const result= await newStudent.save();
+            return result.id;
+        } catch (error) {
+            throw (error);
+        } 
     }
 
     async deleteStudent(studentId: string): Promise<void> {

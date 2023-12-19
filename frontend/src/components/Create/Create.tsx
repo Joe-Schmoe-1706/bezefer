@@ -1,20 +1,36 @@
 import React from "react"
 import Form from "../Form/Form";
-import { Class } from "../../Types/types";
+import { Student, Classroom } from "../../Types/types";
 import * as S from "./Create.style"
 import * as Constants from "./Create.consts";
-import { Student } from "../Students/Students.types";
+import { addClassroom } from "../../api/classrooms.api";
+import Swal from "sweetalert2";
+import { addStudents } from "../../api/students.api";
 
 const Create : React.FC = () => {
     
-    const addClass = (dataToAdd : Class): void => {
-        console.log("added a class");
-        console.log(dataToAdd);
+    const addClass = async (dataToAdd : Classroom): Promise<void> => {
+        try {
+            await addClassroom(dataToAdd._id, dataToAdd.name, parseInt(dataToAdd.numberOfSeats));
+        } catch(error) {
+            Swal.fire({
+                title: 'error',
+                text: 'could not add classroom',
+                icon: 'error'
+            })
+        }
     };
 
-    const addStudent = (dataToAdd: Student): void => {
-        console.log("added a student");
-        console.log(dataToAdd);
+    const addStudent = async (dataToAdd: Student): Promise<void> => {
+        try {
+            await addStudents(dataToAdd._id, dataToAdd.firstName, dataToAdd.lastName, parseInt(dataToAdd.age), dataToAdd.profession)
+        } catch (error) {
+            Swal.fire({
+                title: 'error',
+                text: 'could not add student',
+                icon: 'error'
+            })
+        }
     };
 
     return (

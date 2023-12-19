@@ -25,16 +25,23 @@ export const addStudents = async(
     lastName: string,
     age: number,
     profession: string): Promise<void> => {
-        await fetch(`${BASE_URL}/students`,{
-            method: "POST",
-            body: JSON.stringify({
-                _id: studentId,
-                firstName: firstName,
-                lastName: lastName,
-                age: age,
-                profession: profession
+        try {
+            await fetch(`${BASE_URL}/students`,{
+                method: "POST",
+                body: JSON.stringify({
+                    _id: studentId,
+                    firstName: firstName,
+                    lastName: lastName,
+                    age: age,
+                    profession: profession
+                }),
+                headers: {
+                    "Content-Type": "application/json"
+                }
             })
-        });
+        } catch (error) {
+            throw (error);
+        }
     } 
 
 export const getStudentsInClass = async (classroomId: string): Promise<Student[]> => {
