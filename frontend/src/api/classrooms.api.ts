@@ -16,13 +16,15 @@ const BASE_URL = "http://localhost:5000"
         });
     }
 
-    export const addClassroom = async (classroomId: string, name: string, numberOfSeats: number): Promise<void> => {
+    export const addClassroom = async (classroom: Classroom): Promise<void> => {
         await fetch(`${BASE_URL}/classes`, {
             method: "POST",
             body: JSON.stringify({
-                _id: classroomId,
-                name: name,
-                numberOfSeats: numberOfSeats
+                classroom: {
+                    _id: classroom._id,
+                    name: classroom.name,
+                    numberOfSeats: classroom.numberOfSeats
+                }
             }),
             headers: {
                 "Content-Type": "application/json"

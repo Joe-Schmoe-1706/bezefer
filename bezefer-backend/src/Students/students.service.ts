@@ -37,21 +37,22 @@ export class StudentsService {
         return await this.studentModel.findById(studentId);
     }
 
-    async addStudent(_id: string, firstName: string,lastName: string, age: number, profession: string) : Promise<string> {
+    async addStudent(student: Student) : Promise<string> {
         try {
             console.log("trying")
             const newStudent = new this.studentModel({
-                _id: _id,
-                firstName,
-                lastName,
-                age, 
-                profession,
+                _id: student._id,
+                firstName: student.firstName,
+                lastName: student.lastName,
+                age: student.age, 
+                profession: student.profession,
                 classroom: ""
             });
     
             const result= await newStudent.save();
             return result.id;
         } catch (error) {
+            console.log("error 1")
             throw (error);
         } 
     }

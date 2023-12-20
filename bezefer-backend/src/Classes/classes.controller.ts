@@ -16,11 +16,9 @@ export class ClassesController {
 
     @Post()
     async addClassroom(
-        @Body('_id') _id: string,
-        @Body('name') name: string,
-        @Body('numberOfSeats') numberOfSeats: number
+        @Body('classroom') classroom: Classroom,
     ) {
-        return await this.classesService.addClass(_id, name, numberOfSeats);
+        return await this.classesService.addClass(classroom);
     }
 
     @Delete(':id')

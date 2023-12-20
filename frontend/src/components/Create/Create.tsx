@@ -11,7 +11,10 @@ const Create : React.FC = () => {
     
     const addClass = async (dataToAdd : Classroom): Promise<void> => {
         try {
-            await addClassroom(dataToAdd._id, dataToAdd.name, parseInt(dataToAdd.numberOfSeats));
+            await addClassroom({
+                ...dataToAdd,
+                numberOfSeats: +dataToAdd.capacity
+            });
         } catch(error) {
             Swal.fire({
                 title: 'error',
@@ -23,8 +26,12 @@ const Create : React.FC = () => {
 
     const addStudent = async (dataToAdd: Student): Promise<void> => {
         try {
-            await addStudents(dataToAdd._id, dataToAdd.firstName, dataToAdd.lastName, parseInt(dataToAdd.age), dataToAdd.profession)
+            await addStudents({
+                ...dataToAdd,
+                age: +dataToAdd.age
+            })
         } catch (error) {
+            console.log("error 4");
             Swal.fire({
                 title: 'error',
                 text: 'could not add student',

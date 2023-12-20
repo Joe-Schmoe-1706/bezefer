@@ -1,4 +1,5 @@
 import { Student } from "../Types/types";
+import api from "./axiostInstance"
 
 const BASE_URL = "http://localhost:5000"
 
@@ -19,28 +20,14 @@ export const deleteStudent = async (studentId: string): Promise<void> => {
     });
 }
 
-export const addStudents = async(
-    studentId: string,
-    firstName: string,
-    lastName: string,
-    age: number,
-    profession: string): Promise<void> => {
+export const addStudents = async(student: Student): Promise<void> => {
         try {
-            await fetch(`${BASE_URL}/students`,{
-                method: "POST",
-                body: JSON.stringify({
-                    _id: studentId,
-                    firstName: firstName,
-                    lastName: lastName,
-                    age: age,
-                    profession: profession
-                }),
-                headers: {
-                    "Content-Type": "application/json"
-                }
-            })
-        } catch (error) {
-            throw (error);
+            await api.post("/students",{
+                student
+            });
+        } catch (error : any) {
+            console.log("error 3 - frontend");
+            throw new Error(error);
         }
     } 
 
