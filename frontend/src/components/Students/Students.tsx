@@ -75,12 +75,20 @@ const Students : React.FC = () => {
                 })
             })
             alertify.success("student successfully assigned to class")
-        } catch (error) {
-            Swal.fire({
-                title: 'error',
-                text: 'could not assign student to class',
-                icon: 'error'
-            })
+        } catch (error: any) {
+            if (error.message === "there are no available seats in this class") {
+                Swal.fire({
+                    title: 'full classroom',
+                    text: 'classroom is already full',
+                    icon: 'error'
+                })
+            } else {
+                Swal.fire({
+                    title: 'error',
+                    text: 'could not assign student to class',
+                    icon: 'error'
+                })
+            }
         }
 
         closePopup();

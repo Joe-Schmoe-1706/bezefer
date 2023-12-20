@@ -39,7 +39,11 @@ export class StudentsController {
 
     @Patch(':id/classroom/:classroomId/add')
     async addStudentToClass(@Param('id') studentId: string, @Param('classroomId') classroomId: string) {
-        this.studentsService.changeStudentClassStatus(studentId, classroomId, "add");
+        try {
+            this.studentsService.changeStudentClassStatus(studentId, classroomId, "add");
+        } catch(error) {
+            throw new Error(error);
+        }
     }
 
     @Patch(':id/classroom/:classroomId/remove')

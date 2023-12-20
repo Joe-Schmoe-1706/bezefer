@@ -57,10 +57,22 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
         return validated;
     }
 
+    const clearForm = (): void => {
+        setFormData((prevData) => {
+            let newData = {} as Classroom | Student;
+            Object.keys(prevData).forEach((key) => {
+                newData[key] = ''
+            })
+
+            return newData;
+        })
+    }
+
     const submit = (e : Event, formData : Student | Classroom) : void => {
         e.preventDefault();
         if (validateData(formData)) {
             handleClick(formData);
+            clearForm();
         } else {
             setShowError(true);
         }

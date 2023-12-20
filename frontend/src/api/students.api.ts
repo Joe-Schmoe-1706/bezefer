@@ -37,7 +37,11 @@ export const getStudentsInClass = async (classroomId: string): Promise<Student[]
 }
 
 export const addStudentToClass = async (studentId: string, classroomId: string): Promise<void> => {
-    await api.patch(`/students/${studentId}/classroom/${classroomId}/add`)
+    try {
+        await api.patch(`/students/${studentId}/classroom/${classroomId}/add`)
+    } catch (error: any) {
+        throw new Error(error);
+    }
 }
 
 export const removeStudentFromClass = async (studentId: string, classroomId: string): Promise<void> => {

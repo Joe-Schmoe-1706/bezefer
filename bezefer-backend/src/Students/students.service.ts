@@ -1,5 +1,5 @@
 import mongoose, { Model } from "mongoose";
-import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Student } from "./students.model";
 import { ClassesService } from "src/Classes/classes.service";
@@ -90,12 +90,17 @@ export class StudentsService {
     }
 
     async changeStudentClassStatus(studentId: string, classroomId: string, action: string): Promise<void> {
-        const sutdentToUpdate = await this.getStudentById(studentId);
-        sutdentToUpdate.classroom = action === "add" ? classroomId : "";
-        const promises = [];
-        promises.push(sutdentToUpdate.save());
-        promises.push(this.classroomService.changeNumberOfSeats(classroomId, action));
-        await Promise.all(promises);
+        if ((await this.classroomService.findClassById(classroomId)).numberOfSeatsLeft === 0 && action === "add") {
+            console.log("error caught");
+            throw new Error("there are no available seats in this class");
+        } else {
+            const sutdentToUpdate = await this.getStudentById(studentId);
+            sutdentToUpdate.classroom = action === "add" ? classroomId : "";
+            const promises = [];
+            promises.push(sutdentToUpdate.save());
+            promises.push(this.classroomService.changeNumberOfSeats(classroomId, action));
+            await Promise.all(promises);
+        }
     }
 
     async getStudentsInClass(classroomId: string): Promise<Student[]> {
