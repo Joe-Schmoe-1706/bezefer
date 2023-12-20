@@ -31,22 +31,30 @@ const Classes : React.FC = () => {
     }, []);
 
     const deleteClass = async (classroomId: string) => {
-        const selectedClass = classrooms?.find(classroom => classroom._id === classroomId);
-        if (selectedClass?.numberOfSeats === selectedClass?.numberOfSeatsLeft) {
-            await deleteClassroom(classroomId);
-
-            setClassrooms((oldClassrooms) => {
-                return oldClassrooms.filter(classroom => classroom._id !== classroomId)
-            });
-
-            alertify.success("class deleted successfully");
-        } else {
-            Swal.fire({
-                title: 'error',
-                text: 'cannot delete classroom that has student',
-                icon: 'error'
-            });
-        }
+       Swal.fire({
+        title: 'are you sure you want to delete the classroom?',
+        showCancelButton: true,
+        confirmButtonText: 'Delete'
+       }).then(async (result) => {
+            if (result.isConfirmed) {
+                const selectedClass = classrooms?.find(classroom => classroom._id === classroomId);
+                if (selectedClass?.numberOfSeats === selectedClass?.numberOfSeatsLeft) {
+                    await deleteClassroom(classroomId);
+        
+                    setClassrooms((oldClassrooms) => {
+                        return oldClassrooms.filter(classroom => classroom._id !== classroomId)
+                    });
+        
+                    alertify.success("class deleted successfully");
+                } else {
+                    Swal.fire({
+                        title: 'error',
+                        text: 'cannot delete classroom that has student',
+                        icon: 'error'
+                    });
+                }
+            }
+       })
     }
 
     const renderedClassrooms = classrooms?.map((oldClassroom) => {

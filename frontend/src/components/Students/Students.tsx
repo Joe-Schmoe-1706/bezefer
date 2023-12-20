@@ -8,6 +8,8 @@ import { getStudentsDTO, deleteStudent, addStudentToClass } from "../../api/stud
 import Swal from "sweetalert2";
 import { getAvailableClassrooms } from "../../api/classrooms.api";
 import { tableHeaders } from "./Students.consts";
+import alertify from "alertifyjs";
+import 'alertifyjs/build/css/alertify.css';
 
 
 const Students : React.FC = () => {
@@ -72,6 +74,7 @@ const Students : React.FC = () => {
                     student
                 })
             })
+            alertify.success("student successfully assigned to class")
         } catch (error) {
             Swal.fire({
                 title: 'error',
@@ -84,18 +87,27 @@ const Students : React.FC = () => {
     }
 
     const deleteSelectedStudent = async (studentId: string) => {
-        try {
-            await deleteStudent(studentId);
-            setStudents((prevStudents) => {
-                return prevStudents.filter((student) => student._id !== studentId)
-            });
-        } catch (error) {
-            Swal.fire({
-                title: 'error',
-                text: 'could not delete student',
-                icon: 'error'
-            })
-        }
+        Swal.fire({
+            title: 'Are you sure you want to delete the student?',
+            showCancelButton: true,
+            confirmButtonText: "Delete"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await deleteStudent(studentId);
+                    setStudents((prevStudents) => {
+                        return prevStudents.filter((student) => student._id !== studentId)
+                    });
+                    alertify.success("student successfully deleted");
+                } catch (error) {
+                    Swal.fire({
+                        title: 'error',
+                        text: 'could not delete student',
+                        icon: 'error'
+                    })
+                }
+            }
+        })
     };
 
     const theme = useTheme();

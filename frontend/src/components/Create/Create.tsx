@@ -6,6 +6,8 @@ import * as Constants from "./Create.consts";
 import { addClassroom } from "../../api/classrooms.api";
 import Swal from "sweetalert2";
 import { addStudents } from "../../api/students.api";
+import alertify from "alertifyjs";
+import 'alertifyjs/build/css/alertify.css';
 
 const Create : React.FC = () => {
     
@@ -15,8 +17,9 @@ const Create : React.FC = () => {
                 ...dataToAdd,
                 numberOfSeats: +dataToAdd.capacity
             });
+            alertify.success("classroom successfully added")
         } catch(error : any) {
-            if (error.message = "duplicate ID") {
+            if (error.message ===  "duplicate ID") {
                 Swal.fire({
                     title: 'duplicate id',
                     text: 'classroom id is alredy taken, insert a different one',
@@ -38,8 +41,9 @@ const Create : React.FC = () => {
                 ...dataToAdd,
                 age: +dataToAdd.age
             })
+            alertify.success("student successfully added")
         } catch (error: any) {
-            if (error.message = "duplicate ID") {
+            if (error.message === "duplicate ID") {
                 Swal.fire({
                     title: 'duplicate id',
                     text: 'id is alredy taken, insert a different one',
