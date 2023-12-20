@@ -1,8 +1,9 @@
 import { Model } from "mongoose";
-import { Inject, Injectable } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Classroom } from "./classes.model";
 import { StudentsService } from "src/Students/students.service";
+import validation from "src/validation";
 
 @Injectable()
 export class ClassesService {
@@ -21,14 +22,31 @@ export class ClassesService {
         return await this.classModel.findById(classroomId).exec();
     }
 
+    validateClass(classroom: Classroom): boolean {
+        return validation.validateClassId(classroom._id) &&
+        validation.validateClassName(classroom.name) &&
+        validation.validateNumberOfSeats(classroom.numberOfSeats);
+    }
+ 
     async addClass(classroom: Classroom) : Promise<void> {
-        const newClassroom = new this.classModel({
-            _id: classroom._id,
-            name: classroom.name,
-            numberOfSeats: classroom.numberOfSeats,
-            numberOfSeatsLeft: classroom.numberOfSeats
-        });
-        await newClassroom.save();
+        if (!this.validateClass(classroom)) {
+            throw new BadRequestException("classroom is not valid")
+        }
+        
+        try {
+            const newClassroom = new this.classModel({
+                _id: classroom._id,
+                name: classroom.name,
+                numberOfSeats: classroom.numberOfSeats,
+                numberOfSeatsLeft: classroom.numberOfSeats
+            });
+            await newClassroom.save()
+        } catch (error) {
+            if (error.code === 11000) {
+                throw new Error("duplicate ID")
+            }
+            throw (error);
+        }
     }
 
     async deleteClass(classroomId: string): Promise<void> {

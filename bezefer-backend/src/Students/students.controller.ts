@@ -33,7 +33,6 @@ export class StudentsController {
         try {
             await this.studentsService.addStudent(student);
         } catch (error) {
-            console.log("error 2")
             throw (error);
         }
     }

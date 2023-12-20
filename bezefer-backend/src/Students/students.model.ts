@@ -22,5 +22,3 @@ export class Student {
 };
 
 export const StudentSchema = SchemaFactory.createForClass(Student);
-
-export type StudentDocument = Student & Document

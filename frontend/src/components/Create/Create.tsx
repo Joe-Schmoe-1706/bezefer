@@ -15,12 +15,20 @@ const Create : React.FC = () => {
                 ...dataToAdd,
                 numberOfSeats: +dataToAdd.capacity
             });
-        } catch(error) {
-            Swal.fire({
-                title: 'error',
-                text: 'could not add classroom',
-                icon: 'error'
-            })
+        } catch(error : any) {
+            if (error.message = "duplicate ID") {
+                Swal.fire({
+                    title: 'duplicate id',
+                    text: 'classroom id is alredy taken, insert a different one',
+                    icon: 'error'
+                })
+             } else {
+                Swal.fire({
+                    title: 'error',
+                    text: 'could not add classroom',
+                    icon: 'error'
+                })
+            }
         }
     };
 
@@ -30,13 +38,20 @@ const Create : React.FC = () => {
                 ...dataToAdd,
                 age: +dataToAdd.age
             })
-        } catch (error) {
-            console.log("error 4");
-            Swal.fire({
-                title: 'error',
-                text: 'could not add student',
-                icon: 'error'
-            })
+        } catch (error: any) {
+            if (error.message = "duplicate ID") {
+                Swal.fire({
+                    title: 'duplicate id',
+                    text: 'id is alredy taken, insert a different one',
+                    icon: 'error'
+                })
+             } else {
+                Swal.fire({
+                    title: 'error',
+                    text: 'could not add student',
+                    icon: 'error'
+                })
+            }
         }
     };
 

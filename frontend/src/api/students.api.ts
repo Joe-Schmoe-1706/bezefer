@@ -32,18 +32,14 @@ export const addStudents = async(student: Student): Promise<void> => {
     } 
 
 export const getStudentsInClass = async (classroomId: string): Promise<Student[]> => {
-    const result = await fetch(`${BASE_URL}/students/classroom/${classroomId}`);
-    return await result.json();
+    const result = await api.get(`/students/classroom/${classroomId}`);
+    return await result.data;
 }
 
 export const addStudentToClass = async (studentId: string, classroomId: string): Promise<void> => {
-    await fetch(`${BASE_URL}/students/${studentId}/classroom/${classroomId}/add`, {
-        method: "PATCH"
-    });
+    await api.patch(`/students/${studentId}/classroom/${classroomId}/add`)
 }
 
 export const removeStudentFromClass = async (studentId: string, classroomId: string): Promise<void> => {
-    await fetch(`${BASE_URL}/students/${studentId}/classroom/${classroomId}/remove`, {
-        method: "PATCH"
-    });
+    await api.patch(`/students/${studentId}/classroom/${classroomId}/remove`)
 }

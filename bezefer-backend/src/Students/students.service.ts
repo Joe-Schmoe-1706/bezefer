@@ -1,9 +1,10 @@
 import mongoose, { Model } from "mongoose";
-import { Inject, Injectable } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Student, StudentDocument } from "./students.model";
+import { Student } from "./students.model";
 import { ClassesService } from "src/Classes/classes.service";
 import { StudentDTO } from "./StudentDTO";
+import validation from "src/validation";
 
 @Injectable()
 export class StudentsService {
@@ -33,13 +34,30 @@ export class StudentsService {
         });
     }
 
-    async getStudentById(studentId: string): Promise<StudentDocument> {
-        return await this.studentModel.findById(studentId);
+    validateStudent(student: Student): boolean {
+        return validation.validateStudentId(student._id) &&
+        validation.validateOnlyLetters(student.firstName) &&
+        validation.validateOnlyLetters(student.lastName) &&
+        validation.validateAge(student.age) &&
+        validation.validateOnlyLetters(student.profession); 
+    }
+
+    async getStudentById(studentId: string) {
+        const student = this.studentModel.findById(studentId);
+
+        if (!student) {
+            throw new NotFoundException("student does not exist");
+        }
+
+        return student;
     }
 
     async addStudent(student: Student) : Promise<string> {
+        if (!this.validateStudent(student)) {
+            throw new BadRequestException("student is not valid");
+        }
+
         try {
-            console.log("trying")
             const newStudent = new this.studentModel({
                 _id: student._id,
                 firstName: student.firstName,
@@ -52,7 +70,9 @@ export class StudentsService {
             const result= await newStudent.save();
             return result.id;
         } catch (error) {
-            console.log("error 1")
+            if (error.code === 11000) {
+                throw new Error("duplicate ID")
+            }
             throw (error);
         } 
     }
@@ -70,7 +90,7 @@ export class StudentsService {
     }
 
     async changeStudentClassStatus(studentId: string, classroomId: string, action: string): Promise<void> {
-        const sutdentToUpdate = await this.studentModel.findById(studentId).exec();
+        const sutdentToUpdate = await this.getStudentById(studentId);
         sutdentToUpdate.classroom = action === "add" ? classroomId : "";
         const promises = [];
         promises.push(sutdentToUpdate.save());

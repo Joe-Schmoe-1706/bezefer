@@ -6,6 +6,7 @@ import { deleteClassroom, getAllClassrooms } from "../../api/classrooms.api";
 import Swal from "sweetalert2";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
+import { ErrorSharp } from "@mui/icons-material";
 
 const Classes : React.FC = () => {
     const [classrooms, setClassrooms] = useState<Classroom[]>([]);
@@ -14,8 +15,10 @@ const Classes : React.FC = () => {
         const getClassrooms = async () => {
             try {
                 const newClassrooms = await getAllClassrooms();
+                console.log(newClassrooms);
                 setClassrooms(newClassrooms);
             } catch(error) {
+                console.log(error)
                 Swal.fire({
                     title: 'error',
                     text: 'could not load classses',

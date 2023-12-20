@@ -1,39 +1,26 @@
 import { Classroom } from "../Types/types";
+import api from "./axiostInstance"
 
 const BASE_URL = "http://localhost:5000"
 
     export const getAllClassrooms = async (): Promise<Classroom[]> => {
-        const result = await fetch(`${BASE_URL}/classes`,{
-            method: "GET"
-        });
-        const classrooms = await result.json();
+        const result = await api.get("/classes")
+        const classrooms = await result.data;
         return classrooms;
     }
 
     export const deleteClassroom = async (classroomId: string): Promise<void> => {
-        await fetch (`${BASE_URL}/classes/${classroomId}`, {
-            method: "DELETE"
-        });
+        await api.delete(`/classes/${classroomId}`)
     }
 
     export const addClassroom = async (classroom: Classroom): Promise<void> => {
-        await fetch(`${BASE_URL}/classes`, {
-            method: "POST",
-            body: JSON.stringify({
-                classroom: {
-                    _id: classroom._id,
-                    name: classroom.name,
-                    numberOfSeats: classroom.numberOfSeats
-                }
-            }),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+        await api.post('/classes', {
+            classroom
+        })
     }
 
     export const getAvailableClassrooms = async (): Promise<Classroom[]> => {
-        const result = await fetch(`${BASE_URL}/classes/available`);
-        const classrooms = result.json();
+        const result = await api.get(`/classes/available`);
+        const classrooms = result.data;
         return classrooms;
     }
