@@ -74,6 +74,17 @@ const Students : React.FC = () => {
                     student
                 })
             })
+            
+            setAvailableClassroom((prevClassroom) => {
+                return prevClassroom.map((classroom) => {
+                    return classroom._id === classroomId ?
+                    {
+                        ...classroom,
+                        numberOfSeatsLeft: classroom.numberOfSeatsLeft - 1
+                    } :
+                    classroom
+                })
+            })
             alertify.success("student successfully assigned to class")
         } catch (error: any) {
             if (error.response && error.response.data === 400) {
@@ -149,6 +160,8 @@ const Students : React.FC = () => {
         return <S.StyledTableCell>{header}</S.StyledTableCell>
     });
 
+    const renderedAvilableClasses : Classroom[] = availableClassrooms.filter(classroom => classroom.numberOfSeatsLeft !== 0);
+
     return (
        <div>
         <S.StudentTableContainer>
@@ -166,7 +179,7 @@ const Students : React.FC = () => {
         <PopupList
             isOpen={isPopupOpen} 
             closeModal={closePopup}
-            items={availableClassrooms}
+            items={renderedAvilableClasses}
             listType="classes"
             handleClick={assignToClass}
             />
