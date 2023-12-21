@@ -1,8 +1,6 @@
 import { Classroom } from "../Types/types";
 import api from "./axiostInstance"
 
-const BASE_URL = "http://localhost:5000"
-
     export const getAllClassrooms = async (): Promise<Classroom[]> => {
         const result = await api.get("/classes")
         const classrooms = await result.data;

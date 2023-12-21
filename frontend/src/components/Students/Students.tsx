@@ -76,7 +76,7 @@ const Students : React.FC = () => {
             })
             alertify.success("student successfully assigned to class")
         } catch (error: any) {
-            if (error.message === "there are no available seats in this class") {
+            if (error.response && error.response.data === 400) {
                 Swal.fire({
                     title: 'full classroom',
                     text: 'classroom is already full',

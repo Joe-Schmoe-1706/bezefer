@@ -17,21 +17,14 @@ const Create : React.FC = () => {
                 ...dataToAdd,
                 numberOfSeats: +dataToAdd.capacity
             });
-            alertify.success("classroom successfully added")
+            alertify.success("classroom successfully added");
         } catch(error : any) {
-            if (error.message ===  "duplicate ID") {
-                Swal.fire({
-                    title: 'duplicate id',
-                    text: 'classroom id is alredy taken, insert a different one',
-                    icon: 'error'
-                })
-             } else {
                 Swal.fire({
                     title: 'error',
-                    text: 'could not add classroom',
+                    text: error.response.data.message,
                     icon: 'error'
-                })
-            }
+
+            })
         }
     };
 

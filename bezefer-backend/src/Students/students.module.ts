@@ -3,7 +3,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { Student, StudentSchema } from "./students.model";
 import { StudentsController } from "./students.controller";
 import { StudentsService } from "./students.service";
-import { ClassesModule } from "src/Classes/classes.module";
+import { ClassesModule } from "../Classes/classes.module";
 
 @Module({
     imports: [MongooseModule.forFeature([{name : Student.name, schema: StudentSchema}]),

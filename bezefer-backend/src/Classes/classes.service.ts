@@ -2,8 +2,9 @@ import { Model } from "mongoose";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Classroom } from "./classes.model";
-import { StudentsService } from "src/Students/students.service";
-import validation from "src/validation";
+import { StudentsService } from "../Students/students.service";
+import validation from "../validation";
+import { NotFoundError } from "rxjs";
 
 @Injectable()
 export class ClassesService {
@@ -51,6 +52,10 @@ export class ClassesService {
 
     async deleteClass(classroomId: string): Promise<void> {
         const classroomToDelete = await this.classModel.findById(classroomId).exec();
+        if (!classroomToDelete) {
+            throw new NotFoundError('classroom does not exist');
+        }
+        
         if (classroomToDelete.numberOfSeats === classroomToDelete.numberOfSeatsLeft) {
             await this.classModel.deleteOne({_id : classroomId}).exec();
         } else {

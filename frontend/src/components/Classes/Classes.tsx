@@ -6,7 +6,6 @@ import { deleteClassroom, getAllClassrooms } from "../../api/classrooms.api";
 import Swal from "sweetalert2";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
-import { ErrorSharp } from "@mui/icons-material";
 
 const Classes : React.FC = () => {
     const [classrooms, setClassrooms] = useState<Classroom[]>([]);
@@ -39,13 +38,21 @@ const Classes : React.FC = () => {
             if (result.isConfirmed) {
                 const selectedClass = classrooms?.find(classroom => classroom._id === classroomId);
                 if (selectedClass?.numberOfSeats === selectedClass?.numberOfSeatsLeft) {
-                    await deleteClassroom(classroomId);
+                    try {
+                        await deleteClassroom(classroomId);
         
-                    setClassrooms((oldClassrooms) => {
-                        return oldClassrooms.filter(classroom => classroom._id !== classroomId)
-                    });
-        
-                    alertify.success("class deleted successfully");
+                        setClassrooms((oldClassrooms) => {
+                            return oldClassrooms.filter(classroom => classroom._id !== classroomId)
+                        });
+            
+                        alertify.success("class deleted successfully");
+                    } catch (error: any) {
+                        Swal.fire({
+                            title: 'error',
+                            text: error.response.data.message,
+                            icon: 'error'
+                        });
+                    }
                 } else {
                     Swal.fire({
                         title: 'error',
