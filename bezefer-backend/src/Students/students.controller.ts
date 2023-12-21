@@ -55,15 +55,13 @@ export class StudentsController {
     }
 
     @Patch(':id/classroom/:classroomId/remove')
-    async removeStudentToClass(@Param('id') studentId: string, @Param('classroomId') classroomId: string) {
-        console.log("controller entered")
+    async removeStudentToClass(@Param('id') studentId: string, @Param('classroomId') classroomId: string, @Res() res: Response) {
         try {
             await this.studentsService.changeStudentClassStatus(studentId, classroomId, "remove");
             console.log("controller worked");
-            
+            res.status(200).send('');
         } catch(error) {
-            console.log(error.message);
-            throw new Error(error);
+            res.status(500).json({ message: error.message });
         }
     }
 
