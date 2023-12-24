@@ -27,7 +27,7 @@ export const InputField = styled(TextField)({
 
 export const SubmitBtn = styled(Button, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{ projectTheme : ThemeContextType | null}>(({projectTheme, theme}) => ({
+})<{ projectTheme : ThemeContextType | null}>(({projectTheme}) => ({
     width: "16vw",
     height: "4vh",
     border: "none",
@@ -39,9 +39,6 @@ export const SubmitBtn = styled(Button, {
         backgroundColor: projectTheme === "blue" ? "#3F50B5" : "#F50057",
         color: "#FFFFFF"
     }
-    [theme.breakpoints.up("lg")]: {
-        backgroundColor: "red"
-    },
 }))
 
 export const StyledForm = styled("form")({

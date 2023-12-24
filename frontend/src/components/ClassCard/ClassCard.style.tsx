@@ -1,13 +1,20 @@
 import { Card, styled } from "@mui/material";
 import { ButtonIcon } from "../../Style/DeleteIcon.style";
 
-export const ClassCard = styled(Card)({
-    width: "12vw",
-    height: "19vh",
+export const ClassCard = styled(Card)(({ theme }) => ({
+    [theme.breakpoints.up("lg")]: {
+        width: "12vw",
+        height: "19vh"
+    },
+    [theme.breakpoints.down("md")]: {
+        width: "55vw",
+        height: "25vh",
+        marginBottom: "5vh"
+    },
     fontFamily: "Heebo, sans-serif",
     boxShadow: "0px 4px 4px 0px #00000040"
 
-});
+}));
 
 export const ClassName = styled("div")({
     fontSize: "1.5rem",
