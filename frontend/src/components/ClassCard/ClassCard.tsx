@@ -9,6 +9,8 @@ import { getStudentsInClass, removeStudentFromClass } from "../../api/students.a
 import Swal from "sweetalert2";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
+import { useAppDispatch } from "../../hooks";
+import { increaseSeatsLeft } from "../../state/reducers/classroomSlice";
 
 
 const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
@@ -16,6 +18,8 @@ const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
 
     const [isOpen, setIsOpen] = useState(false);
     const [studentsInClass, setStudentsInClass] = useState<Student[]>([]);
+
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const changeStudentsInClass = async () => {
@@ -48,7 +52,10 @@ const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
             setStudentsInClass((prevStudents) => {
                 return prevStudents.filter((student) => student._id != id)
             });
-            classroom.seatsLeft = classroom.seatsLeft + 1;
+            dispatch(increaseSeatsLeft({
+                id: classroom._id,
+                change: 1
+            }));
             alertify.success("student successfully removed from class");
         } catch (error) {
             Swal.fire({

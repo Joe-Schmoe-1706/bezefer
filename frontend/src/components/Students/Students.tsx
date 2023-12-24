@@ -10,13 +10,17 @@ import { getAvailableClassrooms } from "../../api/classrooms.api";
 import { tableHeaders } from "./Students.consts";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { decreaseSeatsLeft, selectAvailableClassrooms } from "../../state/reducers/classroomSlice";
 
 
 const Students : React.FC = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    const [availableClassrooms, setAvailableClassroom] = useState<Classroom[]>([]);
     const [students, setStudents] = useState<Student[]>([]);
     const [chosenStudentId, setChosenStudentId] = useState<string>('');
+
+    const availabeClassrooms = useAppSelector(selectAvailableClassrooms);
+    const dispatch = useAppDispatch();
 
     useEffect(() => {
         const initializeStudents = async (): Promise<void> => {
@@ -33,23 +37,6 @@ const Students : React.FC = () => {
         }
 
         initializeStudents();
-    }, [])
-
-    useEffect(() => {
-        const initializeAvialableClasses = async (): Promise<void> => {
-            try {
-                const classrooms = await getAvailableClassrooms();
-                setAvailableClassroom(classrooms);
-            } catch (error) {
-                Swal.fire({
-                    title: 'error',
-                    text: 'could not fetch available classrooms',
-                    icon: 'error'
-                })
-            }
-        }
-
-        initializeAvialableClasses();
     }, [])
 
     const openPopup = (studentId : string) : void => {
@@ -74,17 +61,10 @@ const Students : React.FC = () => {
                     student
                 })
             })
-            
-            setAvailableClassroom((prevClassroom) => {
-                return prevClassroom.map((classroom) => {
-                    return classroom._id === classroomId ?
-                    {
-                        ...classroom,
-                        seatsLeft: classroom.seatsLeft - 1
-                    } :
-                    classroom
-                })
-            })
+            dispatch(decreaseSeatsLeft({
+                id: classroomId,
+                change: 1
+            }));
             alertify.success("student successfully assigned to class")
         } catch (error: any) {
             if (error.response && error.response.data === 400) {
@@ -160,8 +140,6 @@ const Students : React.FC = () => {
         return <S.StyledTableCell>{header}</S.StyledTableCell>
     });
 
-    const renderedAvilableClasses : Classroom[] = availableClassrooms.filter(classroom => classroom.seatsLeft !== 0);
-
     return (
        <div>
         <S.StudentTableContainer>
@@ -179,7 +157,7 @@ const Students : React.FC = () => {
         <PopupList
             isOpen={isPopupOpen} 
             closeModal={closePopup}
-            items={renderedAvilableClasses}
+            items={availabeClassrooms}
             listType="classes"
             handleClick={assignToClass}
             />

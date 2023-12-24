@@ -1,4 +1,4 @@
-import { Button, TextField, styled } from "@mui/material";
+import { Button, TextField, styled, useMediaQuery } from "@mui/material";
 import { ThemeContextType } from "../../Types/types";
 
 export const FormContainer = styled("div")({
@@ -27,7 +27,7 @@ export const InputField = styled(TextField)({
 
 export const SubmitBtn = styled(Button, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{ projectTheme : ThemeContextType | null}>(({projectTheme}) => ({
+})<{ projectTheme : ThemeContextType | null}>(({projectTheme, theme}) => ({
     width: "16vw",
     height: "4vh",
     border: "none",
@@ -39,6 +39,9 @@ export const SubmitBtn = styled(Button, {
         backgroundColor: projectTheme === "blue" ? "#3F50B5" : "#F50057",
         color: "#FFFFFF"
     }
+    [theme.breakpoints.up("lg")]: {
+        backgroundColor: "red"
+    },
 }))
 
 export const StyledForm = styled("form")({

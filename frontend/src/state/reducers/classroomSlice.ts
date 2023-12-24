@@ -17,7 +17,7 @@ export const classroomSlice = createSlice({
     name: 'classroom',
     initialState,
     reducers: {
-        addClassroom: (state: stateValue, action: AddAction) => {
+        addClass: (state: stateValue, action: AddAction) => {
             state.classrooms.push(action.payload.classroom);
             return state;
         },
@@ -27,7 +27,7 @@ export const classroomSlice = createSlice({
                 classrooms: newClassrooms
             };
         },
-        addStudentToClass: (state: stateValue, action: ChangeSeatsAction) => {
+        decreaseSeatsLeft: (state: stateValue, action: ChangeSeatsAction) => {
             const updated = state.classrooms.map((classroom) => {
                 return classroom._id === action.payload.id ?
                 {
@@ -41,7 +41,7 @@ export const classroomSlice = createSlice({
                 classrooms: updated
             }
         },
-        removeStudentFromClass: (state: stateValue, action: ChangeSeatsAction) => {
+        increaseSeatsLeft: (state: stateValue, action: ChangeSeatsAction) => {
             const updated = state.classrooms.map((classroom) => {
                 return classroom._id === action.payload.id ?
                 {
@@ -65,13 +65,19 @@ export const classroomSlice = createSlice({
 });
 
 export const {
-    addClassroom,
+    addClass,
     deleteClass,
-    addStudentToClass,
-    removeStudentFromClass,
+    increaseSeatsLeft,
+    decreaseSeatsLeft,
     initializeState
 } = classroomSlice.actions;
 
 export const selectClassroom = (state: RootState) => state.classroom.classrooms
+
+export const selectAvailableClassrooms = (state: RootState) => {
+    const classrooms = state.classroom.classrooms;
+
+    return classrooms.filter(classroom => classroom.seatsLeft > 0);
+}
 
 export default classroomSlice.reducer;

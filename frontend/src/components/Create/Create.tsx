@@ -8,15 +8,27 @@ import Swal from "sweetalert2";
 import { addStudents } from "../../api/students.api";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
+import { useAppDispatch } from "../../hooks";
+import { addClass } from "../../state/reducers/classroomSlice";
 
 const Create : React.FC = () => {
+
+    const dispatch = useAppDispatch();
     
-    const addClass = async (dataToAdd : Classroom): Promise<void> => {
+    const addClassHandler = async (dataToAdd : Classroom): Promise<void> => {
         try {
             await addClassroom({
                 ...dataToAdd,
                 capacity: +dataToAdd.seatsLeft
             });
+            dispatch(addClass({
+                classroom: {
+                    _id: dataToAdd._id,
+                    name: dataToAdd.name,
+                    capacity: +dataToAdd.seatsLeft,
+                    seatsLeft: +dataToAdd.seatsLeft
+                }
+            }));
             alertify.success("classroom successfully added");
         } catch(error : any) {
                 Swal.fire({
@@ -57,7 +69,7 @@ const Create : React.FC = () => {
             <Form 
              header="Create new class"
              btnText="CREATE CLASS"
-             handleClick={addClass}
+             handleClick={addClassHandler}
              fields={Constants.classesFields}></Form>
 
              <Form 
