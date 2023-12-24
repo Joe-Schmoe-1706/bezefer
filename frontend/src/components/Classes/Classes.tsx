@@ -6,30 +6,33 @@ import { deleteClassroom, getAllClassrooms } from "../../api/classrooms.api";
 import Swal from "sweetalert2";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { selectClassroom, deleteClass } from "../../state/reducers/classroomSlice";
 
 const Classes : React.FC = () => {
-    const [classrooms, setClassrooms] = useState<Classroom[]>([]);
-    
-    useEffect(() => {
-        const getClassrooms = async () => {
-            try {
-                const newClassrooms = await getAllClassrooms();
-                console.log(newClassrooms);
-                setClassrooms(newClassrooms);
-            } catch(error) {
-                console.log(error)
-                Swal.fire({
-                    title: 'error',
-                    text: 'could not load classses',
-                    icon: 'error'
-                });
-            }
-        };
+    const classrooms: Classroom[] = useAppSelector(selectClassroom);
+    const dispatch = useAppDispatch();
 
-        getClassrooms();
-    }, []);
+    // useEffect(() => {
+    //     const getClassrooms = async () => {
+    //         try {
+    //             const newClassrooms = await getAllClassrooms();
+    //             console.log(newClassrooms);
+    //             setClassrooms(newClassrooms);
+    //         } catch(error) {
+    //             console.log(error)
+    //             Swal.fire({
+    //                 title: 'error',
+    //                 text: 'could not load classses',
+    //                 icon: 'error'
+    //             });
+    //         }
+    //     };
 
-    const deleteClass = async (classroomId: string) => {
+    //     getClassrooms();
+    // }, []);
+
+    const deleteClassHandler = async (classroomId: string) => {
        Swal.fire({
         title: 'are you sure you want to delete the classroom?',
         showCancelButton: true,
@@ -41,9 +44,9 @@ const Classes : React.FC = () => {
                     try {
                         await deleteClassroom(classroomId);
         
-                        setClassrooms((oldClassrooms) => {
-                            return oldClassrooms.filter(classroom => classroom._id !== classroomId)
-                        });
+                        dispatch(deleteClass({
+                            id: classroomId
+                        }));
             
                         alertify.success("class deleted successfully");
                     } catch (error: any) {
@@ -65,7 +68,7 @@ const Classes : React.FC = () => {
     }
 
     const renderedClassrooms = classrooms?.map((oldClassroom) => {
-        return <ClassCard classroom={oldClassroom} deleteClass={deleteClass}/>
+        return <ClassCard classroom={oldClassroom} deleteClass={deleteClassHandler}/>
     })
 
     return (
