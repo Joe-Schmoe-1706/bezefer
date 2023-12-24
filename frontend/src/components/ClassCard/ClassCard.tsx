@@ -48,7 +48,7 @@ const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
             setStudentsInClass((prevStudents) => {
                 return prevStudents.filter((student) => student._id != id)
             });
-            classroom.numberOfSeatsLeft = classroom.numberOfSeatsLeft + 1;
+            classroom.seatsLeft = classroom.seatsLeft + 1;
             alertify.success("student successfully removed from class");
         } catch (error) {
             Swal.fire({
@@ -63,8 +63,8 @@ const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
         <div>
             <S.ClassCard>
                 <S.ClassName>{classroom.name}</S.ClassName>
-                <S.SeatsLeft>There are <strong>{classroom.numberOfSeatsLeft}</strong> seats left</S.SeatsLeft>
-                <S.TotalSeats>out of <strong>{classroom.numberOfSeats}</strong></S.TotalSeats>
+                <S.SeatsLeft>There are <strong>{classroom.seatsLeft}</strong> seats left</S.SeatsLeft>
+                <S.TotalSeats>out of <strong>{classroom.capacity}</strong></S.TotalSeats>
                 <S.Footer>
                     <S.OpenStudentList onClick={openModal}>STUDENT LIST</S.OpenStudentList>
                     <S.DeleteClassButton onClick={() => deleteClass(classroom._id)}>

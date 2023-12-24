@@ -15,7 +15,7 @@ const Create : React.FC = () => {
         try {
             await addClassroom({
                 ...dataToAdd,
-                numberOfSeats: +dataToAdd.capacity
+                capacity: +dataToAdd.seatsLeft
             });
             alertify.success("classroom successfully added");
         } catch(error : any) {

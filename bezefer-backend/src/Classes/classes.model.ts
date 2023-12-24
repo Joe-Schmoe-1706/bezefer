@@ -9,10 +9,10 @@ export class Classroom {
     name: string
 
     @Prop()
-    numberOfSeats: number
+    capacity: number
 
     @Prop()
-    numberOfSeatsLeft: number
+    seatsLeft: number
 }
 
 export const ClassroomSchema = SchemaFactory.createForClass(Classroom);
@@ -20,6 +20,6 @@ export const ClassroomSchema = SchemaFactory.createForClass(Classroom);
 export interface Classroom {
     _id: string
     name: string,
-    numberOfSeats: number,
-    numberOfSeatsLeft: number
+    capacity: number,
+    seatsLeft: number
 }

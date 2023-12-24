@@ -7,8 +7,8 @@ export default {
         return /^[\u0590-\u05fea-zA-Z][\u0590-\u05fea-zA-Z\s\d]*$/.test(name)
     },
 
-    validateNumberOfSeats(numberOfSeats: number): boolean {
-        return Number.isInteger(numberOfSeats) && numberOfSeats > 0 && numberOfSeats < 1000
+    validatecapacity(capacity: number): boolean {
+        return Number.isInteger(capacity) && capacity > 0 && capacity < 1000
     },
 
     validateStudentId(id: string): boolean {

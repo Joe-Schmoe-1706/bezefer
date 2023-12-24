@@ -32,7 +32,7 @@ export const classroomSlice = createSlice({
                 return classroom._id === action.payload.id ?
                 {
                     ...classroom,
-                    numberOfSeatsLeft: classroom.numberOfSeatsLeft - 1
+                    seatsLeft: classroom.seatsLeft - 1
                 } :
                 classroom
             });
@@ -46,7 +46,7 @@ export const classroomSlice = createSlice({
                 return classroom._id === action.payload.id ?
                 {
                     ...classroom,
-                    numberOfSeatsLeft: classroom.numberOfSeatsLeft + 1
+                    seatsLeft: classroom.seatsLeft + 1
                 } :
                 classroom
             });

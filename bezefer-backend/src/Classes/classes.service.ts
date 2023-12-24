@@ -26,7 +26,7 @@ export class ClassesService {
     validateClass(classroom: Classroom): boolean {
         return validation.validateClassId(classroom._id) &&
         validation.validateClassName(classroom.name) &&
-        validation.validateNumberOfSeats(classroom.numberOfSeats);
+        validation.validatecapacity(classroom.capacity);
     }
  
     async addClass(classroom: Classroom) : Promise<void> {
@@ -38,8 +38,8 @@ export class ClassesService {
             const newClassroom = new this.classModel({
                 _id: classroom._id,
                 name: classroom.name,
-                numberOfSeats: classroom.numberOfSeats,
-                numberOfSeatsLeft: classroom.numberOfSeats
+                capacity: classroom.capacity,
+                seatsLeft: classroom.capacity
             });
             await newClassroom.save()
         } catch (error) {
@@ -56,24 +56,24 @@ export class ClassesService {
             throw new NotFoundError('classroom does not exist');
         }
         
-        if (classroomToDelete.numberOfSeats === classroomToDelete.numberOfSeatsLeft) {
+        if (classroomToDelete.capacity === classroomToDelete.seatsLeft) {
             await this.classModel.deleteOne({_id : classroomId}).exec();
         } else {
             throw new Error("class is not empty");
         }
     }
 
-    async changeNumberOfSeats(classroomId: String, action: string): Promise<void> {
+    async changecapacity(classroomId: String, action: string): Promise<void> {
         const updatedClassroom = await this.classModel.findById(classroomId).exec();
-        updatedClassroom.numberOfSeatsLeft = action === "add" ?
-         updatedClassroom.numberOfSeatsLeft - 1 :
-         updatedClassroom.numberOfSeatsLeft + 1;
+        updatedClassroom.seatsLeft = action === "add" ?
+         updatedClassroom.seatsLeft - 1 :
+         updatedClassroom.seatsLeft + 1;
 
         await updatedClassroom.save();
     }
 
     async findAvailableClassrooms(): Promise<Classroom[]> {
-        const availableClassrooms = await this.classModel.find({numberOfSeatsLeft: {$gte: 1}}).exec();
+        const availableClassrooms = await this.classModel.find({seatsLeft: {$gte: 1}}).exec();
         return availableClassrooms;
     }
 

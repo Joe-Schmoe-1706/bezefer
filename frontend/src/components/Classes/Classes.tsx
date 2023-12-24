@@ -40,7 +40,7 @@ const Classes : React.FC = () => {
        }).then(async (result) => {
             if (result.isConfirmed) {
                 const selectedClass = classrooms?.find(classroom => classroom._id === classroomId);
-                if (selectedClass?.numberOfSeats === selectedClass?.numberOfSeatsLeft) {
+                if (selectedClass?.capacity === selectedClass?.seatsLeft) {
                     try {
                         await deleteClassroom(classroomId);
         

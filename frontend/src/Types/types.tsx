@@ -16,14 +16,14 @@ export interface Student {
 export interface Class {
     id: string,
     name: string,
-    capacity: number
+    seatsLeft: number
     [key: string]: string | number
 }
 
 export interface Classroom {
     _id: string,
     name: string,
-    numberOfSeats: number,
-    numberOfSeatsLeft: number
+    capacity: number,
+    seatsLeft: number
     [key: string]: string | number
 }

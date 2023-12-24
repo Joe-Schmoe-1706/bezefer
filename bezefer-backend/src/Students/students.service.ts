@@ -82,7 +82,7 @@ export class StudentsService {
         if (studentToDelete.classroom != "") {
             const promises = [];
             promises.push(this.studentModel.deleteOne({ _id : studentId}));
-            promises.push(this.classroomService.changeNumberOfSeats(studentToDelete.classroom, "remove"));
+            promises.push(this.classroomService.changecapacity(studentToDelete.classroom, "remove"));
             await Promise.all(promises);
         } else {
             await this.studentModel.deleteOne({ _id : studentId});
@@ -90,7 +90,7 @@ export class StudentsService {
     }
 
     async changeStudentClassStatus(studentId: string, classroomId: string, action: string): Promise<void> {
-        if (action === "add" && (await this.classroomService.findClassById(classroomId)).numberOfSeatsLeft === 0) {
+        if (action === "add" && (await this.classroomService.findClassById(classroomId)).seatsLeft === 0) {
             console.log("error caught");
             throw new BadRequestException("there are no available seats in this class");
         } else {
@@ -99,7 +99,7 @@ export class StudentsService {
             sutdentToUpdate.classroom = action === "add" ? classroomId : "";
             const promises = [];
             promises.push(sutdentToUpdate.save());
-            promises.push(this.classroomService.changeNumberOfSeats(classroomId, action));
+            promises.push(this.classroomService.changecapacity(classroomId, action));
             await Promise.all(promises);
             console.log("all good");
         }

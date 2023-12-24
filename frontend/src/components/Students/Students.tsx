@@ -80,7 +80,7 @@ const Students : React.FC = () => {
                     return classroom._id === classroomId ?
                     {
                         ...classroom,
-                        numberOfSeatsLeft: classroom.numberOfSeatsLeft - 1
+                        seatsLeft: classroom.seatsLeft - 1
                     } :
                     classroom
                 })
@@ -160,7 +160,7 @@ const Students : React.FC = () => {
         return <S.StyledTableCell>{header}</S.StyledTableCell>
     });
 
-    const renderedAvilableClasses : Classroom[] = availableClassrooms.filter(classroom => classroom.numberOfSeatsLeft !== 0);
+    const renderedAvilableClasses : Classroom[] = availableClassrooms.filter(classroom => classroom.seatsLeft !== 0);
 
     return (
        <div>

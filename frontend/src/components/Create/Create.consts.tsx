@@ -26,12 +26,12 @@ export const classesFields : FormField[] = [
         }
     },
     {
-        name: "capacity",
+        name: "seatsLeft",
         required: true,
         placeHolder: "Max Seats",
-        validation: (capacity : string) => {
-            if (capacity.match(/^[\d]*$/)) {
-                if (parseInt(capacity) > 0 && parseInt(capacity) < 1000) {
+        validation: (seatsLeft : string) => {
+            if (seatsLeft.match(/^[\d]*$/)) {
+                if (parseInt(seatsLeft) > 0 && parseInt(seatsLeft) < 1000) {
                     return true;
                 }
             }
