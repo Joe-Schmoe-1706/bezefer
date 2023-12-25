@@ -16,12 +16,27 @@ export const Appbar = styled(MuiAppBar, {
 }))
 
 export const ListIcon = styled(IconButton)(({ theme }) => ({
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.only("xl")]: {
         width: "3vw",
         height: "3vw",
         marginLeft: "1vw"
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.only("lg")]: {
+        width: "3vw",
+        height: "3vw",
+        marginLeft: "1vw"
+    },
+    [theme.breakpoints.only("md")]: {
+        width: "3vw",
+        height: "3vw",
+        marginLeft: "1vw"
+    },
+    [theme.breakpoints.only("sm")]: {
+        width: "10vw",
+        height: "10vw",
+        marginLeft: "5vw",
+    },
+    [theme.breakpoints.only("xs")]: {
         width: "10vw",
         height: "10vw",
         marginLeft: "5vw",
@@ -33,7 +48,7 @@ export const HeaderText = styled("div")(({ theme }) => ({
     color: "#FFFFFF",
     fontWeight: "500",
     verticalAlign: "middle",
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.up("md")]: {
         marginLeft: "1vw",
         fontSize: "3rem"
     },
@@ -49,12 +64,27 @@ export const StyledToolBar = styled(Toolbar)({
 })
 
 export const DrawerIcon = styled(MenuIcon)(({ theme }) => ({
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.only("xl")]: {
         width: "1.5vw",
         height: "1.5vw",
         marginLeft:"1vw"
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.only("lg")]: {
+        width: "1.5vw",
+        height: "1.5vw",
+        marginLeft:"1vw"
+    },
+    [theme.breakpoints.only("md")]: {
+        width: "3vw",
+        height: "3vw",
+        marginLeft:"1vw"
+    },
+    [theme.breakpoints.only("sm")]: {
+        width: "4vw",
+        height: "4vw",
+        marginLeft:"3vw",
+    },
+    [theme.breakpoints.only("xs")]: {
         width: "7vw",
         height: "7vw",
         marginLeft:"3vw",
@@ -63,12 +93,27 @@ export const DrawerIcon = styled(MenuIcon)(({ theme }) => ({
 }))
 
 export const ColorChangeIcon = styled(LoyaltyIcon)(({ theme }) => ({
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.only("xl")]: {
         width: "1.5vw",
         height: "1.5vw",
         marginLeft:"1vw"
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.only("lg")]: {
+        width: "1.5vw",
+        height: "1.5vw",
+        marginLeft:"1vw"
+    },
+    [theme.breakpoints.only("md")]: {
+        width: "3vw",
+        height: "3vw",
+        marginLeft:"1vw"
+    },
+    [theme.breakpoints.only("sm")]: {
+        width: "4vw",
+        height: "4vw",
+        marginLeft:"3vw",
+    },
+    [theme.breakpoints.only("xs")]: {
         width: "6vw",
         height: "6vw",
         marginLeft:"3vw",
@@ -90,5 +135,9 @@ export const NavigationOption = styled(ListItemText)(({ theme }) => ({
     [theme.breakpoints.down("md")]: {
         fontSize: "1rem",
         width: "15vw",
+    },
+    [theme.breakpoints.only("lg")]: {
+        fontSize: "1.5rem !important",
+        width: "8vw",
     }
 }))

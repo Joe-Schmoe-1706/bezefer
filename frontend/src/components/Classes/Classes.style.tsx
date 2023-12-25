@@ -1,20 +1,38 @@
 import {styled} from "@mui/material";
 
 export const classesContainer = styled("div")(({ theme }) => ({
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.only("xl")]: {
         display: "grid",
         gridTemplate: "auto auto / repeat(6,1fr)",
-        gap: "2vw"
+        gap: "2vw",
+        paddingLeft: "2vw"
     },
-    [theme.breakpoints.down("md")]: {
+    [theme.breakpoints.only("lg")]: {
+        display: "grid",
+        gridTemplate: "auto auto / repeat(4,1fr)",
+        gap: "2vw",
+        paddingLeft: "2vw"
+    },
+    [theme.breakpoints.only("md")]: {
+        display: "grid",
+        gridTemplate: "auto auto / repeat(3,1fr)",
+        gap: "2vw",
+        paddingLeft: "2vw"
+    },
+    [theme.breakpoints.only("sm")]: {
         display: "flex",
         flexDirection: "column",
         alignContent: "center",
-        alignItems: "center"  
+        alignItems: "center", 
+    },
+    [theme.breakpoints.only("xs")]: {
+        display: "flex",
+        flexDirection: "column",
+        alignContent: "center",
+        alignItems: "center", 
     },
     marginTop : "8vh",
     width: "100vw",
-    paddingLeft: "2vw"
 }));
 
 export const NoClassesMessage = styled("div",{
