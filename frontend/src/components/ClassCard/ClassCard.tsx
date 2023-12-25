@@ -1,13 +1,42 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import * as S from "./ClassCard.style"
 import { useTheme } from "../../Context/ThemeContext"
 import StudentsModal from "../PopupList/PopupList";
 import * as DeleteStyle from "../../Style/DeleteIcon.style"
+import { Student } from "../../Types/types";
+import { Props } from "./ClassCard.types";
+import { getStudentsInClass, removeStudentFromClass } from "../../api/students.api";
+import Swal from "sweetalert2";
+import alertify from "alertifyjs";
+import 'alertifyjs/build/css/alertify.css';
+import { useAppDispatch } from "../../hooks";
+import { increaseSeatsLeft } from "../../state/reducers/classroomSlice";
 
-const ClassCard : React.FC = () => {
+
+const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
     const theme = useTheme();
 
     const [isOpen, setIsOpen] = useState(false);
+    const [studentsInClass, setStudentsInClass] = useState<Student[]>([]);
+
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        const changeStudentsInClass = async () => {
+            try {
+                const students = await getStudentsInClass(classroom._id);
+                setStudentsInClass(students)
+            } catch (error) {
+                Swal.fire({
+                    title: 'error',
+                    text: 'could not load students in class',
+                    icon: 'error'
+                });
+            }
+        }
+
+        changeStudentsInClass();
+    },[])
 
     const closeModal = () : void => {
         setIsOpen(false);
@@ -17,36 +46,35 @@ const ClassCard : React.FC = () => {
         setIsOpen(true);
     }
 
-    const classInSchool = {
-        subject : "physics",
-        teacher : "karlo",
-        capacity : 45,
-        seatsLeft : 22,
-        students : [
-            {
-                id : 1,
-                name : "מתן גולדברג"
-            },
-            {
-                id : 2,
-                name : "פיונה פנג"
-            }
-        ]
-    };
-
-    const deleteStudent = (id : number) : void => {
-        console.log("student deleted with id " + id);
+    const deleteStudent = async (id : string) : Promise<void> => {
+        try {
+            await removeStudentFromClass(id, classroom._id);
+            setStudentsInClass((prevStudents) => {
+                return prevStudents.filter((student) => student._id != id)
+            });
+            dispatch(increaseSeatsLeft({
+                id: classroom._id,
+                change: 1
+            }));
+            alertify.success("student successfully removed from class");
+        } catch (error) {
+            Swal.fire({
+                title: 'error',
+                text: 'could not remove student from class',
+                icon: 'error'
+            })
+        }
     }
 
     return (
         <div>
             <S.ClassCard>
-                <S.ClassName>אלון</S.ClassName>
-                <S.SeatsLeft>There are <strong>2</strong> seats left</S.SeatsLeft>
-                <S.TotalSeats>out of <strong>2</strong></S.TotalSeats>
+                <S.ClassName>{classroom.name}</S.ClassName>
+                <S.SeatsLeft>There are <strong>{classroom.seatsLeft}</strong> seats left</S.SeatsLeft>
+                <S.TotalSeats>out of <strong>{classroom.capacity}</strong></S.TotalSeats>
                 <S.Footer>
                     <S.OpenStudentList onClick={openModal}>STUDENT LIST</S.OpenStudentList>
-                    <S.DeleteClassButton>
+                    <S.DeleteClassButton onClick={() => deleteClass(classroom._id)}>
                         <DeleteStyle.CustomDeleteIcon projectTheme={theme}></DeleteStyle.CustomDeleteIcon>
                     </S.DeleteClassButton>
                 </S.Footer>
@@ -54,7 +82,7 @@ const ClassCard : React.FC = () => {
             <StudentsModal
              isOpen={isOpen}
              closeModal={closeModal}
-             items={classInSchool.students}
+             items={studentsInClass}
              listType="students"
              handleClick={deleteStudent}></StudentsModal>
         </div>

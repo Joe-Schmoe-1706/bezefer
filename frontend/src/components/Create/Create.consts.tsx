@@ -2,11 +2,15 @@ import { FormField } from "../Form/Form.types";
 
 export const classesFields : FormField[] = [
     {
-        name: "id",
+        name: "_id",
         required: true,
         placeHolder: "Class ID",
         validation: (id : string) => {
-            return true;
+            if (id.match(/^[\d]{1,9}$/)) {
+                return true;
+            }
+
+            return false
         }
     },
     {
@@ -14,7 +18,7 @@ export const classesFields : FormField[] = [
         required: true,
         placeHolder: "Name",
         validation: (name : string) => {
-            if (name.match(/^[\u0590-\u05fe][\u0590-\u05fe\s\d]*$/)) {
+            if (name.match(/^[\u0590-\u05fea-zA-Z][\u0590-\u05fea-zA-Z\s\d]*$/)) {
                 return true;
             }
 
@@ -22,12 +26,12 @@ export const classesFields : FormField[] = [
         }
     },
     {
-        name: "capacity",
+        name: "seatsLeft",
         required: true,
         placeHolder: "Max Seats",
-        validation: (capacity : string) => {
-            if (capacity.match(/^[\d]*$/)) {
-                if (parseInt(capacity) > 0 && parseInt(capacity) < 1000) {
+        validation: (seatsLeft : string) => {
+            if (seatsLeft.match(/^[\d]*$/)) {
+                if (parseInt(seatsLeft) > 0 && parseInt(seatsLeft) < 1000) {
                     return true;
                 }
             }
@@ -38,7 +42,7 @@ export const classesFields : FormField[] = [
 ];
 
 const onlyLetters = (string : string) : boolean  => {
-    if (string.match(/^[a-z\u0590-\u05fe\s]+$/)) {
+    if (string.match(/^[a-zA-Z\u0590-\u05fe\s]+$/)) {
         return true;
     }
 
@@ -47,7 +51,7 @@ const onlyLetters = (string : string) : boolean  => {
 
 export const studentFields : FormField[] = [
     {
-        name: "id",
+        name: "_id",
         required: true,
         placeHolder: "ID",
         validation: (id : String) => {

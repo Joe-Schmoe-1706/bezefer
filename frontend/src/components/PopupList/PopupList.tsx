@@ -1,5 +1,5 @@
 import React from "react";
-import { StudentsModalProps } from "../../Types/types";
+import { StudentsModalProps } from "./PopupList.types";
 import * as S from "./PopupList.style";
 import { List, Avatar, ListItem} from "@mui/material";
 import { useTheme } from "../../Context/ThemeContext";
@@ -24,13 +24,27 @@ const StudentsModal : React.FC<StudentsModalProps> = ({isOpen, closeModal, items
                     {avatar}
                 </Avatar>
             </S.ListAvatar>
-            <S.Name primary={item.name}/>
-            <DeleteStyle.ButtonIcon edge="end" onClick={() => handleClick(item.id)}>
+            <S.Name>{listType === "students" ? `${item.firstName} ${item.lastName}` : item.name}</S.Name>
+            <DeleteStyle.ButtonIcon edge="end" onClick={() => handleClick(item._id)}>
                 {actionButton}
             </DeleteStyle.ButtonIcon>
         </ListItem>
         )
     })
+
+    if (items.length === 0) {
+        return (
+            <S.StudentModal open={isOpen} onClose={closeModal}>
+                <S.ModalContent>
+                    <S.ModalHeader>
+                        {listType === "students" ?
+                        "there are no students in this class" :
+                        "there aren't available classes"}
+                    </S.ModalHeader>
+                </S.ModalContent>
+            </S.StudentModal>
+        )
+    }
 
     return (
         <S.StudentModal open={isOpen} onClose={closeModal} >

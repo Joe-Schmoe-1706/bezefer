@@ -1,53 +1,46 @@
 import {TableBody, TableHead, TableRow } from "@mui/material";
-import React, {useState} from "react"
+import React, {useEffect, useState} from "react"
 import { useTheme } from "../../Context/ThemeContext";
 import * as S from "./Students.style"
 import PopupList from "../PopupList/PopupList"
-import { Student } from "./Students.types";
+import { Classroom, Student } from "../../Types/types";
+import { getStudentsDTO, deleteStudent, addStudentToClass } from "../../api/students.api";
+import Swal from "sweetalert2";
+import { getAvailableClassrooms } from "../../api/classrooms.api";
+import { tableHeaders } from "./Students.consts";
+import alertify from "alertifyjs";
+import 'alertifyjs/build/css/alertify.css';
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { decreaseSeatsLeft, selectAvailableClassrooms } from "../../state/reducers/classroomSlice";
+
 
 const Students : React.FC = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
+    const [students, setStudents] = useState<Student[]>([]);
+    const [chosenStudentId, setChosenStudentId] = useState<string>('');
 
-    const students : Student[] = [
-        {
-            id: "326570330",
-            firstName: "מתן",
-            lastName: "גולדברג",
-            age: 19,
-            profession: "ראפר"
-        },
-        {
-            id: "333222111",
-            firstName: "קווין",
-            lastName: "דה בריינה",
-            age: 33,
-            profession: "כדורגלן"
-        },
-        {
-            id: "777888999",
-            firstName: "טיילור",
-            lastName: "סוויפט",
-            age: 32,
-            profession: "זמרת"
+    const availabeClassrooms = useAppSelector(selectAvailableClassrooms);
+    const dispatch = useAppDispatch();
+
+    useEffect(() => {
+        const initializeStudents = async (): Promise<void> => {
+            try {
+                const allStudents = await getStudentsDTO();
+                setStudents(allStudents);
+            } catch (error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'error',
+                    text: 'could not fetch students'
+                })
+            }
         }
-    ];
 
-    const classes = [
-        {
-            id: 1,
-            name: "יוסי"
-        },
-        {
-            id: 2,
-            name: "קרלו"
-        },
-        {
-            id: 3,
-            name: "קיטלרו"
-        }
-    ]
+        initializeStudents();
+    }, [])
 
-    const openPopup = () : void => {
+    const openPopup = (studentId : string) : void => {
+        setChosenStudentId(studentId);
         setIsPopupOpen(true);
     }
 
@@ -55,57 +48,97 @@ const Students : React.FC = () => {
         setIsPopupOpen(false);
     }
 
-    const theme = useTheme();
-    console.log(theme)
+    const assignToClass = async (classroomId: string) : Promise<void> => {
+        try {
+            await addStudentToClass(chosenStudentId, classroomId);
+            setStudents((prevStudents) => {
+                return prevStudents.map((student) => {
+                    return student._id === chosenStudentId ?
+                    {
+                        ...student,
+                        classroom: classroomId
+                    } :
+                    student
+                })
+            })
+            dispatch(decreaseSeatsLeft({
+                id: classroomId,
+                change: 1
+            }));
+            alertify.success("student successfully assigned to class")
+        } catch (error: any) {
+            if (error.response && error.response.data === 400) {
+                Swal.fire({
+                    title: 'full classroom',
+                    text: 'classroom is already full',
+                    icon: 'error'
+                })
+            } else {
+                Swal.fire({
+                    title: 'error',
+                    text: 'could not assign student to class',
+                    icon: 'error'
+                })
+            }
+        }
 
-    const renderedStudentValues = (student : Student) : JSX.Element[] => {
-        return Object.values(student).map((value) => {
-            return (
-                <S.StyledTableCell>{value}</S.StyledTableCell>
-            )
+        closePopup();
+    }
+
+    const deleteSelectedStudent = async (studentId: string) => {
+        Swal.fire({
+            title: 'Are you sure you want to delete the student?',
+            showCancelButton: true,
+            confirmButtonText: "Delete"
+        }).then(async (result) => {
+            if (result.isConfirmed) {
+                try {
+                    await deleteStudent(studentId);
+                    setStudents((prevStudents) => {
+                        return prevStudents.filter((student) => student._id !== studentId)
+                    });
+                    alertify.success("student successfully deleted");
+                } catch (error) {
+                    Swal.fire({
+                        title: 'error',
+                        text: 'could not delete student',
+                        icon: 'error'
+                    })
+                }
+            }
         })
+    };
+
+    const theme = useTheme();
+
+    const renderedStudentValues = (student: Student) : JSX.Element[] => {
+        const renderedValues = [];
+        for (const key in student) {
+            if (key !== "classroom") {
+                renderedValues.push(<S.StyledTableCell>{student[key]}</S.StyledTableCell>)
+            }
+        }
+
+        return renderedValues;
     } 
 
-    const renderedRows : JSX.Element[] = students.map(studnet => {
+    const renderedRows : JSX.Element[] = students.map((student) => {
         return (
             <TableRow>
-                {renderedStudentValues(studnet)}
+                {renderedStudentValues(student)}
                 <S.StyledTableCell>
-                    <S.DynamicButton variant="outlined" projectTheme={theme} onClick={openPopup}>ASSIGN TO CLASS</S.DynamicButton>
+                    <S.DynamicButton variant="outlined" projectTheme={theme} onClick={() => openPopup(student._id)} disabled={student.classroom != ''}>ASSIGN TO CLASS</S.DynamicButton>
                 </S.StyledTableCell>
                 <S.StyledTableCell>
-                    <S.DynamicButton variant="outlined" projectTheme={theme}>DELETE</S.DynamicButton>
+                    <S.DynamicButton variant="outlined" projectTheme={theme} onClick={() => deleteSelectedStudent(student._id)}>DELETE</S.DynamicButton>
                 </S.StyledTableCell>
             </TableRow>
         )
     });
 
-    const getCapitalPosition = (string : string) => {
-        for (let index = 0; index < string.length; index++) {
-            if (string.charAt(index) !== string.charAt(index).toLocaleLowerCase()) {
-                return index;
-            }
-        }
-
-        return -1;
-    }
-
-    const renderedHeaders : JSX.Element[] = Object.keys(students[0]).map((key) => {
-        let header = key;
-        const capitalLetterPosition = getCapitalPosition(header);
-
-        if (capitalLetterPosition === -1) {
-            header = header.charAt(0).toLocaleUpperCase() + header.substring(1);
-        } else {
-            header = header.charAt(0).toLocaleUpperCase() + 
-            header.substring(1, capitalLetterPosition) + 
-            ' ' + header.substring(capitalLetterPosition);
-        }
-        
-        return (
-            <S.StyledTableCell>{header}</S.StyledTableCell>
-        )
-    })
+    const renderedHeaders : JSX.Element[] = tableHeaders.map((header) => {
+        return <S.StyledTableCell>{header}</S.StyledTableCell>
+    });
 
     return (
        <div>
@@ -114,8 +147,6 @@ const Students : React.FC = () => {
                 <TableHead>
                     <TableRow>
                         {renderedHeaders}
-                        <S.StyledTableCell>Assign</S.StyledTableCell>
-                        <S.StyledTableCell>Delete</S.StyledTableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -126,9 +157,9 @@ const Students : React.FC = () => {
         <PopupList
             isOpen={isPopupOpen} 
             closeModal={closePopup}
-            items={classes}
+            items={availabeClassrooms}
             listType="classes"
-            handleClick={() => console.log("click")}
+            handleClick={assignToClass}
             />
        </div>
     )

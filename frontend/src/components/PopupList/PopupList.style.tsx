@@ -4,13 +4,39 @@ import SchoolIcon from '@mui/icons-material/School';
 import { ThemeContextType } from "../../Types/types";
 import AddIcon from '@mui/icons-material/Add';
 
-export const StudentModal = styled(Modal)({
-    width: "14vw",
-    height: "14vh",
+export const StudentModal = styled(Modal)(({ theme }) => ({
     fontFamily: "Heebo, sans-serif",
-    marginLeft: "40vw",
-    marginTop: "40vh"
-})
+    [theme.breakpoints.only("xl")]: {
+        marginLeft: "40vw",
+        marginTop: "40vh",
+        width: "14vw",
+        height: "14vh"
+    },
+    [theme.breakpoints.only("lg")]: {
+        marginLeft: "40vw",
+        marginTop: "40vh",
+        width: "14vw",
+        height: "14vh"
+    },
+    [theme.breakpoints.only("md")]: {
+        marginLeft: "40vw",
+        marginTop: "40vh",
+        width: "25vw",
+        height: "14vh"
+    },
+    [theme.breakpoints.only("sm")]: {
+        marginLeft: "35vw",
+        marginTop: "40vh",
+        width: "30vw",
+        height: "20vh"
+    },
+    [theme.breakpoints.only("xs")]: {
+        marginLeft: "20vw",
+        marginTop: "40vh",
+        width: "60vw",
+        height: "20vh"
+    },
+}))
 
 export const ModalHeader = styled("div")({
     marginLeft: "2vw",
@@ -44,8 +70,14 @@ export const ListAvatar = styled(ListItemAvatar)({
 
 export const PlusIcon = styled(AddIcon, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{projectTheme : ThemeContextType | null}>(({ projectTheme }) => ({
-    width: "2vw",
-    height: "2vw",
+})<{projectTheme : ThemeContextType | null}>(({ projectTheme, theme }) => ({
+    [theme.breakpoints.up("md")]: {
+        width: "2vw",
+        height: "2vw",
+    },
+    [theme.breakpoints.down("md")]: {
+        width: "8vw",
+        height: "8vw",
+    },
     color: projectTheme === "blue" ? "#3F50B5" : "#F50057"
 }))
