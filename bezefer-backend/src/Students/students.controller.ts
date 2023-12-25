@@ -29,12 +29,14 @@ export class StudentsController {
 
     @Post()
     async addStudent(
-      @Body('student') student: Student, 
+      @Body('student') student: Student,
+      @Res() res: Response
     ) {
         try {
-            this.studentsService.addStudent(student);
+            await this.studentsService.addStudent(student);
+            res.status(201).send('');
         } catch (error) {
-            throw (error);
+            res.status(500).json({message: error.message})
         }
     }
 

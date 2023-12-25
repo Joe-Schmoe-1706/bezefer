@@ -21,15 +21,10 @@ export const deleteStudent = async (studentId: string): Promise<void> => {
 }
 
 export const addStudents = async(student: Student): Promise<void> => {
-        try {
-            await api.post("/students",{
-                student
-            });
-        } catch (error : any) {
-            console.log("error 3 - frontend");
-            throw new Error(error);
-        }
-    } 
+    await api.post("/students",{
+        student
+    });
+}
 
 export const getStudentsInClass = async (classroomId: string): Promise<Student[]> => {
     const result = await api.get(`/students/classroom/${classroomId}`);

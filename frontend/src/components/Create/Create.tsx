@@ -56,19 +56,11 @@ const Create : React.FC = () => {
             })
             alertify.success("student successfully added")
         } catch (error: any) {
-            if (error.message === "duplicate ID") {
-                Swal.fire({
-                    title: 'duplicate id',
-                    text: 'id is alredy taken, insert a different one',
-                    icon: 'error'
-                })
-             } else {
-                Swal.fire({
-                    title: 'error',
-                    text: 'could not add student',
-                    icon: 'error'
-                })
-            }
+            Swal.fire({
+                title: 'error',
+                text: error.response.data.message,
+                icon: 'error'
+            })
         }
     };
 
