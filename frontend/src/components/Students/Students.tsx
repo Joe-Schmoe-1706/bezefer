@@ -6,12 +6,12 @@ import PopupList from "../PopupList/PopupList"
 import { Classroom, Student } from "../../Types/types";
 import { getStudentsDTO, deleteStudent, addStudentToClass } from "../../api/students.api";
 import Swal from "sweetalert2";
-import { getAvailableClassrooms } from "../../api/classrooms.api";
 import { tableHeaders } from "./Students.consts";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { decreaseSeatsLeft, selectAvailableClassrooms } from "../../state/reducers/classroomSlice";
+import { decreaseSeatsLeft, increaseSeatsLeft, selectAvailableClassrooms } from "../../state/reducers/classroomSlice";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 
 const Students : React.FC = () => {
@@ -60,13 +60,16 @@ const Students : React.FC = () => {
                     } :
                     student
                 })
-            })
+            });
+
             dispatch(decreaseSeatsLeft({
                 id: classroomId,
                 change: 1
             }));
+
             alertify.success("student successfully assigned to class")
         } catch (error: any) {
+
             if (error.response && error.response.data === 400) {
                 Swal.fire({
                     title: 'full classroom',
@@ -94,9 +97,18 @@ const Students : React.FC = () => {
             if (result.isConfirmed) {
                 try {
                     await deleteStudent(studentId);
+                    const deletedStudent = students.find((student) => student._id === studentId);
                     setStudents((prevStudents) => {
                         return prevStudents.filter((student) => student._id !== studentId)
                     });
+                    
+                    if (deletedStudent && deletedStudent.classroom !== '') {
+                        dispatch(increaseSeatsLeft({
+                            id: deletedStudent.classroom,
+                            change: 1
+                        }))
+                    };
+
                     alertify.success("student successfully deleted");
                 } catch (error) {
                     Swal.fire({
@@ -141,27 +153,32 @@ const Students : React.FC = () => {
     });
 
     return (
-       <div>
-        <S.StudentTableContainer>
-            <S.StudentTable>
-                <TableHead>
-                    <TableRow>
-                        {renderedHeaders}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {renderedRows}
-                </TableBody>
-            </S.StudentTable>
-        </S.StudentTableContainer>
-        <PopupList
-            isOpen={isPopupOpen} 
-            closeModal={closePopup}
-            items={availabeClassrooms}
-            listType="classes"
-            handleClick={assignToClass}
-            />
-       </div>
+        <div>
+            {students.length > 0 && <div>
+            <S.StudentTableContainer>
+                <S.StudentTable>
+                    <TableHead>
+                        <TableRow>
+                            {renderedHeaders}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {renderedRows}
+                    </TableBody>
+                </S.StudentTable>
+            </S.StudentTableContainer>
+            <PopupList
+                isOpen={isPopupOpen} 
+                closeModal={closePopup}
+                items={availabeClassrooms}
+                listType="classes"
+                handleClick={assignToClass}
+                />
+            </div> }
+            {students.length === 0 &&
+                <ErrorPage errorMessage="נראה מאוד בודד כאן, אין תלמידים" redirectMessage="לחץ כדי להוסיף תלמידים"></ErrorPage>
+            }
+        </div>
     )
 }
 

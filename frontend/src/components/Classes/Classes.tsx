@@ -8,29 +8,13 @@ import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { selectClassroom, deleteClass } from "../../state/reducers/classroomSlice";
+import ErrorPage from "../ErrorPage/ErrorPage";
 
 const Classes : React.FC = () => {
     const classrooms: Classroom[] = useAppSelector(selectClassroom);
     const dispatch = useAppDispatch();
 
-    // useEffect(() => {
-    //     const getClassrooms = async () => {
-    //         try {
-    //             const newClassrooms = await getAllClassrooms();
-    //             console.log(newClassrooms);
-    //             setClassrooms(newClassrooms);
-    //         } catch(error) {
-    //             console.log(error)
-    //             Swal.fire({
-    //                 title: 'error',
-    //                 text: 'could not load classses',
-    //                 icon: 'error'
-    //             });
-    //         }
-    //     };
 
-    //     getClassrooms();
-    // }, []);
 
     const deleteClassHandler = async (classroomId: string) => {
        Swal.fire({
@@ -40,7 +24,7 @@ const Classes : React.FC = () => {
        }).then(async (result) => {
             if (result.isConfirmed) {
                 const selectedClass = classrooms?.find(classroom => classroom._id === classroomId);
-                if (selectedClass?.capacity === selectedClass?.seatsLeft) {
+                if (selectedClass?.numberOfSeats === selectedClass?.seatsLeft) {
                     try {
                         await deleteClassroom(classroomId);
         
@@ -73,10 +57,12 @@ const Classes : React.FC = () => {
 
     return (
         <div>
-            <S.classesContainer>
+            {classrooms.length !== 0 && <S.classesContainer>
                 {renderedClassrooms}
-            </S.classesContainer>
-            <S.NoClassesMessage isShown={classrooms.length === 0}>There are no classrooms</S.NoClassesMessage>
+            </S.classesContainer> }
+            {classrooms.length === 0 && 
+                <ErrorPage errorMessage="נראה מאוד בודד כאן, אין כיתות כרגע" redirectMessage="לחץ כדי להוסיף כיתה"></ErrorPage>
+            }
         </div>
 
     )

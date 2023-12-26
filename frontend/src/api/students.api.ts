@@ -5,19 +5,17 @@ const BASE_URL = "http://localhost:5000"
 
 
 export const getAllStudents = async (): Promise<Student[]> => {
-    const result = await fetch(`${BASE_URL}/students`)
-    return await result.json();
+    const result = await api.get(`/students`)
+    return await result.data;
 }
 
 export const getStudentsDTO = async (): Promise<Student[]> => {
-    const result = await fetch(`${BASE_URL}/students/DTO`);
-    return await result.json();
+    const result = await api.get(`/students/DTO`);
+    return await result.data;
 }
 
 export const deleteStudent = async (studentId: string): Promise<void> => {
-    await fetch (`${BASE_URL}/students/${studentId}`,{
-        method: "DELETE"
-    });
+    await api.delete(`/students/${studentId}`)
 }
 
 export const addStudents = async(student: Student): Promise<void> => {

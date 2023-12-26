@@ -68,6 +68,21 @@ export const ListAvatar = styled(ListItemAvatar)({
     marginLeft: "1vw"
 })
 
+export const ErrorContent = styled("div")({
+    backgroundColor: "#FFFFFF",
+    height: "10vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
+});
+
+export const ErrorModalHeader = styled("div")({
+    fontSize: "1rem",
+    fontWeight: "600",
+    textAlign: 'center',
+    color: "#F50053"
+})
+
 export const PlusIcon = styled(AddIcon, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
 })<{projectTheme : ThemeContextType | null}>(({ projectTheme, theme }) => ({

@@ -128,16 +128,24 @@ export const NavigationDrawer = styled(Drawer)({
 export const NavigationOption = styled(ListItemText)(({ theme }) => ({
     fontWeight: "600",
     textAlign: "center",
-    [theme.breakpoints.up("lg")]: {
+    [theme.breakpoints.only("xl")]: {
         fontSize: "1.5rem",
         width: "6vw"
-    },
-    [theme.breakpoints.down("md")]: {
-        fontSize: "1rem",
-        width: "15vw",
     },
     [theme.breakpoints.only("lg")]: {
         fontSize: "1.5rem !important",
         width: "8vw",
-    }
+    },
+    [theme.breakpoints.only("md")]: {
+        fontSize: "1rem",
+        width: "10vw",
+    },
+    [theme.breakpoints.only("sm")]: {
+        fontSize: "1rem",
+        width: "10vw",
+    },
+    [theme.breakpoints.only("xs")]: {
+        fontSize: "0.75rem",
+        width: "20vw",
+    },
 }))

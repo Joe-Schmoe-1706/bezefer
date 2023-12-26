@@ -9,7 +9,8 @@ export interface Student {
     firstName: string,
     lastName: string,
     age: number,
-    profession: string
+    profession: string,
+    classroom: string,
     [key: string]: string | number
 }
 
@@ -27,3 +28,5 @@ export interface Classroom {
     seatsLeft: number
     [key: string]: string | number
 }
+
+export type StatusOptions = "loading" | "done" | "failed";
