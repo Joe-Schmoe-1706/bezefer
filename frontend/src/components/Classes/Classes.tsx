@@ -1,18 +1,23 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import * as S from "./Classes.style";
 import ClassCard from "../ClassCard/ClassCard";
-import { Classroom } from "../../Types/types";
-import { deleteClassroom, getAllClassrooms } from "../../api/classrooms.api";
+import { Classroom, StatusOptions } from "../../Types/types";
+import { deleteClassroom } from "../../api/classrooms.api";
 import Swal from "sweetalert2";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { selectClassroom, deleteClass } from "../../state/reducers/classroomSlice";
 import ErrorPage from "../ErrorPage/ErrorPage";
+import NoConnection from "../NoConnection/NoConnection";
+import { useTheme } from "../../Context/ThemeContext";
 
-const Classes : React.FC = () => {
+const Classes : React.FC<{
+    status: StatusOptions
+}> = ({status}) => {
     const classrooms: Classroom[] = useAppSelector(selectClassroom);
     const dispatch = useAppDispatch();
+    const theme = useTheme();
 
 
 
@@ -57,11 +62,19 @@ const Classes : React.FC = () => {
 
     return (
         <div>
-            {classrooms.length !== 0 && <S.classesContainer>
+            {status === "done" && classrooms.length !== 0 && <S.classesContainer>
                 {renderedClassrooms}
             </S.classesContainer> }
-            {classrooms.length === 0 && 
+            {status === "done" && classrooms.length === 0 && 
                 <ErrorPage errorMessage="נראה מאוד בודד כאן, אין כיתות כרגע" redirectMessage="לחץ כדי להוסיף כיתה"></ErrorPage>
+            }
+            {status === "failed" && 
+                <NoConnection></NoConnection>
+            }
+            {status === "loading" && 
+                <S.LoadingContainer>
+                    <S.Loading projectTheme={theme} size={"8rem"}></S.Loading>
+                </S.LoadingContainer>
             }
         </div>
 

@@ -17,10 +17,16 @@ const App : React.FC = () => {
 
   useEffect(() => {
     const initState = async () => {
-      const classrooms = await getAllClassrooms();
-      dispatch(initializeState({
-        classrooms: classrooms
-      }));
+      try {
+          const classrooms = await getAllClassrooms();
+          dispatch(initializeState({
+          classrooms: classrooms
+        }));
+
+        setClassesStatus("done");
+      } catch (error) {
+        setClassesStatus("failed");
+      }
     }
 
     initState();
@@ -30,8 +36,8 @@ const App : React.FC = () => {
     <ThempeProvider>
       <Navbar />
       <Routes>
-        <Route path='/' Component={Classes} />
-        <Route path='/students' Component={Students} />
+        <Route path='/' element={<Classes status={classesStatus}/>} />
+        <Route path='/students' element={<Students status={classesStatus}/>} />
         <Route path='/create' Component={Create} /> 
       </Routes>
     </ThempeProvider>
