@@ -36,16 +36,18 @@ export class StudentsController {
             await this.studentsService.addStudent(student);
             res.status(201).send('');
         } catch (error) {
-            res.status(500).json({message: error.message})
+            if (error.message = "duplicate ID") {
+                res.status(400).send("duplicate ID");
+            } else {
+                res.status(500).send('');
+            }
         }
     }
 
     @Patch(':id/classroom/:classroomId/add')
     async addStudentToClass(@Param('id') studentId: string, @Param('classroomId') classroomId: string, @Res() res: Response) {
-        console.log("controller entered")
         try {
             await this.studentsService.changeStudentClassStatus(studentId, classroomId, "add");
-            console.log("controller worked");
             res.status(200).send('');
         } catch(error) {
             if (error.message === "there are no available seats in this class") {
@@ -60,7 +62,6 @@ export class StudentsController {
     async removeStudentToClass(@Param('id') studentId: string, @Param('classroomId') classroomId: string, @Res() res: Response) {
         try {
             await this.studentsService.changeStudentClassStatus(studentId, classroomId, "remove");
-            console.log("controller worked");
             res.status(200).send('');
         } catch(error) {
             res.status(500).json({ message: error.message });

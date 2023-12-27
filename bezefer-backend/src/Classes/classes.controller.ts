@@ -24,7 +24,11 @@ export class ClassesController {
             await this.classesService.addClass(classroom);
             res.status(201).send('');
         } catch (error) {
-            res.status(500).json({message: error.message})
+            if (error.message === "duplicate ID") {
+                res.status(400).send("duplicate Id");
+            } else {
+                res.status(500).send('');
+            }
         }
     }
 
