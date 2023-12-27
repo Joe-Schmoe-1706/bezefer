@@ -33,14 +33,17 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
 
     const renderedFields = fields.map((field) => {
         return (
-            <S.InputField 
-             error={!field.validation(formData[field.name].toString()) && formData[field.name].toString() !== ''}
-             required={field.required}
-             label={field.placeHolder}  
-             name={field.name}
-             value={formData[field.name]}
-             onChange={handleChange}
-            />
+            <div>
+                <S.InputField 
+                error={!field.validation(formData[field.name].toString()) && formData[field.name].toString() !== ''}
+                required={field.required}
+                label={field.placeHolder}  
+                name={field.name}
+                value={formData[field.name]}
+                onChange={handleChange}
+                />
+                <S.HelperText>{field.helperText}</S.HelperText>
+            </div>
         )
     })
 

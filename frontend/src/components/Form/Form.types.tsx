@@ -5,7 +5,8 @@ export interface FormField {
     name: string,
     placeHolder: string,
     required: boolean,
-    validation : (value : string) => boolean
+    validation : (value : string) => boolean,
+    helperText: string
 };
 
 export interface Props {

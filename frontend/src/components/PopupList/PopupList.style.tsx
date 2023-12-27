@@ -10,7 +10,7 @@ export const StudentModal = styled(Modal)(({ theme }) => ({
         marginLeft: "40vw",
         marginTop: "40vh",
         width: "14vw",
-        height: "14vh"
+        height: "30vh"
     },
     [theme.breakpoints.only("lg")]: {
         marginLeft: "40vw",
@@ -36,6 +36,8 @@ export const StudentModal = styled(Modal)(({ theme }) => ({
         width: "60vw",
         height: "20vh"
     },
+    overflow: "auto",
+    overflowX: "hidden"
 }))
 
 export const ModalHeader = styled("div")({

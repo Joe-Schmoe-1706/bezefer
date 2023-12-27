@@ -1,4 +1,4 @@
-import { Button, TextField, styled, useMediaQuery } from "@mui/material";
+import { Button, FormHelperText, TextField, styled, useMediaQuery } from "@mui/material";
 import { ThemeContextType } from "../../Types/types";
 
 export const FormContainer = styled("div")(({ theme }) => ({
@@ -24,36 +24,40 @@ export const FormHeader = styled("div")(({ theme }) => ({
 }))
 
 export const InputField = styled(TextField)(({ theme }) => ({
-    marginLeft: "2vw",
     [theme.breakpoints.only("xl")]: {
+        marginLeft: "2vw",
         width: "12vw",
         height: "5vh",
         fontSize: "1.2rem",
-        marginBottom: "2vh"
+        marginBottom: "1vh"
     },
     [theme.breakpoints.only("lg")]: {
+        marginLeft: "2vw",
         width: "18vw",
         height: "5vh",
         fontSize: "1.2rem",
-        marginBottom: "2vh"
+        marginBottom: "1vh"
     },
     [theme.breakpoints.only("md")]: {
+        marginLeft: "2vw",
         width: "20vw",
         height: "5vh",
         fontSize: "1.2rem",
-        marginBottom: "2vh"
+        marginBottom: "1vh"
     },
     [theme.breakpoints.only("sm")]: {
+        marginLeft: "2vw",
         width: "50vw",
         height: "7vh",
         fontSize: "1.2rem",
         marginBottom: "1vh",
     },
     [theme.breakpoints.only("xs")]: {
+        marginLeft: "7vw",
         width: "70vw",
         height: "7vh",
         fontSize: "1.2rem",
-        marginBottom: "1vh"
+        marginBottom: "0.5vh"
     },
     // border: "0.1px solid #858585",
     // borderRadius: "10px"
@@ -69,6 +73,9 @@ export const SubmitBtn = styled(Button, {
     '&:hover' : {
         backgroundColor: projectTheme,
         color: "#FFFFFF"
+    },
+    ":disabled": {
+        backgroundColor: "#e9ecef"
     },
     [theme.breakpoints.only("xl")]: {
         width: "16vw",
@@ -112,4 +119,29 @@ export const ErrorMessage = styled("div", {
     color: "#fc0303",
     marginTop: "2vh",
     visibility: showError ? "visible" : "hidden"
+}))
+
+export const HelperText = styled(FormHelperText)(({ theme }) => ({
+    textAlign: "right",
+    direction: "rtl",
+    [theme.breakpoints.only("xl")]: {
+        marginRight: "2vw",
+        marginBottom: "3vh",
+    },
+    [theme.breakpoints.only("lg")]: {
+        marginRight: "2vw",
+        marginBottom: "3vh",
+    },
+    [theme.breakpoints.only("md")]: {
+        marginRight: "2vw",
+        marginBottom: "3vh",
+    },
+    [theme.breakpoints.only("sm")]: {
+        marginRight: "2vw",
+        marginBottom: "3vh",
+    },
+    [theme.breakpoints.only("xs")]: {
+        marginRight: "10vw",
+        marginBottom: "2vh",
+    },
 }))

@@ -30,7 +30,7 @@ const Classes : React.FC<{
        }).then(async (result) => {
             if (result.isConfirmed) {
                 const selectedClass = classrooms?.find(classroom => classroom._id === classroomId);
-                if (selectedClass?.numberOfSeats === selectedClass?.seatsLeft) {
+                if (selectedClass?.capacity === selectedClass?.seatsLeft) {
                     try {
                         await deleteClassroom(classroomId);
         
@@ -38,7 +38,7 @@ const Classes : React.FC<{
                             id: classroomId
                         }));
             
-                        alertify.success("class deleted successfully");
+                        alertify.success("הכיתה נמחקה בהצלחה");
                     } catch (error: any) {
                         Swal.fire({
                             title: 'תקלה',
