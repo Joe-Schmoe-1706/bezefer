@@ -39,12 +39,19 @@ const Create : React.FC = () => {
             alertify.success("classroom successfully added");
             ref.current?.start();
         } catch(error : any) {
+            if (error.response.status !== 400) {
                 Swal.fire({
-                    title: 'error',
-                    text: error.response.data.message,
+                    title: 'תקלה',
+                    text: 'לא ניתן להוסיף את הכיתה הזו',
                     icon: 'error'
-
-            })
+                })
+            } else {
+                Swal.fire({
+                    title: 'תקלה',
+                    text: 'כיתה בעלת אותו מזהה כבר קיימת',
+                    icon: 'error'
+                })
+            }
         }
     };
 
@@ -56,11 +63,19 @@ const Create : React.FC = () => {
             })
             alertify.success("student successfully added")
         } catch (error: any) {
-            Swal.fire({
-                title: 'error',
-                text: error.response.data.message,
-                icon: 'error'
-            })
+            if (error.response.status !== 400) {
+                Swal.fire({
+                    title: 'תקלה',
+                    text: 'לא ניתן להוסיף את התלמיד הזה',
+                    icon: 'error'
+                })
+            } else {
+                Swal.fire({
+                    title: 'תקלה',
+                    text: 'תלמיד בעל אותו מזהה כבר קיים',
+                    icon: 'error'
+                })
+            }
         }
     };
 

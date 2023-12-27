@@ -23,9 +23,10 @@ const Classes : React.FC<{
 
     const deleteClassHandler = async (classroomId: string) => {
        Swal.fire({
-        title: 'are you sure you want to delete the classroom?',
+        title: 'האם אתה בטוח ברצונך למחוק את הכיתה',
         showCancelButton: true,
-        confirmButtonText: 'Delete'
+        confirmButtonText: 'מחק',
+        cancelButtonText: 'בטל'
        }).then(async (result) => {
             if (result.isConfirmed) {
                 const selectedClass = classrooms?.find(classroom => classroom._id === classroomId);
@@ -40,15 +41,15 @@ const Classes : React.FC<{
                         alertify.success("class deleted successfully");
                     } catch (error: any) {
                         Swal.fire({
-                            title: 'error',
-                            text: error.response.data.message,
+                            title: 'תקלה',
+                            text: 'לא ניתן למחוק את הכיתה',
                             icon: 'error'
                         });
                     }
                 } else {
                     Swal.fire({
-                        title: 'error',
-                        text: 'cannot delete classroom that has student',
+                        title: 'תקלה',
+                        text: 'לא ניתן למחוק כיתה שבה יש תלמידים',
                         icon: 'error'
                     });
                 }

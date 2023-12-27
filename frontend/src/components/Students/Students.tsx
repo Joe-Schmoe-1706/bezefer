@@ -36,8 +36,8 @@ const Students : React.FC<{
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'error',
-                    text: 'could not fetch students'
+                    title: 'תקלה',
+                    text: 'לא ניתן לקבל את התלמידים'
                 })
                 setStudentStatus("failed");
             }
@@ -74,19 +74,19 @@ const Students : React.FC<{
                 change: 1
             }));
 
-            alertify.success("student successfully assigned to class")
+            alertify.success("התלמיד השתבץ לכיתה בהצלחה")
         } catch (error: any) {
 
             if (error.response && error.response.data === 400) {
                 Swal.fire({
-                    title: 'full classroom',
-                    text: 'classroom is already full',
+                    title: 'כיתה מלאה',
+                    text: 'הכיתה כבר מלאה',
                     icon: 'error'
                 })
             } else {
                 Swal.fire({
-                    title: 'error',
-                    text: 'could not assign student to class',
+                    title: 'תקלה',
+                    text: 'לא ניתן לשייך את התלמיד לכיתה',
                     icon: 'error'
                 })
             }
@@ -97,9 +97,10 @@ const Students : React.FC<{
 
     const deleteSelectedStudent = async (studentId: string) => {
         Swal.fire({
-            title: 'Are you sure you want to delete the student?',
+            title: 'האם אתה בטוח?',
             showCancelButton: true,
-            confirmButtonText: "Delete"
+            confirmButtonText: "מחק",
+            cancelButtonText: "בטל"
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
@@ -116,11 +117,11 @@ const Students : React.FC<{
                         }))
                     };
 
-                    alertify.success("student successfully deleted");
+                    alertify.success("התלמיד נמחק בהצלחה");
                 } catch (error) {
                     Swal.fire({
-                        title: 'error',
-                        text: 'could not delete student',
+                        title: 'תקלה',
+                        text: 'לא ניתן למחוק את התלמיד',
                         icon: 'error'
                     })
                 }
