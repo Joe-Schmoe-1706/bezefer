@@ -85,7 +85,7 @@ export const ErrorModalHeader = styled("div")({
 
 export const PlusIcon = styled(AddIcon, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{projectTheme : ThemeContextType | null}>(({ projectTheme, theme }) => ({
+})<{projectTheme : ThemeContextType}>(({ projectTheme, theme }) => ({
     [theme.breakpoints.up("md")]: {
         width: "2vw",
         height: "2vw",
@@ -94,5 +94,5 @@ export const PlusIcon = styled(AddIcon, {
         width: "8vw",
         height: "8vw",
     },
-    color: projectTheme === "blue" ? "#3F50B5" : "#F50057"
+    color: projectTheme
 }))

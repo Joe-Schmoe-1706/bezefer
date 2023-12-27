@@ -1,4 +1,4 @@
-import { Drawer, ListItemText, styled, Toolbar } from "@mui/material";
+import { Drawer, ListItemText, styled, Toolbar, MenuItem } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
 import { ThemeContextType } from "../../Types/types";
@@ -8,10 +8,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 
 export const Appbar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{projectTheme : ThemeContextType | null}>(({ projectTheme }) => ({
+})<{projectTheme : ThemeContextType}>(({ projectTheme }) => ({
     width : "100vw",
     height : "10vh",
-    backgroundColor: projectTheme === "blue" ? "#3F50B5" : "#F50057",
+    backgroundColor: projectTheme,
     position : "static",
 }))
 
@@ -148,4 +148,11 @@ export const NavigationOption = styled(ListItemText)(({ theme }) => ({
         fontSize: "0.75rem",
         width: "20vw",
     },
+}))
+
+export const ColorItem = styled(MenuItem, {
+    shouldForwardProp: (prop) => prop !== "color"
+})<{color : string}>(({ color }) => ({
+    color: color,
+    fontSize: "1.25rem"
 }))

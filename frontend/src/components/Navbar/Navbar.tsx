@@ -1,16 +1,27 @@
 import React, {useState} from "react";
 import { useTheme, useUpdateTheme } from "../../Context/ThemeContext";
 import * as S from "./Navbar.style";
-import { Drawer, List, ListItemButton } from "@mui/material";
+import { Drawer, List, ListItemButton, Menu } from "@mui/material";
 import { useNavigate } from "react-router-dom"
+import { ColorOptions } from "./Navbar.consts";
+import { ThemeContextType } from "../../Types/types";
 
 const Navbar : React.FC = () => {
     const [open, setOpen] = useState<boolean>(false); 
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const menuOpen = Boolean(anchorEl);
+
+    const openColorMenu = (event: React.MouseEvent<SVGSVGElement>) => {
+      setAnchorEl(event.currentTarget);
+    };
+    const handleClose = () => {
+      setAnchorEl(null);
+    };
 
     const navigationOptions : string[] = ["Classes", "Students", "Create"];
 
     const theme = useTheme();
-    const toggleTheme = useUpdateTheme();
+    const setTheme = useUpdateTheme();
     const navigate = useNavigate();
 
     const openNav = () : void => {
@@ -19,6 +30,11 @@ const Navbar : React.FC = () => {
 
     const closeNav = () : void => {
         setOpen(false);
+    }
+
+    const changeTheme = (color: ThemeContextType) => {
+        setTheme(color);
+        handleClose();
     }
 
     const handleNavigation = (selectedOption : string) : void => {
@@ -38,6 +54,15 @@ const Navbar : React.FC = () => {
                 <S.NavigationOption primary={option}/>
             </ListItemButton>
         )
+    });
+
+    const renderedMenuOptions: JSX.Element[] = ColorOptions.map((color) => {
+        return (
+            <S.ColorItem 
+            value={color.code} 
+            onClick={() => changeTheme(color.code)}
+            color={color.code}>{color.name}</S.ColorItem>
+        )
     })
 
     return (
@@ -47,7 +72,7 @@ const Navbar : React.FC = () => {
                 <S.HeaderText>
                     Shob Classes
                 </S.HeaderText>
-                <S.ColorChangeIcon onClick = {toggleTheme}/>
+                <S.ColorChangeIcon onClick = {openColorMenu}/>
                 <Drawer
                 open = {open}
                 anchor="left"
@@ -58,6 +83,13 @@ const Navbar : React.FC = () => {
                     </List>
                 </Drawer>
             </S.StyledToolBar>
+            <Menu 
+                anchorEl={anchorEl}
+                open={menuOpen}
+                onClose={handleClose}
+            >
+                {renderedMenuOptions}
+            </Menu>
         </S.Appbar>
     )
 }

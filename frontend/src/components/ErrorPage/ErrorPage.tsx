@@ -18,16 +18,16 @@ const ErrorPage: React.FC<Props> = ({errorMessage, redirectMessage}) => {
     return (
         <S.Container projectTheme={theme}>
             <S.ContentContainer>
+                <S.ErrorImage src={theme === "#3F50B5" ? notFoundBlue : notFoundRed}>
+                </S.ErrorImage>
+            </S.ContentContainer>
+            <S.ContentContainer>
                 <S.ErrorMessage>
                     {errorMessage}
                 </S.ErrorMessage>
                 <S.redirectMessage onClick={redirect}>
                     {redirectMessage}
                 </S.redirectMessage>
-            </S.ContentContainer>
-            <S.ContentContainer>
-                <S.ErrorImage src={theme === "blue" ? notFoundBlue : notFoundRed}>
-                </S.ErrorImage>
             </S.ContentContainer>
         </S.Container>
     )

@@ -19,8 +19,8 @@ export const StyledTableCell = styled(TableCell)({
 
 export const DynamicButton = styled(Button, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{projectTheme : ThemeContextType | null}>(({projectTheme}) => ({
-    color: projectTheme === "blue" ? "#3F50B5" : "#F50057",
-    borderColor:  projectTheme === "blue" ? "#3F50B5" : "#F50057",
+})<{projectTheme : ThemeContextType}>(({projectTheme}) => ({
+    color: projectTheme,
+    borderColor:  projectTheme,
     cursor: "pointer"
 }))

@@ -7,12 +7,18 @@ export const Container = styled("div")({
     alignContent: "center"
 });
 
-export const ErrorImage = styled("img")({
-    height: "40vh",
-    width: "40vh",
+export const ErrorImage = styled("img")(({ theme }) => ({
+    [theme.breakpoints.up("sm")]: {
+        height: "40vh",
+        width: "40vh"
+    },
+    [theme.breakpoints.down("md")]: {
+        height: "25vh",
+        width: "25vh"
+    },
     marginTop: "12vh",
     alignSelf: "center"
-});
+}));
 
 export const ErrorMessage = styled("div")({
     marginTop: "5vh",

@@ -3,21 +3,43 @@ import { ThemeContextType } from "../../Types/types";
 
 export const Container = styled("div",{
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{projectTheme : ThemeContextType | null}>(({ projectTheme }) => ({
-    display: "grid",
-    gridTemplate: "auto / repeat(2, 50vw)",
-    color: projectTheme === "blue" ? "#3F50B5" : "#F50057",
+})<{projectTheme : ThemeContextType}>(({ projectTheme, theme }) => ({
+    color: projectTheme,
     height: "90vh",
     position: "relative",
     width: "100vw",
-    overflow: "hidden"
+    overflow: "hidden",
+    [theme.breakpoints.up("sm")]: {
+        display: "grid",
+        gridTemplate: "auto / repeat(2, 50vw)",
+        direction: "rtl"
+    },
+    [theme.breakpoints.down("md")]: {
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center"  
+    },
 }));
 
-export const ErrorImage = styled("img")({
-    height: "40vh",
-    width: "40vh",
-    left: "0"
-});
+export const ErrorImage = styled("img")(({ theme }) => ({
+    [theme.breakpoints.up("sm")]: {
+        height: "40vh",
+        width: "40vh",
+        marginRight: "auto"
+    },
+    [theme.breakpoints.only("sm")]: {
+        height: "40vh",
+        width: "40vh",
+        marginRight: "auto",
+        marginTop: "10vh"
+    },
+    [theme.breakpoints.only("xs")]: {
+        height: "25vh",
+        width: "25vh",
+        marginRight: "auto",
+        marginTop: "10vh"
+    }
+}));
 
 export const ErrorMessage = styled("div")({
     display: "flex",

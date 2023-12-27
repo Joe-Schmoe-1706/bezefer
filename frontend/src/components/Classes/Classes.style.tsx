@@ -51,6 +51,6 @@ export const LoadingContainer = styled("div")({
 
 export const Loading = styled(CircularProgress, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{projectTheme: ThemeContextType | null}>(({projectTheme}) => ({
-    color: projectTheme === "blue" ? "#3F50B5" : "#F50057"
+})<{projectTheme: ThemeContextType}>(({projectTheme}) => ({
+    color: projectTheme
 }))

@@ -61,13 +61,13 @@ export const InputField = styled(TextField)(({ theme }) => ({
 
 export const SubmitBtn = styled(Button, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{ projectTheme : ThemeContextType | null}>(({projectTheme, theme}) => ({
+})<{ projectTheme : ThemeContextType}>(({projectTheme, theme}) => ({
     border: "none",
-    backgroundColor: projectTheme === "blue" ? "#3F50B5" : "#F50057",
+    backgroundColor: projectTheme,
     color: "#FFFFFF",
     cursor: "pointer",
     '&:hover' : {
-        backgroundColor: projectTheme === "blue" ? "#3F50B5" : "#F50057",
+        backgroundColor: projectTheme,
         color: "#FFFFFF"
     },
     [theme.breakpoints.only("xl")]: {
