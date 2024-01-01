@@ -1,4 +1,4 @@
-import React, {FormEventHandler, useState} from "react"
+import React, { FormEvent, useState } from "react"
 import { Props } from "./Form.types"
 import * as S from "./Form.style"
 import { useTheme } from "../../Context/ThemeContext"
@@ -71,7 +71,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
         })
     }
 
-    const submit = (e : Event, formData : Student | Classroom) : void => {
+    const submit = (e : FormEvent<HTMLFormElement>, formData : Student | Classroom) : void => {
         e.preventDefault();
         if (validateData(formData)) {
             handleClick(formData);
@@ -84,7 +84,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
     return (
         <S.FormContainer>
             <S.FormHeader>{header}</S.FormHeader>
-            <S.StyledForm onSubmit={(e: Event) => submit(e, formData)}>
+            <S.StyledForm onSubmit={(e: FormEvent<HTMLFormElement>) => submit(e, formData)}>
                 {renderedFields}
                 <S.SubmitBtn 
                  projectTheme={theme} 

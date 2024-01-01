@@ -1,7 +1,7 @@
 import { styled } from "@mui/material"
 
 export const FormsContainer = styled("div")(({ theme }) => ({
-    [theme.breakpoints.up("md")]: {
+    [theme.breakpoints.up("sm")]: {
         display: "grid",
         gridTemplate: "auto / repeat(2, 50vw)"
     },

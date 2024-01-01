@@ -1,10 +1,11 @@
-import { Button, FormHelperText, TextField, styled, useMediaQuery } from "@mui/material";
+import { Button, FormHelperText, TextField, styled } from "@mui/material";
 import { ThemeContextType } from "../../Types/types";
 
 export const FormContainer = styled("div")(({ theme }) => ({
     width: "100%",
     display: "flex",
     flexDirection:"column",
+    alignContent: "center",
     alignItems: "center",
     fontFamily: "Heebo",
     [theme.breakpoints.down("md")]: {
@@ -32,28 +33,25 @@ export const InputField = styled(TextField)(({ theme }) => ({
         marginBottom: "1vh"
     },
     [theme.breakpoints.only("lg")]: {
-        marginLeft: "2vw",
-        width: "18vw",
+        width: "23vw",
         height: "5vh",
         fontSize: "1.2rem",
         marginBottom: "1vh"
     },
     [theme.breakpoints.only("md")]: {
-        marginLeft: "2vw",
-        width: "20vw",
+        marginLeft: "3vw",
+        width: "25vw",
         height: "5vh",
         fontSize: "1.2rem",
         marginBottom: "1vh"
     },
     [theme.breakpoints.only("sm")]: {
-        marginLeft: "2vw",
         width: "50vw",
         height: "7vh",
         fontSize: "1.2rem",
         marginBottom: "1vh",
     },
     [theme.breakpoints.only("xs")]: {
-        marginLeft: "7vw",
         width: "70vw",
         height: "7vh",
         fontSize: "1.2rem",
@@ -92,7 +90,7 @@ export const SubmitBtn = styled(Button, {
         width: "16vw",
         height: "4vh",
         fontSize: "1.1rem",
-        marginLeft: "4vw"
+        marginLeft: "8vw"
     },
     [theme.breakpoints.only("sm")]: {
         width: "35vw",
@@ -126,22 +124,20 @@ export const HelperText = styled(FormHelperText)(({ theme }) => ({
     direction: "rtl",
     [theme.breakpoints.only("xl")]: {
         marginRight: "2vw",
-        marginBottom: "3vh",
+        marginBottom: "1vh",
     },
     [theme.breakpoints.only("lg")]: {
-        marginRight: "2vw",
         marginBottom: "3vh",
     },
     [theme.breakpoints.only("md")]: {
-        marginRight: "2vw",
         marginBottom: "3vh",
     },
     [theme.breakpoints.only("sm")]: {
-        marginRight: "2vw",
         marginBottom: "3vh",
+        marginRight: "1vw",
     },
     [theme.breakpoints.only("xs")]: {
-        marginRight: "10vw",
         marginBottom: "2vh",
+        marginRight: "2vw",
     },
 }))

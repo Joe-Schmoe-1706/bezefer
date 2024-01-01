@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React from "react"
 import Form from "../Form/Form";
 import { Student, Classroom } from "../../Types/types";
 import * as S from "./Create.style"
@@ -14,11 +14,6 @@ import { addClass } from "../../state/reducers/classroomSlice";
 const Create : React.FC = () => {
 
     const dispatch = useAppDispatch();
-
-    const ref = useRef<FireworksHandlers>(null);
-
-    ref.current?.stop();
-
     
     const addClassHandler = async (dataToAdd : Classroom): Promise<void> => {
         try {
@@ -35,7 +30,6 @@ const Create : React.FC = () => {
                 }
             }));
             alertify.success("הכיתה הוספה");
-            ref.current?.start();
         } catch(error : any) {
             if (error.response.status !== 400) {
                 Swal.fire({
