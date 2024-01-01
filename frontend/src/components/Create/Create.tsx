@@ -10,8 +10,6 @@ import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch } from "../../hooks";
 import { addClass } from "../../state/reducers/classroomSlice";
-import { Fireworks } from '@fireworks-js/react'
-import type { FireworksHandlers } from '@fireworks-js/react'
 
 const Create : React.FC = () => {
 
@@ -36,7 +34,7 @@ const Create : React.FC = () => {
                     seatsLeft: +dataToAdd.seatsLeft
                 }
             }));
-            alertify.success("classroom successfully added");
+            alertify.success("הכיתה הוספה");
             ref.current?.start();
         } catch(error : any) {
             if (error.response.status !== 400) {
@@ -61,7 +59,7 @@ const Create : React.FC = () => {
                 ...dataToAdd,
                 age: +dataToAdd.age
             })
-            alertify.success("student successfully added")
+            alertify.success("התלמיד נוסף")
         } catch (error: any) {
             if (error.response.status !== 400) {
                 Swal.fire({
@@ -94,18 +92,6 @@ const Create : React.FC = () => {
                 handleClick={addStudent}
                 fields={Constants.studentFields}></Form>
             </S.FormsContainer>
-            {/* <Fireworks
-                ref={ref}
-                options={{ opacity: 0.5 }}
-                style={{
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                position: 'fixed',
-                background: '#fff'
-                }}
-            /> */}
         </div>
     )
 }

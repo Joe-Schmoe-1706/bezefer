@@ -32,9 +32,7 @@ export const getStudentsInClass = async (classroomId: string): Promise<Student[]
 export const addStudentToClass = async (studentId: string, classroomId: string): Promise<void> => {
     try {
         await api.patch(`/students/${studentId}/classroom/${classroomId}/add`)
-        console.log("api called");
     } catch (error: any) {
-        console.log(error.message);
         throw error;
     }
 }
@@ -42,9 +40,7 @@ export const addStudentToClass = async (studentId: string, classroomId: string):
 export const removeStudentFromClass = async (studentId: string, classroomId: string): Promise<void> => {
     try {
         await api.patch(`/students/${studentId}/classroom/${classroomId}/remove`)
-        console.log("api called");
     } catch (error: any) {
-        console.log(error.message);
         throw error;
     }
 }

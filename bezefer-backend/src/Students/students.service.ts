@@ -91,17 +91,14 @@ export class StudentsService {
 
     async changeStudentClassStatus(studentId: string, classroomId: string, action: string): Promise<void> {
         if (action === "add" && (await this.classroomService.findClassById(classroomId)).seatsLeft === 0) {
-            console.log("error caught");
             throw new BadRequestException("there are no available seats in this class");
         } else {
-            console.log("class is available");
             const sutdentToUpdate = await this.getStudentById(studentId);
             sutdentToUpdate.classroom = action === "add" ? classroomId : "";
             const promises = [];
             promises.push(sutdentToUpdate.save());
             promises.push(this.classroomService.changecapacity(classroomId, action));
             await Promise.all(promises);
-            console.log("all good");
         }
     }
 

@@ -56,7 +56,7 @@ const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
                 id: classroom._id,
                 change: 1
             }));
-            alertify.success("student successfully removed from class");
+            alertify.success("התלמיד הוסר מהכיתה בהצלחה");
         } catch (error) {
             Swal.fire({
                 title: 'תקלה',

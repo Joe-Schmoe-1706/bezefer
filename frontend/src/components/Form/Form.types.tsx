@@ -1,5 +1,5 @@
 import { MouseEventHandler } from "react"
-import { Class, Student } from "../../Types/types"
+import { Classroom, Student } from "../../Types/types"
 
 export interface FormField {
     name: string,
@@ -12,6 +12,6 @@ export interface FormField {
 export interface Props {
     header: string,
     btnText: string,
-    handleClick: (formData : Class | Student) => void,
+    handleClick: (data :Classroom  | Student) => void,
     fields : FormField[]
 }
