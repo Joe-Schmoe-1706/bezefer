@@ -6,23 +6,29 @@ import axios from "axios";
     })
 
     export const getAllClassrooms = async (): Promise<Classroom[]> => {
-        const result = await api.get('')
-        const classrooms = await result.data;
-        return classrooms;
+        try {
+            const result = await api.get('')
+            const classrooms = await result.data;
+            return classrooms;
+        } catch(error) {
+            throw error;
+        }
     }
 
     export const deleteClassroom = async (classroomId: string): Promise<void> => {
-        await api.delete(`/${classroomId}`)
+        try {
+            await api.delete(`/${classroomId}`)
+        } catch (error) {
+            throw error;
+        }
     }
 
     export const addClassroom = async (classroom: Classroom): Promise<void> => {
-        await api.post('', {
-            classroom
-        })
-    }
-
-    export const getAvailableClassrooms = async (): Promise<Classroom[]> => {
-        const result = await api.get(`/available`);
-        const classrooms = result.data;
-        return classrooms;
+        try {
+            await api.post('', {
+                classroom
+            })
+        } catch (error) {
+            throw error
+        }
     }

@@ -1,32 +1,53 @@
 import { Student } from "../Types/types";
-import api from "./axiostInstance"
+import axios from "axios";
 
-const BASE_URL = "http://localhost:5000"
-
+const api = axios.create({
+    baseURL: `http://localhost:5000/students`
+})
 
 export const getAllStudents = async (): Promise<Student[]> => {
-    const result = await api.get(`/students`)
-    return await result.data;
+    try {
+        const result = await api.get(`/students`)
+        return await result.data;
+    } catch(error) {
+        throw error;
+    }
 }
 
 export const getStudentsDTO = async (): Promise<Student[]> => {
-    const result = await api.get(`/students/DTO`);
-    return await result.data;
+    try {
+        const result = await api.get(`/students/DTO`);
+        return await result.data;
+    } catch(error) {
+        throw error;
+    }
 }
 
 export const deleteStudent = async (studentId: string): Promise<void> => {
-    await api.delete(`/students/${studentId}`)
+    try {
+        await api.delete(`/students/${studentId}`)
+    } catch(error) {
+        throw error;
+    }
 }
 
 export const addStudents = async(student: Student): Promise<void> => {
-    await api.post("/students",{
-        student
-    });
+    try {
+        await api.post("/students",{
+            student
+        });
+    } catch(error) {
+        throw error;
+    }
 }
 
 export const getStudentsInClass = async (classroomId: string): Promise<Student[]> => {
-    const result = await api.get(`/students/classroom/${classroomId}`);
-    return await result.data;
+    try {
+        const result = await api.get(`/students/classroom/${classroomId}`);
+        return await result.data;
+    } catch(error) {
+        throw error;
+    }
 }
 
 export const addStudentToClass = async (studentId: string, classroomId: string): Promise<void> => {
