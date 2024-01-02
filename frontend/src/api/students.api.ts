@@ -14,15 +14,6 @@ export const getAllStudents = async () => {
     }
 }
 
-export const getStudentsDTO = async () => {
-    try {
-        const {data} = await api.get<Student[]>(`/DTO`);
-        return data;
-    } catch(error) {
-        throw error;
-    }
-}
-
 export const deleteStudent = async (studentId: string): Promise<void> => {
     try {
         await api.delete(``,

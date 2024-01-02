@@ -15,13 +15,7 @@ export class StudentsController {
         const classes = await this.studentsService.findAll();
         return classes;
     }
-
-    @Get('/DTO')
-    async findAllStudentsDTO(): Promise<StudentDTO[]> {
-        const students = await this.studentsService.findAllDTO();
-        return students;
-    }
-
+    
     @Delete('')
     async removeStudent(@Query("studentId") studentId: string) {
         await this.studentsService.deleteStudent(studentId);

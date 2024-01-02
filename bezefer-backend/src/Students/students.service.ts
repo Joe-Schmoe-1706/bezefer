@@ -14,22 +14,8 @@ export class StudentsService {
     ) {}
 
     async findAll(): Promise<Student[]> {
-        const students = await this.studentModel.find().exec();
+        const students = await this.studentModel.find().lean();
         return students;
-    }
-
-    async findAllDTO(): Promise<StudentDTO[]> {
-        const students = await this.studentModel.find().exec();
-        return students.map((student) => {
-            return {
-                _id: student._id,
-                firstName: student.firstName,
-                lsatName: student.lastName,
-                age: student.age,
-                profession: student.profession,
-                classroom: student.classroom
-            }
-        });
     }
 
     validateStudent(student: Student): boolean {

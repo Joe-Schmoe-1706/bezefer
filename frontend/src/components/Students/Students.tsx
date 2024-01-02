@@ -3,8 +3,8 @@ import React, {useEffect, useState} from "react"
 import { useTheme } from "../../Context/ThemeContext";
 import * as S from "./Students.style"
 import PopupList from "../PopupList/PopupList"
-import { Classroom, StatusOptions, Student } from "../../Types/types";
-import { getStudentsDTO, deleteStudent, addStudentToClass } from "../../api/students.api";
+import { StatusOptions, Student } from "../../Types/types";
+import { getAllStudents, deleteStudent, addStudentToClass } from "../../api/students.api";
 import Swal from "sweetalert2";
 import { tableHeaders } from "./Students.consts";
 import alertify from "alertifyjs";
@@ -30,7 +30,7 @@ const Students : React.FC<{
     useEffect(() => {
         const initializeStudents = async (): Promise<void> => {
             try {
-                const allStudents = await getStudentsDTO();
+                const allStudents = await getAllStudents();
                 setStudents(allStudents);
                 setStudentStatus("done");
             } catch (error) {
