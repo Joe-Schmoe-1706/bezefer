@@ -57,6 +57,7 @@ const Students : React.FC<{
 
     const assignToClass = async (classroomId: string) : Promise<void> => {
         try {
+            closePopup();
             await addStudentToClass(chosenStudentId, classroomId);
             setStudents((prevStudents) => {
                 return prevStudents.map((student) => {

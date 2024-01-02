@@ -48,6 +48,7 @@ const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
 
     const deleteStudent = async (id : string) : Promise<void> => {
         try {
+            closeModal();
             await removeStudentFromClass(id, classroom._id);
             setStudentsInClass((prevStudents) => {
                 return prevStudents.filter((student) => student._id != id)
