@@ -54,10 +54,7 @@ export class StudentsService {
             const result= await newStudent.save();
             return result.id;
         } catch (error) {
-            if (error.code === 11000) {
-                throw new Error("duplicate ID")
-            }
-            throw (error);
+            throw error;
         } 
     }
 

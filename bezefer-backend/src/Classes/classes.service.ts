@@ -1,5 +1,5 @@
 import { Model } from "mongoose";
-import { BadRequestException, Inject, Injectable } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Classroom } from "./classes.model";
 import { StudentsService } from "../Students/students.service";
@@ -43,17 +43,14 @@ export class ClassesService {
             });
             await newClassroom.save()
         } catch (error) {
-            if (error.code === 11000) {
-                throw new Error("duplicate ID")
-            }
-            throw (error);
+            throw error;
         }
     }
 
     async deleteClass(classroomId: string): Promise<void> {
         const classroomToDelete = await this.classModel.findById(classroomId).exec();
         if (!classroomToDelete) {
-            throw new NotFoundError('classroom does not exist');
+            throw new NotFoundException('classroom does not exist');
         }
         
         if (classroomToDelete.capacity === classroomToDelete.seatsLeft) {
@@ -64,17 +61,15 @@ export class ClassesService {
     }
 
     async changecapacity(classroomId: String, action: string): Promise<void> {
-        const updatedClassroom = await this.classModel.findById(classroomId).exec();
-        updatedClassroom.seatsLeft = action === "add" ?
-         updatedClassroom.seatsLeft - 1 :
-         updatedClassroom.seatsLeft + 1;
-
-        await updatedClassroom.save();
+        try {
+            const updatedClassroom = await this.classModel.findById(classroomId).exec();
+            updatedClassroom.seatsLeft = action === "add" ?
+             updatedClassroom.seatsLeft - 1 :
+             updatedClassroom.seatsLeft + 1;
+    
+            await updatedClassroom.save();
+        } catch (error) {
+            throw error;
+        }
     }
-
-    async findAvailableClassrooms(): Promise<Classroom[]> {
-        const availableClassrooms = await this.classModel.find({seatsLeft: {$gte: 1}}).exec();
-        return availableClassrooms;
-    }
-
 }

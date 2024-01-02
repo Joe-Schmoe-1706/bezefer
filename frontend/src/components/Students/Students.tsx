@@ -78,7 +78,7 @@ const Students : React.FC<{
             alertify.success("התלמיד השתבץ לכיתה בהצלחה")
         } catch (error: any) {
 
-            if (error.response && error.response.data === 400) {
+            if (error.response && error.response.data === 509) {
                 Swal.fire({
                     title: 'כיתה מלאה',
                     text: 'הכיתה כבר מלאה',

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Res } from "@nestjs/common";
+import { Body, ConflictException, Controller, Delete, Get, Param, Post, Res } from "@nestjs/common";
 import { ClassesService } from "./classes.service";
 import { Classroom } from "./classes.model";
 import { Response } from "express";
@@ -11,39 +11,35 @@ export class ClassesController {
 
     @Get()
     async GetAllClasses() : Promise<Classroom[]> {
-        const classes = await this.classesService.findAll();
-        return classes;
+        try {
+            const classes = await this.classesService.findAll();
+            return classes;
+        } catch(error) {
+            throw error;
+        }
     }
 
     @Post()
     async addClassroom(
         @Body('classroom') classroom: Classroom,
-        @Res() res: Response
     ) {
         try {
             await this.classesService.addClass(classroom);
-            res.status(201).send('');
         } catch (error) {
-            if (error.message === "duplicate ID") {
-                res.status(400).send("duplicate Id");
+            if (error.code === 11000) {
+                throw new ConflictException("duplicate Id");
             } else {
-                res.status(500).send('');
+                throw error;
             }
         }
     }
 
     @Delete(':id')
-    async removeClassroom(@Param('id') classroomId: string, @Res() res: Response) {
+    async removeClassroom(@Param('id') classroomId: string) {
         try {
             await this.classesService.deleteClass(classroomId);
-            res.status(204).send('');
         } catch (error) {
-            res.status(500).send({message : error.message});
+            throw error;
         }
-    }
-
-    @Get('/available')
-    async getAvailableClassroom() {
-        return await this.classesService.findAvailableClassrooms();
     }
 }

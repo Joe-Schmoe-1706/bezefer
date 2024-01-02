@@ -31,7 +31,7 @@ const Create : React.FC = () => {
             }));
             alertify.success("הכיתה הוספה");
         } catch(error : any) {
-            if (error.response.status !== 400) {
+            if (error.response.status !== 409) {
                 Swal.fire({
                     title: 'תקלה',
                     text: 'לא ניתן להוסיף את הכיתה הזו',
@@ -55,7 +55,7 @@ const Create : React.FC = () => {
             })
             alertify.success("התלמיד נוסף")
         } catch (error: any) {
-            if (error.response.status !== 400) {
+            if (error.response.status !== 409) {
                 Swal.fire({
                     title: 'תקלה',
                     text: 'לא ניתן להוסיף את התלמיד הזה',
