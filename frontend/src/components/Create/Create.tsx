@@ -77,13 +77,13 @@ const Create : React.FC = () => {
                 <Form
                 header="Create new class"
                 btnText="CREATE CLASS"
-                handleClick={addClassHandler}
+                handleClick={addClassHandler as (data: Classroom | Student) => Promise<void>}
                 fields={Constants.classesFields}></Form>
 
                 <Form 
                 header="Add new student"
                 btnText="ADD STUDENT"
-                handleClick={addStudent}
+                handleClick={addStudent as (data: Classroom | Student) => Promise<void>}
                 fields={Constants.studentFields}></Form>
             </S.FormsContainer>
         </div>

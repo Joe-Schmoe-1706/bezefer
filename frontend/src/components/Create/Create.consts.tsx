@@ -12,7 +12,7 @@ export const classesFields : FormField[] = [
 
             return false
         },
-        helperText: "מזהה צריך להכיל גג תשע ספרות"
+        helperText: "מזהה צריך להכיל בין ספרה לתשע ספרות"
     },
     {
         name: "name",
@@ -73,7 +73,7 @@ export const studentFields : FormField[] = [
         validation: (firstName: string) => {
            return onlyLetters(firstName)
         },
-        helperText: "שם יכול להכי רק אותיות בעברית או אנגלית"
+        helperText: "שם יכול להכיל רק אותיות בעברית או אנגלית"
     },
     {
         name: "lastName",
@@ -82,7 +82,7 @@ export const studentFields : FormField[] = [
         validation: (lastName: string) => {
             return onlyLetters(lastName)
         },
-        helperText: "שם יכול להכי רק אותיות בעברית או אנגלית"
+        helperText: "שם יכול להכיל רק אותיות בעברית או אנגלית"
     },
     {
         name: "age",

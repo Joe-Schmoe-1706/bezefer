@@ -42,7 +42,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
                 value={formData[field.name]}
                 onChange={handleChange}
                 />
-                <S.HelperText>{field.helperText}</S.HelperText>
+                <S.HelperText isError={!field.validation(formData[field.name].toString())} isEmpty={formData[field.name].toString() === ''}>{field.helperText}</S.HelperText>
             </div>
         )
     })

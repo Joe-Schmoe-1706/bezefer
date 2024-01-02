@@ -119,9 +119,12 @@ export const ErrorMessage = styled("div", {
     visibility: showError ? "visible" : "hidden"
 }))
 
-export const HelperText = styled(FormHelperText)(({ theme }) => ({
+export const HelperText = styled(FormHelperText, {
+    shouldForwardProp: (prop) => prop !== "isError" 
+})<{isError: boolean, isEmpty: boolean}>(({ theme, isError, isEmpty }) => ({
     textAlign: "right",
     direction: "rtl",
+    color: isEmpty ? "#000000" : isError ? "#fc0303" : "#43A047",
     [theme.breakpoints.only("xl")]: {
         marginRight: "2vw",
         marginBottom: "1vh",
