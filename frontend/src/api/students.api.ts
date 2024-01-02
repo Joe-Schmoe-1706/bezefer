@@ -5,19 +5,19 @@ const api = axios.create({
     baseURL: `http://localhost:5000/students`
 })
 
-export const getAllStudents = async (): Promise<Student[]> => {
+export const getAllStudents = async () => {
     try {
-        const result = await api.get(`/students`)
-        return await result.data;
+        const { data } = await api.get<Student[]>(``)
+        return data;
     } catch(error) {
         throw error;
     }
 }
 
-export const getStudentsDTO = async (): Promise<Student[]> => {
+export const getStudentsDTO = async () => {
     try {
-        const result = await api.get(`/students/DTO`);
-        return await result.data;
+        const {data} = await api.get<Student[]>(`/DTO`);
+        return data;
     } catch(error) {
         throw error;
     }
@@ -25,7 +25,12 @@ export const getStudentsDTO = async (): Promise<Student[]> => {
 
 export const deleteStudent = async (studentId: string): Promise<void> => {
     try {
-        await api.delete(`/students/${studentId}`)
+        await api.delete(``,
+        {
+            params: {
+                studentId: studentId
+            }
+        })
     } catch(error) {
         throw error;
     }
@@ -33,7 +38,7 @@ export const deleteStudent = async (studentId: string): Promise<void> => {
 
 export const addStudents = async(student: Student): Promise<void> => {
     try {
-        await api.post("/students",{
+        await api.post("",{
             student
         });
     } catch(error) {
@@ -41,10 +46,14 @@ export const addStudents = async(student: Student): Promise<void> => {
     }
 }
 
-export const getStudentsInClass = async (classroomId: string): Promise<Student[]> => {
+export const getStudentsInClass = async (classroomId: string) => {
     try {
-        const result = await api.get(`/students/classroom/${classroomId}`);
-        return await result.data;
+        const {data} = await api.get<Student[]>(`/classroom`, {
+            params: {
+                classroomId: classroomId
+            }
+        });
+        return data;
     } catch(error) {
         throw error;
     }
@@ -52,7 +61,12 @@ export const getStudentsInClass = async (classroomId: string): Promise<Student[]
 
 export const addStudentToClass = async (studentId: string, classroomId: string): Promise<void> => {
     try {
-        await api.patch(`/students/${studentId}/classroom/${classroomId}/add`)
+        await api.patch(`/classroom/add`,null, {
+            params: {
+                studentId: studentId,
+                classroomId: classroomId
+            }
+        })
     } catch (error: any) {
         throw error;
     }
@@ -60,7 +74,12 @@ export const addStudentToClass = async (studentId: string, classroomId: string):
 
 export const removeStudentFromClass = async (studentId: string, classroomId: string): Promise<void> => {
     try {
-        await api.patch(`/students/${studentId}/classroom/${classroomId}/remove`)
+        await api.patch(`/classroom/remove`,null, {
+            params: {
+                studentId: studentId,
+                classroomId: classroomId   
+            }
+        })
     } catch (error: any) {
         throw error;
     }

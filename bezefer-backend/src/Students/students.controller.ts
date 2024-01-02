@@ -1,4 +1,4 @@
-import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Res } from "@nestjs/common";
+import { BadRequestException, Body, Controller, Delete, Get, NotFoundException, Param, Patch, Post, Query, Res } from "@nestjs/common";
 import { StudentsService } from "./students.service";
 import { Student } from "./students.model";
 import { StudentDTO } from "./StudentDTO";
@@ -22,8 +22,8 @@ export class StudentsController {
         return students;
     }
 
-    @Delete(':id')
-    async removeStudent(@Param('id') studentId: string) {
+    @Delete('')
+    async removeStudent(@Query("studentId") studentId: string) {
         await this.studentsService.deleteStudent(studentId);
     }
 
@@ -44,8 +44,8 @@ export class StudentsController {
         }
     }
 
-    @Patch(':id/classroom/:classroomId/add')
-    async addStudentToClass(@Param('id') studentId: string, @Param('classroomId') classroomId: string, @Res() res: Response) {
+    @Patch('/classroom/add')
+    async addStudentToClass(@Query("studentId") studentId: string, @Query("classroomId") classroomId: string, @Res() res: Response) {
         try {
             await this.studentsService.changeStudentClassStatus(studentId, classroomId, "add");
             res.status(200).send('');
@@ -58,9 +58,10 @@ export class StudentsController {
         }
     }
 
-    @Patch(':id/classroom/:classroomId/remove')
-    async removeStudentToClass(@Param('id') studentId: string, @Param('classroomId') classroomId: string, @Res() res: Response) {
+    @Patch('/classroom/remove')
+    async removeStudentToClass(@Query("studentId") studentId: string, @Query("classroomId") classroomId: string, @Res() res: Response) {
         try {
+            console.log(studentId);
             await this.studentsService.changeStudentClassStatus(studentId, classroomId, "remove");
             res.status(200).send('');
         } catch(error) {
@@ -68,8 +69,8 @@ export class StudentsController {
         }
     }
 
-    @Get('/classroom/:id')
-    async getStudentsInClassroom(@Param('id') classroomId: string) {
+    @Get('/classroom')
+    async getStudentsInClassroom(@Query('classroomId') classroomId: string) {
         return this.studentsService.getStudentsInClass(classroomId);
     }
 } 

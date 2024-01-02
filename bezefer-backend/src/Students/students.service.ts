@@ -8,8 +8,6 @@ import validation from "../validation";
 
 @Injectable()
 export class StudentsService {
-
-
     constructor(
         @InjectModel(Student.name) private readonly studentModel : Model<Student>,
         @Inject(ClassesService) private readonly classroomService: ClassesService

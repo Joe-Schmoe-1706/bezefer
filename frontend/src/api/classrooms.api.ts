@@ -5,11 +5,10 @@ import axios from "axios";
         baseURL: `http://localhost:5000/classes`
     })
 
-    export const getAllClassrooms = async (): Promise<Classroom[]> => {
+    export const getAllClassrooms = async () => {
         try {
-            const result = await api.get('')
-            const classrooms = await result.data;
-            return classrooms;
+            const {data} = await api.get<Classroom[]>('')
+            return data;
         } catch(error) {
             throw error;
         }
