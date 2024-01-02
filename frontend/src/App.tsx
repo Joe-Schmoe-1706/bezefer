@@ -6,19 +6,27 @@ import Students from './components/Students/Students'
 import Create from './components/Create/Create'
 import { useAppDispatch } from './hooks'
 import { initializeState } from './state/reducers/classroomSlice'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { getAllClassrooms } from './api/classrooms.api'
+import { StatusOptions } from './Types/types'
 
 const App : React.FC = () => {
-
   const dispatch = useAppDispatch();
+
+  const [classesStatus, setClassesStatus] = useState<StatusOptions>("loading");
 
   useEffect(() => {
     const initState = async () => {
-      const classrooms = await getAllClassrooms();
-      dispatch(initializeState({
-        classrooms: classrooms
-      }));
+      try {
+          const classrooms = await getAllClassrooms();
+          dispatch(initializeState({
+          classrooms: classrooms
+        }));
+
+        setClassesStatus("done");
+      } catch (error) {
+        setClassesStatus("failed");
+      }
     }
 
     initState();
@@ -28,9 +36,9 @@ const App : React.FC = () => {
     <ThempeProvider>
       <Navbar />
       <Routes>
-        <Route path='/' Component={Classes} />
-        <Route path='/students' Component={Students} />
-        <Route path='/create' Component={Create} />
+        <Route path='/' element={<Classes status={classesStatus}/>} />
+        <Route path='/students' element={<Students status={classesStatus}/>} />
+        <Route path='/create' Component={Create} /> 
       </Routes>
     </ThempeProvider>
   )

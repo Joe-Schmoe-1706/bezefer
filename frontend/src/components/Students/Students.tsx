@@ -3,21 +3,26 @@ import React, {useEffect, useState} from "react"
 import { useTheme } from "../../Context/ThemeContext";
 import * as S from "./Students.style"
 import PopupList from "../PopupList/PopupList"
-import { Classroom, Student } from "../../Types/types";
+import { Classroom, StatusOptions, Student } from "../../Types/types";
 import { getStudentsDTO, deleteStudent, addStudentToClass } from "../../api/students.api";
 import Swal from "sweetalert2";
-import { getAvailableClassrooms } from "../../api/classrooms.api";
 import { tableHeaders } from "./Students.consts";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch, useAppSelector } from "../../hooks";
-import { decreaseSeatsLeft, selectAvailableClassrooms } from "../../state/reducers/classroomSlice";
+import { decreaseSeatsLeft, increaseSeatsLeft, selectAvailableClassrooms } from "../../state/reducers/classroomSlice";
+import ErrorPage from "../ErrorPage/ErrorPage";
+import { Loading, LoadingContainer } from "../Classes/Classes.style";
+import NoConnection from "../NoConnection/NoConnection";
 
 
-const Students : React.FC = () => {
+const Students : React.FC<{
+    status: StatusOptions
+}> = ({ status }) => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
     const [students, setStudents] = useState<Student[]>([]);
     const [chosenStudentId, setChosenStudentId] = useState<string>('');
+    const [studentsStatus, setStudentStatus] = useState<StatusOptions>("loading");
 
     const availabeClassrooms = useAppSelector(selectAvailableClassrooms);
     const dispatch = useAppDispatch();
@@ -27,12 +32,14 @@ const Students : React.FC = () => {
             try {
                 const allStudents = await getStudentsDTO();
                 setStudents(allStudents);
+                setStudentStatus("done");
             } catch (error) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'error',
-                    text: 'could not fetch students'
+                    title: 'תקלה',
+                    text: 'לא ניתן לקבל את התלמידים'
                 })
+                setStudentStatus("failed");
             }
         }
 
@@ -60,23 +67,26 @@ const Students : React.FC = () => {
                     } :
                     student
                 })
-            })
+            });
+
             dispatch(decreaseSeatsLeft({
                 id: classroomId,
                 change: 1
             }));
-            alertify.success("student successfully assigned to class")
+
+            alertify.success("התלמיד השתבץ לכיתה בהצלחה")
         } catch (error: any) {
+
             if (error.response && error.response.data === 400) {
                 Swal.fire({
-                    title: 'full classroom',
-                    text: 'classroom is already full',
+                    title: 'כיתה מלאה',
+                    text: 'הכיתה כבר מלאה',
                     icon: 'error'
                 })
             } else {
                 Swal.fire({
-                    title: 'error',
-                    text: 'could not assign student to class',
+                    title: 'תקלה',
+                    text: 'לא ניתן לשייך את התלמיד לכיתה',
                     icon: 'error'
                 })
             }
@@ -87,21 +97,31 @@ const Students : React.FC = () => {
 
     const deleteSelectedStudent = async (studentId: string) => {
         Swal.fire({
-            title: 'Are you sure you want to delete the student?',
+            title: 'האם אתה בטוח?',
             showCancelButton: true,
-            confirmButtonText: "Delete"
+            confirmButtonText: "מחק",
+            cancelButtonText: "בטל"
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
                     await deleteStudent(studentId);
+                    const deletedStudent = students.find((student) => student._id === studentId);
                     setStudents((prevStudents) => {
                         return prevStudents.filter((student) => student._id !== studentId)
                     });
-                    alertify.success("student successfully deleted");
+                    
+                    if (deletedStudent && deletedStudent.classroom !== '') {
+                        dispatch(increaseSeatsLeft({
+                            id: deletedStudent.classroom,
+                            change: 1
+                        }))
+                    };
+
+                    alertify.success("התלמיד נמחק בהצלחה");
                 } catch (error) {
                     Swal.fire({
-                        title: 'error',
-                        text: 'could not delete student',
+                        title: 'תקלה',
+                        text: 'לא ניתן למחוק את התלמיד',
                         icon: 'error'
                     })
                 }
@@ -141,27 +161,40 @@ const Students : React.FC = () => {
     });
 
     return (
-       <div>
-        <S.StudentTableContainer>
-            <S.StudentTable>
-                <TableHead>
-                    <TableRow>
-                        {renderedHeaders}
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {renderedRows}
-                </TableBody>
-            </S.StudentTable>
-        </S.StudentTableContainer>
-        <PopupList
-            isOpen={isPopupOpen} 
-            closeModal={closePopup}
-            items={availabeClassrooms}
-            listType="classes"
-            handleClick={assignToClass}
-            />
-       </div>
+        <div>
+            {status === "done" && studentsStatus === "done" && students.length > 0 && <div>
+            <S.StudentTableContainer>
+                <S.StudentTable>
+                    <TableHead>
+                        <TableRow>
+                            {renderedHeaders}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {renderedRows}
+                    </TableBody>
+                </S.StudentTable>
+            </S.StudentTableContainer>
+            <PopupList
+                isOpen={isPopupOpen} 
+                closeModal={closePopup}
+                items={availabeClassrooms}
+                listType="classes"
+                handleClick={assignToClass}
+                />
+            </div> }
+            {status === "done" && studentsStatus === "done" && students.length === 0 &&
+                <ErrorPage errorMessage="נראה מאוד בודד כאן, אין תלמידים" redirectMessage="לחץ כדי להוסיף תלמידים"></ErrorPage>
+            }
+            {(status === "loading" || studentsStatus === "loading") &&
+                <LoadingContainer>
+                    <Loading projectTheme={theme} size={"8rem"}></Loading>
+                </LoadingContainer>
+            }
+            {(status === "failed" || studentsStatus === "failed") && (status !== "loading" && studentsStatus !== "loading") &&
+                <NoConnection></NoConnection>
+            }
+        </div>
     )
 }
 

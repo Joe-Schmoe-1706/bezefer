@@ -11,7 +11,8 @@ export const classesFields : FormField[] = [
             }
 
             return false
-        }
+        },
+        helperText: "מזהה צריך להכיל בין ספרה לתשע ספרות"
     },
     {
         name: "name",
@@ -23,7 +24,8 @@ export const classesFields : FormField[] = [
             }
 
             return false;
-        }
+        },
+        helperText: "שם כיתה יכול להכיל אותיות בעברית ואנגלית וספרות"
     },
     {
         name: "seatsLeft",
@@ -37,7 +39,8 @@ export const classesFields : FormField[] = [
             }
 
             return false;
-        }
+        },
+        helperText: "מספר המקומות בכיתה יכול להיות בן 1 ל 1000"
     }
 ];
 
@@ -60,7 +63,8 @@ export const studentFields : FormField[] = [
             }
 
             return false;
-        }
+        },
+        helperText: "מזהה יכול להכיל רק תשע ספרות"
     },
     {
         name: "firstName",
@@ -68,7 +72,8 @@ export const studentFields : FormField[] = [
         placeHolder: "First Name",
         validation: (firstName: string) => {
            return onlyLetters(firstName)
-        }
+        },
+        helperText: "שם יכול להכיל רק אותיות בעברית או אנגלית"
     },
     {
         name: "lastName",
@@ -76,7 +81,8 @@ export const studentFields : FormField[] = [
         placeHolder: "Last Name",
         validation: (lastName: string) => {
             return onlyLetters(lastName)
-        }
+        },
+        helperText: "שם יכול להכיל רק אותיות בעברית או אנגלית"
     },
     {
         name: "age",
@@ -90,7 +96,8 @@ export const studentFields : FormField[] = [
             }
 
             return false;
-        }
+        },
+        helperText: "גיל יכול להיות בן 8 ל 120"
     },
     {
         name: "profession",
@@ -98,6 +105,7 @@ export const studentFields : FormField[] = [
         placeHolder: "Profession",
         validation: (profession: string) => {
             return onlyLetters(profession)
-        }
+        },
+        helperText: "מקצוע יכול להכי רק אותיות בעברית או אנגלית"
     }
 ]

@@ -1,4 +1,4 @@
-export type ThemeContextType = "red" | "blue";
+export type ThemeContextType = "#F50057" | "#3F50B5" | "#5c5248" | "#7b2cbf" | "#2a850e" | "#4d0b0a";
 
 export interface ContextProps {
     children : React.ReactNode
@@ -9,7 +9,8 @@ export interface Student {
     firstName: string,
     lastName: string,
     age: number,
-    profession: string
+    profession: string,
+    classroom: string,
     [key: string]: string | number
 }
 
@@ -27,3 +28,5 @@ export interface Classroom {
     seatsLeft: number
     [key: string]: string | number
 }
+
+export type StatusOptions = "loading" | "done" | "failed";

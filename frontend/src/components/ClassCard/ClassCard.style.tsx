@@ -21,7 +21,7 @@ export const ClassCard = styled(Card)(({ theme }) => ({
     },
     [theme.breakpoints.only("xs")]: {
         width: "55vw",
-        height: "25vh",
+        height: "22vh",
         marginBottom: "8vh"
     },
     fontFamily: "Heebo, sans-serif",

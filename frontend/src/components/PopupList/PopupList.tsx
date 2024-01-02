@@ -35,13 +35,13 @@ const StudentsModal : React.FC<StudentsModalProps> = ({isOpen, closeModal, items
     if (items.length === 0) {
         return (
             <S.StudentModal open={isOpen} onClose={closeModal}>
-                <S.ModalContent>
-                    <S.ModalHeader>
+                <S.ErrorContent>
+                    <S.ErrorModalHeader>
                         {listType === "students" ?
-                        "there are no students in this class" :
-                        "there aren't available classes"}
-                    </S.ModalHeader>
-                </S.ModalContent>
+                        "אין תלמידים בכיתה הזו" :
+                        "אין כיתות זמינות"}
+                    </S.ErrorModalHeader>
+                </S.ErrorContent>
             </S.StudentModal>
         )
     }

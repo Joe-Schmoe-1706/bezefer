@@ -10,7 +10,7 @@ export const StudentModal = styled(Modal)(({ theme }) => ({
         marginLeft: "40vw",
         marginTop: "40vh",
         width: "14vw",
-        height: "14vh"
+        height: "30vh"
     },
     [theme.breakpoints.only("lg")]: {
         marginLeft: "40vw",
@@ -36,6 +36,8 @@ export const StudentModal = styled(Modal)(({ theme }) => ({
         width: "60vw",
         height: "20vh"
     },
+    overflow: "auto",
+    overflowX: "hidden"
 }))
 
 export const ModalHeader = styled("div")({
@@ -68,9 +70,24 @@ export const ListAvatar = styled(ListItemAvatar)({
     marginLeft: "1vw"
 })
 
+export const ErrorContent = styled("div")({
+    backgroundColor: "#FFFFFF",
+    height: "10vh",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center"
+});
+
+export const ErrorModalHeader = styled("div")({
+    fontSize: "1rem",
+    fontWeight: "600",
+    textAlign: 'center',
+    color: "#F50053"
+})
+
 export const PlusIcon = styled(AddIcon, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{projectTheme : ThemeContextType | null}>(({ projectTheme, theme }) => ({
+})<{projectTheme : ThemeContextType}>(({ projectTheme, theme }) => ({
     [theme.breakpoints.up("md")]: {
         width: "2vw",
         height: "2vw",
@@ -79,5 +96,5 @@ export const PlusIcon = styled(AddIcon, {
         width: "8vw",
         height: "8vw",
     },
-    color: projectTheme === "blue" ? "#3F50B5" : "#F50057"
+    color: projectTheme
 }))

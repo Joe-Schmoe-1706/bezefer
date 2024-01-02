@@ -1,4 +1,4 @@
-import React, { useRef } from "react"
+import React from "react"
 import Form from "../Form/Form";
 import { Student, Classroom } from "../../Types/types";
 import * as S from "./Create.style"
@@ -10,17 +10,10 @@ import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch } from "../../hooks";
 import { addClass } from "../../state/reducers/classroomSlice";
-import { Fireworks } from '@fireworks-js/react'
-import type { FireworksHandlers } from '@fireworks-js/react'
 
 const Create : React.FC = () => {
 
     const dispatch = useAppDispatch();
-
-    const ref = useRef<FireworksHandlers>(null);
-
-    ref.current?.stop();
-
     
     const addClassHandler = async (dataToAdd : Classroom): Promise<void> => {
         try {
@@ -36,15 +29,21 @@ const Create : React.FC = () => {
                     seatsLeft: +dataToAdd.seatsLeft
                 }
             }));
-            alertify.success("classroom successfully added");
-            ref.current?.start();
+            alertify.success("הכיתה הוספה");
         } catch(error : any) {
+            if (error.response.status !== 400) {
                 Swal.fire({
-                    title: 'error',
-                    text: error.response.data.message,
+                    title: 'תקלה',
+                    text: 'לא ניתן להוסיף את הכיתה הזו',
                     icon: 'error'
-
-            })
+                })
+            } else {
+                Swal.fire({
+                    title: 'תקלה',
+                    text: 'כיתה בעלת אותו מזהה כבר קיימת',
+                    icon: 'error'
+                })
+            }
         }
     };
 
@@ -54,13 +53,21 @@ const Create : React.FC = () => {
                 ...dataToAdd,
                 age: +dataToAdd.age
             })
-            alertify.success("student successfully added")
+            alertify.success("התלמיד נוסף")
         } catch (error: any) {
-            Swal.fire({
-                title: 'error',
-                text: error.response.data.message,
-                icon: 'error'
-            })
+            if (error.response.status !== 400) {
+                Swal.fire({
+                    title: 'תקלה',
+                    text: 'לא ניתן להוסיף את התלמיד הזה',
+                    icon: 'error'
+                })
+            } else {
+                Swal.fire({
+                    title: 'תקלה',
+                    text: 'תלמיד בעל אותו מזהה כבר קיים',
+                    icon: 'error'
+                })
+            }
         }
     };
 
@@ -70,27 +77,15 @@ const Create : React.FC = () => {
                 <Form
                 header="Create new class"
                 btnText="CREATE CLASS"
-                handleClick={addClassHandler}
+                handleClick={addClassHandler as (data: Classroom | Student) => Promise<void>}
                 fields={Constants.classesFields}></Form>
 
                 <Form 
                 header="Add new student"
                 btnText="ADD STUDENT"
-                handleClick={addStudent}
+                handleClick={addStudent as (data: Classroom | Student) => Promise<void>}
                 fields={Constants.studentFields}></Form>
             </S.FormsContainer>
-            {/* <Fireworks
-                ref={ref}
-                options={{ opacity: 0.5 }}
-                style={{
-                top: 0,
-                left: 0,
-                width: '100%',
-                height: '100%',
-                position: 'fixed',
-                background: '#fff'
-                }}
-            /> */}
         </div>
     )
 }

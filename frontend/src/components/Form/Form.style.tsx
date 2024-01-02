@@ -1,10 +1,11 @@
-import { Button, TextField, styled, useMediaQuery } from "@mui/material";
+import { Button, FormHelperText, TextField, styled } from "@mui/material";
 import { ThemeContextType } from "../../Types/types";
 
 export const FormContainer = styled("div")(({ theme }) => ({
     width: "100%",
     display: "flex",
     flexDirection:"column",
+    alignContent: "center",
     alignItems: "center",
     fontFamily: "Heebo",
     [theme.breakpoints.down("md")]: {
@@ -24,24 +25,25 @@ export const FormHeader = styled("div")(({ theme }) => ({
 }))
 
 export const InputField = styled(TextField)(({ theme }) => ({
-    marginLeft: "2vw",
     [theme.breakpoints.only("xl")]: {
+        marginLeft: "2vw",
         width: "12vw",
         height: "5vh",
         fontSize: "1.2rem",
-        marginBottom: "2vh"
+        marginBottom: "1vh"
     },
     [theme.breakpoints.only("lg")]: {
-        width: "18vw",
+        width: "23vw",
         height: "5vh",
         fontSize: "1.2rem",
-        marginBottom: "2vh"
+        marginBottom: "1vh"
     },
     [theme.breakpoints.only("md")]: {
-        width: "20vw",
+        marginLeft: "3vw",
+        width: "25vw",
         height: "5vh",
         fontSize: "1.2rem",
-        marginBottom: "2vh"
+        marginBottom: "1vh"
     },
     [theme.breakpoints.only("sm")]: {
         width: "50vw",
@@ -53,7 +55,7 @@ export const InputField = styled(TextField)(({ theme }) => ({
         width: "70vw",
         height: "7vh",
         fontSize: "1.2rem",
-        marginBottom: "1vh"
+        marginBottom: "0.5vh"
     },
     // border: "0.1px solid #858585",
     // borderRadius: "10px"
@@ -61,14 +63,17 @@ export const InputField = styled(TextField)(({ theme }) => ({
 
 export const SubmitBtn = styled(Button, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{ projectTheme : ThemeContextType | null}>(({projectTheme, theme}) => ({
+})<{ projectTheme : ThemeContextType}>(({projectTheme, theme}) => ({
     border: "none",
-    backgroundColor: projectTheme === "blue" ? "#3F50B5" : "#F50057",
+    backgroundColor: projectTheme,
     color: "#FFFFFF",
     cursor: "pointer",
     '&:hover' : {
-        backgroundColor: projectTheme === "blue" ? "#3F50B5" : "#F50057",
+        backgroundColor: projectTheme,
         color: "#FFFFFF"
+    },
+    ":disabled": {
+        backgroundColor: "#e9ecef"
     },
     [theme.breakpoints.only("xl")]: {
         width: "16vw",
@@ -85,7 +90,7 @@ export const SubmitBtn = styled(Button, {
         width: "16vw",
         height: "4vh",
         fontSize: "1.1rem",
-        marginLeft: "4vw"
+        marginLeft: "8vw"
     },
     [theme.breakpoints.only("sm")]: {
         width: "35vw",
@@ -112,4 +117,30 @@ export const ErrorMessage = styled("div", {
     color: "#fc0303",
     marginTop: "2vh",
     visibility: showError ? "visible" : "hidden"
+}))
+
+export const HelperText = styled(FormHelperText, {
+    shouldForwardProp: (prop) => prop !== "isError" 
+})<{isError: boolean, isEmpty: boolean}>(({ theme, isError, isEmpty }) => ({
+    textAlign: "right",
+    direction: "rtl",
+    color: isEmpty ? "#000000" : isError ? "#fc0303" : "#43A047",
+    [theme.breakpoints.only("xl")]: {
+        marginRight: "2vw",
+        marginBottom: "1vh",
+    },
+    [theme.breakpoints.only("lg")]: {
+        marginBottom: "3vh",
+    },
+    [theme.breakpoints.only("md")]: {
+        marginBottom: "3vh",
+    },
+    [theme.breakpoints.only("sm")]: {
+        marginBottom: "3vh",
+        marginRight: "1vw",
+    },
+    [theme.breakpoints.only("xs")]: {
+        marginBottom: "2vh",
+        marginRight: "2vw",
+    },
 }))

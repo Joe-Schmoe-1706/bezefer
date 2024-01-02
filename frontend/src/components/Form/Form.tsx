@@ -1,4 +1,4 @@
-import React, {FormEventHandler, useState} from "react"
+import React, { FormEvent, useState } from "react"
 import { Props } from "./Form.types"
 import * as S from "./Form.style"
 import { useTheme } from "../../Context/ThemeContext"
@@ -33,14 +33,17 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
 
     const renderedFields = fields.map((field) => {
         return (
-            <S.InputField 
-             error={!field.validation(formData[field.name].toString()) && formData[field.name].toString() !== ''}
-             required={field.required}
-             label={field.placeHolder}  
-             name={field.name}
-             value={formData[field.name]}
-             onChange={handleChange}
-            />
+            <div>
+                <S.InputField 
+                error={!field.validation(formData[field.name].toString()) && formData[field.name].toString() !== ''}
+                required={field.required}
+                label={field.placeHolder}  
+                name={field.name}
+                value={formData[field.name]}
+                onChange={handleChange}
+                />
+                <S.HelperText isError={!field.validation(formData[field.name].toString())} isEmpty={formData[field.name].toString() === ''}>{field.helperText}</S.HelperText>
+            </div>
         )
     })
 
@@ -68,7 +71,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
         })
     }
 
-    const submit = (e : Event, formData : Student | Classroom) : void => {
+    const submit = (e : FormEvent<HTMLFormElement>, formData : Student | Classroom) : void => {
         e.preventDefault();
         if (validateData(formData)) {
             handleClick(formData);
@@ -81,7 +84,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
     return (
         <S.FormContainer>
             <S.FormHeader>{header}</S.FormHeader>
-            <S.StyledForm onSubmit={(e: Event) => submit(e, formData)}>
+            <S.StyledForm onSubmit={(e: FormEvent<HTMLFormElement>) => submit(e, formData)}>
                 {renderedFields}
                 <S.SubmitBtn 
                  projectTheme={theme} 

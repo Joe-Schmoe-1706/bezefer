@@ -28,8 +28,8 @@ const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
                 setStudentsInClass(students)
             } catch (error) {
                 Swal.fire({
-                    title: 'error',
-                    text: 'could not load students in class',
+                    title: 'תקלה',
+                    text: 'לא ניתן לטעון את התלמידים בכיתה זו',
                     icon: 'error'
                 });
             }
@@ -56,11 +56,11 @@ const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
                 id: classroom._id,
                 change: 1
             }));
-            alertify.success("student successfully removed from class");
+            alertify.success("התלמיד הוסר מהכיתה בהצלחה");
         } catch (error) {
             Swal.fire({
-                title: 'error',
-                text: 'could not remove student from class',
+                title: 'תקלה',
+                text: 'לא ניתן להסיר תלמידים מהכיתה',
                 icon: 'error'
             })
         }
