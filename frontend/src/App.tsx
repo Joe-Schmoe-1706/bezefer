@@ -1,9 +1,9 @@
 import ThempeProvider from './Context/ThemeContext'
-import Classes from './components/Classes/Classes'
+import Classes from './pages/Classes/Classes'
 import Navbar from './components/Navbar/Navbar'
 import {Routes, Route} from "react-router-dom"
-import Students from './components/Students/Students'
-import Create from './components/Create/Create'
+import Students from './pages/Students/Students'
+import Create from './pages/Create/Create'
 import { useAppDispatch } from './hooks'
 import { initializeState } from './state/reducers/classroomSlice'
 import { useEffect, useState } from 'react'

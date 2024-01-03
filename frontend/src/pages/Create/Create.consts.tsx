@@ -1,4 +1,4 @@
-import { FormField } from "../Form/Form.types";
+import { FormField } from "../../components/Form/Form.types";
 
 export const classesFields : FormField[] = [
     {

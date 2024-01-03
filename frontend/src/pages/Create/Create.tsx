@@ -1,5 +1,5 @@
 import React from "react"
-import Form from "../Form/Form";
+import Form from "../../components/Form/Form";
 import { Student, Classroom } from "../../Types/types";
 import * as S from "./Create.style"
 import * as Constants from "./Create.consts";

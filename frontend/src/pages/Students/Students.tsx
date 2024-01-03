@@ -2,7 +2,7 @@ import {TableBody, TableHead, TableRow } from "@mui/material";
 import React, {useEffect, useState} from "react"
 import { useTheme } from "../../Context/ThemeContext";
 import * as S from "./Students.style"
-import PopupList from "../PopupList/PopupList"
+import PopupList from "../../components/PopupList/PopupList"
 import { StatusOptions, Student } from "../../Types/types";
 import { getAllStudents, deleteStudent, addStudentToClass } from "../../api/students.api";
 import Swal from "sweetalert2";
@@ -11,9 +11,9 @@ import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { decreaseSeatsLeft, increaseSeatsLeft, selectAvailableClassrooms } from "../../state/reducers/classroomSlice";
-import ErrorPage from "../ErrorPage/ErrorPage";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
 import { Loading, LoadingContainer } from "../Classes/Classes.style";
-import NoConnection from "../NoConnection/NoConnection";
+import NoConnection from "../../components/NoConnection/NoConnection";
 
 
 const Students : React.FC<{

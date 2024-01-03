@@ -1,6 +1,6 @@
 import React from "react";
 import * as S from "./Classes.style";
-import ClassCard from "../ClassCard/ClassCard";
+import ClassCard from "../../components/ClassCard/ClassCard";
 import { Classroom, StatusOptions } from "../../Types/types";
 import { deleteClassroom } from "../../api/classrooms.api";
 import Swal from "sweetalert2";
@@ -8,8 +8,8 @@ import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { selectClassroom, deleteClass } from "../../state/reducers/classroomSlice";
-import ErrorPage from "../ErrorPage/ErrorPage";
-import NoConnection from "../NoConnection/NoConnection";
+import ErrorPage from "../../components/ErrorPage/ErrorPage";
+import NoConnection from "../../components/NoConnection/NoConnection";
 import { useTheme } from "../../Context/ThemeContext";
 
 const Classes : React.FC<{
