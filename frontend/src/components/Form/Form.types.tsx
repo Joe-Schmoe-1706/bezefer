@@ -11,6 +11,6 @@ export interface FormField {
 export interface Props {
     header: string,
     btnText: string,
-    handleClick: (data :Classroom  | Student) => Promise<void>,
+    handleClick: (data : Record<string,string>) => Promise<void>,
     fields : FormField[]
 }

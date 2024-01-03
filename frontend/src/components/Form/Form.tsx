@@ -5,7 +5,7 @@ import { useTheme } from "../../Context/ThemeContext"
 import { Classroom, Student } from "../../Types/types"
 
 const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
-    const initialFormData : Student | Classroom =  {} as Student | Classroom;
+    const initialFormData : Record<string, string> =  {};
 
     const theme = useTheme();
 
@@ -13,7 +13,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
         initialFormData[field.name] = ''
     })
 
-    const [formData, setFormData] = useState<Student | Classroom>(initialFormData);
+    const [formData, setFormData] = useState<Record<string,string>>(initialFormData);
     const [showError, setShowError] = useState<boolean>(false);
 
     const handleChange = (event : React.ChangeEvent<HTMLInputElement>) : void => {
@@ -47,22 +47,16 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
         )
     })
 
-    const validateData = (data : Student | Classroom) : boolean => {
-        let validated = true;
-
-        Object.keys(data).forEach((key) => {
+    const validateData = (data : Record<string, string>) : boolean => {
+        return Object.keys(data).every((key) => {
             const formField = fields.find((field) => field.name === key);
-            if (!formField?.validation(formData[key].toString())) {
-                validated = false;
-            }
+            return formField?.validation(formData[key].toString());
         })
-
-        return validated;
     }
 
     const clearForm = (): void => {
         setFormData((prevData) => {
-            let newData = {} as Classroom | Student;
+            let newData: Record<string,string> = {}
             Object.keys(prevData).forEach((key) => {
                 newData[key] = ''
             })
@@ -71,7 +65,7 @@ const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
         })
     }
 
-    const submit = (e : FormEvent<HTMLFormElement>, formData : Student | Classroom) : void => {
+    const submit = (e : FormEvent<HTMLFormElement>, formData : Record<string, string>) : void => {
         e.preventDefault();
         if (validateData(formData)) {
             handleClick(formData);
