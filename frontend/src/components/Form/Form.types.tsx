@@ -1,5 +1,3 @@
-import { Classroom, Student } from "../../Types/types"
-
 export interface FormField {
     name: string,
     placeHolder: string,
@@ -8,7 +6,7 @@ export interface FormField {
     helperText: string
 };
 
-export interface Props {
+export interface FormProps {
     header: string,
     btnText: string,
     handleClick: (data : Record<string,string>) => Promise<void>,

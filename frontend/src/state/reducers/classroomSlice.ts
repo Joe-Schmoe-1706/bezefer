@@ -1,16 +1,16 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { Classroom } from "../../Types/types";
-import { AddAction, ChangeSeatsAction, DeleteAction, InitAction } from "../action.types";
-import { getAllClassrooms } from "../../api/classrooms.api";
+import { createSlice } from "@reduxjs/toolkit";
+import { Classroom, StatusOptions } from "../../Types/types";
+import { AddAction, ChangeSeatsAction, DeleteAction, InitAction, StatusAction } from "../action.types";
 import { RootState } from "../store";
-import { avatarClasses } from "@mui/material";
 
 export interface stateValue {
-    classrooms: Classroom[]
+    classrooms: Classroom[],
+    status: StatusOptions
 };
 
 const initialState: stateValue = {
-    classrooms: []
+    classrooms: [],
+    status: "loading"
 }
 
 export const classroomSlice = createSlice({
@@ -23,9 +23,8 @@ export const classroomSlice = createSlice({
         },
         deleteClass: (state: stateValue, action: DeleteAction) => {
             const newClassrooms = state.classrooms.filter(classroom => classroom._id !== action.payload.id);
-            return {
-                classrooms: newClassrooms
-            };
+            state.classrooms = newClassrooms;
+            return state;
         },
         decreaseSeatsLeft: (state: stateValue, action: ChangeSeatsAction) => {
             const updated = state.classrooms.map((classroom) => {
@@ -37,9 +36,8 @@ export const classroomSlice = createSlice({
                 classroom
             });
 
-            return {
-                classrooms: updated
-            }
+            state.classrooms = updated;
+            return state;
         },
         increaseSeatsLeft: (state: stateValue, action: ChangeSeatsAction) => {
             const updated = state.classrooms.map((classroom) => {
@@ -51,14 +49,16 @@ export const classroomSlice = createSlice({
                 classroom
             });
 
-            return {
-                classrooms: updated
-            }
+            state.classrooms = updated;
+            return state;
         },
         initializeState: (state: stateValue, action: InitAction) => {
-            return {
-                classrooms: action.payload.classrooms
-            }
+            state.classrooms = action.payload.classrooms;
+            return state;
+        },
+        changeStatus: (state: stateValue, action: StatusAction) => {
+            state.status = action.payload.status;
+            return state;
         }
     },
 

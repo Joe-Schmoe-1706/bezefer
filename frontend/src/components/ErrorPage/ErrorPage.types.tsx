@@ -1,4 +1,4 @@
-export interface Props {
+export interface ErrorProps {
     errorMessage: string,
     redirectMessage: string
 }

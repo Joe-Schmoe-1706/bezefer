@@ -1,10 +1,9 @@
 import React, { FormEvent, useState } from "react"
-import { Props } from "./Form.types"
+import { FormProps } from "./Form.types"
 import * as S from "./Form.style"
 import { useTheme } from "../../Context/ThemeContext"
-import { Classroom, Student } from "../../Types/types"
 
-const Form : React.FC<Props> = ({header, btnText, handleClick, fields}) => {
+const Form : React.FC<FormProps> = ({header, btnText, handleClick, fields}) => {
     const initialFormData : Record<string, string> =  {};
 
     const theme = useTheme();
