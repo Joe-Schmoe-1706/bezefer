@@ -1,5 +1,5 @@
 import React from "react";
-import { Props } from "./ErrorPage.types";
+import { ErrorProps } from "./ErrorPage.types";
 import { useTheme } from "../../Context/ThemeContext";
 import * as S from "./ErrorPage.style"
 import notFoundBlue from "../../assets/not_found_blue.jpg"
@@ -10,7 +10,7 @@ import notFoundBrown from "../../assets/not_found_brown.jpg"
 import notFoundRed from "../../assets/not_found_red.jpg"
 import { useNavigate } from "react-router-dom";
 
-const ErrorPage: React.FC<Props> = ({errorMessage, redirectMessage}) => {
+const ErrorPage: React.FC<ErrorProps> = ({errorMessage, redirectMessage}) => {
     const theme = useTheme();
 
     const navigate = useNavigate();

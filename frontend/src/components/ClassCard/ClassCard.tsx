@@ -4,16 +4,16 @@ import { useTheme } from "../../Context/ThemeContext"
 import StudentsModal from "../PopupList/PopupList";
 import * as DeleteStyle from "../../Style/DeleteIcon.style"
 import { Student } from "../../Types/types";
-import { Props } from "./ClassCard.types";
 import { getStudentsInClass, removeStudentFromClass } from "../../api/students.api";
 import Swal from "sweetalert2";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch } from "../../hooks";
 import { increaseSeatsLeft } from "../../state/reducers/classroomSlice";
+import { ClassCardProps } from "./ClassCard.types";
 
 
-const ClassCard : React.FC<Props> = ({classroom, deleteClass}) => {
+const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
     const theme = useTheme();
 
     const [isOpen, setIsOpen] = useState(false);
