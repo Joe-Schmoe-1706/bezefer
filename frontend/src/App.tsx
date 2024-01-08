@@ -10,11 +10,10 @@ import { useEffect, useState } from 'react'
 import { getAllClassrooms } from './api/classrooms.api'
 import { StatusOptions } from './Types/types'
 import { fetchStudents } from './state/reducers/studentSlice'
+import { routes } from './consts/routes'
 
 const App : React.FC = () => {
   const dispatch = useAppDispatch();
-
-  const [classesStatus, setClassesStatus] = useState<StatusOptions>("loading");
 
   useEffect(() => {
     const initState = async () => {
@@ -27,12 +26,10 @@ const App : React.FC = () => {
         dispatch(changeStatus({
           status: "done"
         }))
-        setClassesStatus("done");
       } catch (error) {
         dispatch(changeStatus({
           status: "failed"
         }))
-        setClassesStatus("failed");
       }
     }
 
@@ -44,9 +41,9 @@ const App : React.FC = () => {
     <ThempeProvider>
       <Navbar />
       <Routes>
-        <Route path='/' element={<Classes/>} />
-        <Route path='/students' element={<Students/>} />
-        <Route path='/create' Component={Create} /> 
+        {routes.map((route) => 
+          <Route path={route.path} element={route.component}/>
+        )}
       </Routes>
     </ThempeProvider>
   )
