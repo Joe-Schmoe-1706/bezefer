@@ -1,10 +1,10 @@
 import React, {useState} from "react";
-import { useTheme, useUpdateTheme } from "../../Context/ThemeContext";
+import { useTheme } from "../../Context/ThemeContext";
 import * as S from "./Navbar.style";
 import { Drawer, List, ListItemButton, Menu } from "@mui/material";
 import { useNavigate } from "react-router-dom"
 import { ColorOptions } from "./Navbar.consts";
-import { ThemeContextType } from "../../Types/types";
+import { ThemeType } from "../../Context/ThemeContext.types";
 
 const Navbar : React.FC = () => {
     const [open, setOpen] = useState<boolean>(false); 
@@ -20,8 +20,7 @@ const Navbar : React.FC = () => {
 
     const navigationOptions : string[] = ["Classes", "Students", "Create"];
 
-    const theme = useTheme();
-    const setTheme = useUpdateTheme();
+    const {theme, toggleTheme} = useTheme();
     const navigate = useNavigate();
 
     const openNav = () : void => {
@@ -32,8 +31,8 @@ const Navbar : React.FC = () => {
         setOpen(false);
     }
 
-    const changeTheme = (color: ThemeContextType) => {
-        setTheme(color);
+    const changeTheme = (theme: ThemeType) => {
+        toggleTheme(theme);
         handleClose();
     }
 
@@ -59,14 +58,14 @@ const Navbar : React.FC = () => {
     const renderedMenuOptions: JSX.Element[] = ColorOptions.map((color) => {
         return (
             <S.ColorItem 
-            value={color.code} 
-            onClick={() => changeTheme(color.code)}
-            color={color.code}>{color.name}</S.ColorItem>
+            value={color.hex} 
+            onClick={() => changeTheme(color)}
+            color={color.hex}>{color.name}</S.ColorItem>
         )
     })
 
     return (
-        <S.Appbar projectTheme={theme}>
+        <S.Appbar projectTheme={theme.hex}>
             <S.StyledToolBar>
                 <S.DrawerIcon onClick={openNav} />
                 <S.HeaderText>

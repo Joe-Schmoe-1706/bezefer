@@ -1,31 +1,38 @@
-import React, {useContext, useState} from "react"
-import { ThemeContextType, ContextProps } from "../Types/types";
+import React, { useContext, useState } from "react";
+import { ColorOption, ContextProps } from "../Types/types";
+import { ContextData, ThemeType } from "./ThemeContext.types";
 
-const ThemeContext = React.createContext<ThemeContextType>("#3F50B5");
-const UpdateThemeContext = React.createContext<((color: ThemeContextType) => void)>(() => {});
+const defaultTheme: ThemeType = {
+    hex: "#3F50B5",
+    name: "blue"
+};
+
+const ThemeContext = React.createContext<ContextData>({
+    theme: defaultTheme,
+    toggleTheme: () => {}
+});
 
 export const useTheme = () => {
-    return useContext(ThemeContext);
+  return useContext(ThemeContext);
 }
 
-export const useUpdateTheme = () => {
-    return useContext(UpdateThemeContext);
+const ThemeProvider: React.FC<ContextProps> = ({ children }) => {
+  const [theme, setTheme] = useState<ThemeType>(defaultTheme);
+
+  const toggleTheme = (theme: ThemeType): void => {
+    setTheme(theme);
+  };
+
+  const contextValue = {
+    theme,
+    toggleTheme
+  }
+
+  return (
+    <ThemeContext.Provider value={contextValue}>
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
-const ThempeProvider : React.FC<ContextProps> = ({ children }) => {
-    const [theme, setTheme] = useState<ThemeContextType>("#3F50B5")
-
-    const toggleTheme = (color: ThemeContextType) : void => {
-        setTheme(color);
-    };
-
-    return (
-        <ThemeContext.Provider value={theme}>
-            <UpdateThemeContext.Provider value={toggleTheme}>
-                {children}
-            </UpdateThemeContext.Provider>
-        </ThemeContext.Provider>
-    )
-}
-
-export default ThempeProvider;
+export default ThemeProvider;

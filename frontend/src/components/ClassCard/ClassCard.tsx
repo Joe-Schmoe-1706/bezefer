@@ -8,19 +8,22 @@ import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { ClassCardProps } from "./ClassCard.types";
-import { removeFromClassHandler, selectStudentsInClass } from "../../state/reducers/studentSlice";
+import { removeFromClassHandler, selectStudents } from "../../state/reducers/studentSlice";
 import PersonIcon from '@mui/icons-material/Person';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
-    const theme = useTheme();
+    const {theme} = useTheme();
 
     const [isOpen, setIsOpen] = useState(false);
 
     const dispatch = useAppDispatch();
 
-    const studentsInClass = useAppSelector((state) => selectStudentsInClass(state, classroom._id));
+    const studentsInClass = new Map(
+        Array.from(useAppSelector(selectStudents))
+        .filter(([,student]) => student.classroom === classroom._id)
+    );
 
     const closeModal = () : void => {
         setIsOpen(false);
@@ -66,8 +69,8 @@ const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
                 <S.TotalSeats>out of <strong>{classroom.capacity}</strong></S.TotalSeats>
                 <S.Footer>
                     <S.OpenStudentList onClick={openModal}>STUDENT LIST</S.OpenStudentList>
-                    <S.DeleteClassButton projectTheme={theme} onClick={() => deleteClass(classroom._id)}>
-                        <DeleteStyle.CustomDeleteIcon projectTheme={theme}></DeleteStyle.CustomDeleteIcon>
+                    <S.DeleteClassButton projectTheme={theme.hex} onClick={() => deleteClass(classroom._id)}>
+                        <DeleteStyle.CustomDeleteIcon projectTheme={theme.hex}></DeleteStyle.CustomDeleteIcon>
                     </S.DeleteClassButton>
                 </S.Footer>
             </S.ClassCard>

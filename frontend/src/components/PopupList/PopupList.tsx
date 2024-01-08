@@ -15,7 +15,8 @@ const StudentsModal : React.FC<StudentsModalProps> = ({
     avatar,
     errorMessage
 }) => {
-    const theme = useTheme();
+
+    const { theme } = useTheme();
 
     const listItems = items.map((item) => {
         return (
@@ -26,7 +27,7 @@ const StudentsModal : React.FC<StudentsModalProps> = ({
                 </Avatar>
             </S.ListAvatar>
             <S.Name>{item.text}</S.Name>
-            <DeleteStyle.ButtonIcon projectTheme={theme} edge="end" onClick={() => handleClick(item._id)}>
+            <DeleteStyle.ButtonIcon projectTheme={theme.hex} edge="end" onClick={() => handleClick(item._id)}>
                 {actionIcon}
             </DeleteStyle.ButtonIcon>
         </ListItem>

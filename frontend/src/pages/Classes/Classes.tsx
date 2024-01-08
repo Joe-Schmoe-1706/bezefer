@@ -16,7 +16,7 @@ import { selectStatus } from "../../state/reducers/status";
 const Classes : React.FC = () => {
     const classrooms: Classroom[] = useAppSelector(selectClassroom);
     const dispatch = useAppDispatch();
-    const theme = useTheme();
+    const {theme} = useTheme();
 
     const status = useAppSelector(selectStatus);
 
@@ -75,7 +75,7 @@ const Classes : React.FC = () => {
             }
             {status === "loading" && 
                 <S.LoadingContainer>
-                    <S.Loading projectTheme={theme} size={"8rem"}></S.Loading>
+                    <S.Loading projectTheme={theme.hex} size={"8rem"}></S.Loading>
                 </S.LoadingContainer>
             }
         </div>

@@ -1,14 +1,14 @@
 import { Drawer, ListItemText, styled, Toolbar, MenuItem } from "@mui/material";
 import MuiAppBar from "@mui/material/AppBar";
 import IconButton from "@mui/material/IconButton";
-import { ThemeContextType } from "../../Types/types";
+import { ColorOption } from "../../Types/types";
 import LoyaltyIcon from '@mui/icons-material/Loyalty';
 import MenuIcon from '@mui/icons-material/Menu';
 
 
 export const Appbar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{projectTheme : ThemeContextType}>(({ projectTheme }) => ({
+})<{projectTheme : ColorOption}>(({ projectTheme }) => ({
     width : "100vw",
     height : "10vh",
     backgroundColor: projectTheme,

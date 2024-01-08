@@ -136,7 +136,7 @@ const Students : React.FC = () => {
         })
     };
 
-    const theme = useTheme();
+    const {theme} = useTheme();
 
     const classroomsToModal = availabeClassrooms.map((classroom) => {
         return {
@@ -156,14 +156,15 @@ const Students : React.FC = () => {
     } 
 
     const renderedRows : JSX.Element[] = [...students].map(([, student]) => {
+        console.log(`${theme.hex} + ${theme.name}`)
         return (
             <TableRow>
                 {renderedStudentValues(student)}
                 <S.StyledTableCell>
-                    <S.DynamicButton variant="outlined" projectTheme={theme} onClick={() => openPopup(student._id)} disabled={student.classroom != ''}>ASSIGN TO CLASS</S.DynamicButton>
+                    <S.DynamicButton variant="outlined" projectTheme={theme.hex} onClick={() => openPopup(student._id)} disabled={student.classroom != ''}>ASSIGN TO CLASS</S.DynamicButton>
                 </S.StyledTableCell>
                 <S.StyledTableCell>
-                    <S.DynamicButton variant="outlined" projectTheme={theme} onClick={() => deleteSelectedStudent(student)}>DELETE</S.DynamicButton>
+                    <S.DynamicButton variant="outlined" projectTheme={theme.hex} onClick={() => deleteSelectedStudent(student)}>DELETE</S.DynamicButton>
                 </S.StyledTableCell>
             </TableRow>
         )
@@ -204,7 +205,7 @@ const Students : React.FC = () => {
             }
             {(status === "loading") &&
                 <LoadingContainer>
-                    <Loading projectTheme={theme} size={"8rem"}></Loading>
+                    <Loading projectTheme={theme.hex} size={"8rem"}></Loading>
                 </LoadingContainer>
             }
             {(status === "failed") &&

@@ -1,5 +1,5 @@
 import {CircularProgress, styled} from "@mui/material";
-import { ThemeContextType } from "../../Types/types";
+import { ColorOption } from "../../Types/types";
 
 export const classesContainer = styled("div")(({ theme }) => ({
     [theme.breakpoints.only("xl")]: {
@@ -51,6 +51,6 @@ export const LoadingContainer = styled("div")({
 
 export const Loading = styled(CircularProgress, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{projectTheme: ThemeContextType}>(({projectTheme}) => ({
+})<{projectTheme: ColorOption}>(({projectTheme}) => ({
     color: projectTheme
 }))

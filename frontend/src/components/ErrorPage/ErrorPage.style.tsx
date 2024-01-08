@@ -1,9 +1,9 @@
 import { styled } from "@mui/material";
-import { ThemeContextType } from "../../Types/types";
+import { ColorOption } from "../../Types/types";
 
 export const Container = styled("div",{
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{projectTheme : ThemeContextType}>(({ projectTheme, theme }) => ({
+})<{projectTheme : ColorOption}>(({ projectTheme, theme }) => ({
     color: projectTheme,
     height: "90vh",
     position: "relative",

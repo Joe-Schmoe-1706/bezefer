@@ -1,8 +1,8 @@
-import { styled, IconButton, CircularProgress } from "@mui/material"
+import { styled, IconButton } from "@mui/material"
 import DeleteIcon from '@mui/icons-material/Delete';
-import { ThemeContextType } from "../Types/types";
+import { ColorOption } from "../Types/types";
 
-export const ButtonIcon = styled(IconButton)<{projectTheme : ThemeContextType}>(({ theme, projectTheme }) => ({
+export const ButtonIcon = styled(IconButton)<{projectTheme : ColorOption}>(({ theme, projectTheme }) => ({
     color: projectTheme,
     [theme.breakpoints.only("xl")]: {
         height: "5vh",
@@ -31,7 +31,7 @@ export const ButtonIcon = styled(IconButton)<{projectTheme : ThemeContextType}>(
     }
 }))
 
-export const CustomDeleteIcon = styled(DeleteIcon)<{projectTheme : ThemeContextType}>(({ projectTheme, theme }) => ({
+export const CustomDeleteIcon = styled(DeleteIcon)<{projectTheme : ColorOption}>(({ projectTheme, theme }) => ({
     [theme.breakpoints.only("xl")]: {
         width: "2vw",
         height: "2vw",

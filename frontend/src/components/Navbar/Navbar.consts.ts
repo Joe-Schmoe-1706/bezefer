@@ -1,28 +1,29 @@
-import { ThemeContextType } from "../../Types/types";
+import { ThemeType } from "../../Context/ThemeContext.types";
+import { ColorOption } from "../../Types/types";
 
-export const ColorOptions: {name: string, code: ThemeContextType}[] = [
+export const ColorOptions: ThemeType[] = [
     {
         name: "red",
-        code: "#F50057"
+        hex: "#F50057"
     },
     {
         name: "blue",
-        code: "#3F50B5"
+        hex: "#3F50B5"
     },
     {
-        name: "dark grey",
-        code: "#5c5248"
+        name: "gray",
+        hex: "#5c5248"
     },
     {
         name: "purple",
-        code: "#7b2cbf"
+        hex: "#7b2cbf"
     },
     {
         name: "green",
-        code: "#2a850e"
+        hex: "#2a850e"
     },
     {
         name: "brown",
-        code: "#4d0b0a"
+        hex: "#4d0b0a"
     }
 ]

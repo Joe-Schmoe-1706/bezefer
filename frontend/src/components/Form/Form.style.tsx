@@ -1,5 +1,5 @@
 import { Button, FormHelperText, TextField, styled } from "@mui/material";
-import { ThemeContextType } from "../../Types/types";
+import { ColorOption } from "../../Types/types";
 
 export const FormContainer = styled("div")(({ theme }) => ({
     width: "100%",
@@ -63,7 +63,7 @@ export const InputField = styled(TextField)(({ theme }) => ({
 
 export const SubmitBtn = styled(Button, {
     shouldForwardProp: (prop) => prop !== "projectTheme"
-})<{ projectTheme : ThemeContextType}>(({projectTheme, theme}) => ({
+})<{ projectTheme : ColorOption}>(({projectTheme, theme}) => ({
     border: "none",
     backgroundColor: projectTheme,
     color: "#FFFFFF",

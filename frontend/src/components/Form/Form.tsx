@@ -6,7 +6,7 @@ import { useTheme } from "../../Context/ThemeContext"
 const Form : React.FC<FormProps> = ({header, btnText, handleClick, fields}) => {
     const initialFormData : Record<string, string> =  {};
 
-    const theme = useTheme();
+    const {theme} = useTheme();
 
     fields.forEach((field) => {
         initialFormData[field.name] = ''
@@ -80,7 +80,7 @@ const Form : React.FC<FormProps> = ({header, btnText, handleClick, fields}) => {
             <S.StyledForm onSubmit={(e: FormEvent<HTMLFormElement>) => submit(e, formData)}>
                 {renderedFields}
                 <S.SubmitBtn 
-                 projectTheme={theme} 
+                 projectTheme={theme.hex} 
                  type="submit"
                  disabled={validateData(formData) === false}
                  >

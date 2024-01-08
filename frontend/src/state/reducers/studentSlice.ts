@@ -6,7 +6,6 @@ import { Dispatch } from "react";
 import { addStudents, getAllStudents, deleteStudent, removeStudentFromClass, addStudentToClass } from "../../api/students.api";
 import { changeSeatsLeft } from "./classroomSlice";
 import { enableMapSet } from "immer";
-import { useAppSelector } from "../../hooks";
 
 enableMapSet()
 
