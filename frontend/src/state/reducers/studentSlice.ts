@@ -47,20 +47,19 @@ export const addStudentHandler = (studentToAdd: Student) => async (dispatch: Dis
     }
 };
 
-export const deleteStudentHandler = (studentId: string) => async (dispatch: Dispatch, getState: () => RootState) => {
+export const deleteStudentHandler = (student: Student) => async (dispatch: Dispatch, getState: () => RootState) => {
     try {
-        await deleteStudent(studentId);
-        const students = getState().student.students;
+        await deleteStudent(student._id);
 
-        if (students.get(studentId)?.classroom !== "") {
+        if (student.classroom !== "") {
             dispatch(changeSeatsLeft({
-                id: studentId,
+                id: student._id,
                 type: "add"
             }))
         }
 
         dispatch(deleteStudentState({
-            studentId: studentId
+            studentId: student._id
         }));
 
     } catch (error) {
@@ -100,20 +99,6 @@ export const addToClassHandler = (studentId: string, newClassroomId: string) => 
     }
 };
 
-export const selectStudentsInClass = (classroomId: string) => {
-    const students = useAppSelector(selectStudents);
-
-    let newMap: Map<string, Student> = new Map<string, Student>();
-    
-    for (let student of students.values()) {
-        if (student.classroom === classroomId) {
-            newMap.set(student._id, student);
-        }
-    }  
-
-    return newMap;
-}
-
 export const studentSlice = createSlice({
     name: "students",
     initialState: initialState,
@@ -147,17 +132,17 @@ export const studentSlice = createSlice({
 
 export const selectStudents = (state: RootState) => state.student.students;
 
-// export const selectStudentsInClass = (state: RootState, classroomId: string) => {
-//     let newMap: Map<string, Student> = new Map<string, Student>();
+export const selectStudentsInClass = (state: RootState, classroomId: string) => {
+    let newMap: Map<string, Student> = new Map<string, Student>();
     
-//     for (let student of state.student.students.values()) {
-//         if (student.classroom === classroomId) {
-//             newMap.set(student._id, student);
-//         }
-//     }  
+    for (let student of state.student.students.values()) {
+        if (student.classroom === classroomId) {
+            newMap.set(student._id, student);
+        }
+    }  
 
-//     return newMap;
-// }
+    return newMap;
+}
 
 export const  {
     addStudnet,

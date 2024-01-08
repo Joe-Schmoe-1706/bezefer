@@ -1,16 +1,16 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import * as S from "./ClassCard.style"
 import { useTheme } from "../../Context/ThemeContext"
 import StudentsModal from "../PopupList/PopupList";
 import * as DeleteStyle from "../../Style/DeleteIcon.style"
-import { Student } from "../../Types/types";
-import { getStudentsInClass } from "../../api/students.api";
 import Swal from "sweetalert2";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { ClassCardProps } from "./ClassCard.types";
 import { removeFromClassHandler, selectStudentsInClass } from "../../state/reducers/studentSlice";
+import PersonIcon from '@mui/icons-material/Person';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 
 const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
@@ -29,6 +29,11 @@ const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
     const openModal = () : void => {
         setIsOpen(true);
     }
+
+    const studentsToModal = Array.from(studentsInClass.values()).map(student => ({
+        text: `${student.firstName} ${student.lastName}`,
+        _id: student._id
+      }));
 
     const deleteStudent = async (id : string) : Promise<void> => {
         try {
@@ -61,7 +66,7 @@ const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
                 <S.TotalSeats>out of <strong>{classroom.capacity}</strong></S.TotalSeats>
                 <S.Footer>
                     <S.OpenStudentList onClick={openModal}>STUDENT LIST</S.OpenStudentList>
-                    <S.DeleteClassButton onClick={() => deleteClass(classroom._id)}>
+                    <S.DeleteClassButton projectTheme={theme} onClick={() => deleteClass(classroom._id)}>
                         <DeleteStyle.CustomDeleteIcon projectTheme={theme}></DeleteStyle.CustomDeleteIcon>
                     </S.DeleteClassButton>
                 </S.Footer>
@@ -69,9 +74,14 @@ const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
             <StudentsModal
              isOpen={isOpen}
              closeModal={closeModal}
-             items={studentsInClass}
-             listType="students"
-             handleClick={deleteStudent}></StudentsModal>
+             items={studentsToModal}
+             handleClick={deleteStudent}
+             avatar={<PersonIcon/>}
+             actionIcon={<DeleteIcon/>}
+             errorMessage="אין תלמידים בכיתה זו"
+             header="students"
+             >
+             </StudentsModal>
         </div>
     )
 }

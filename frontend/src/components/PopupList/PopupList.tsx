@@ -5,16 +5,17 @@ import { List, Avatar, ListItem} from "@mui/material";
 import { useTheme } from "../../Context/ThemeContext";
 import * as DeleteStyle from "../../Style/DeleteIcon.style"
 
-const StudentsModal : React.FC<StudentsModalProps> = ({isOpen, closeModal, items, listType, handleClick}) => {
+const StudentsModal : React.FC<StudentsModalProps> = ({
+    isOpen,
+    closeModal,
+    items,
+    handleClick,
+    header,
+    actionIcon,
+    avatar,
+    errorMessage
+}) => {
     const theme = useTheme();
-
-    const avatar = listType === "students" ?
-    <S.ProfileIcon /> : 
-    <S.StudentIcon />;
-
-    const actionButton = listType === "students" ? 
-    <DeleteStyle.CustomDeleteIcon projectTheme={theme} /> :
-    <S.PlusIcon projectTheme={theme} />
 
     const listItems = items.map((item) => {
         return (
@@ -24,9 +25,9 @@ const StudentsModal : React.FC<StudentsModalProps> = ({isOpen, closeModal, items
                     {avatar}
                 </Avatar>
             </S.ListAvatar>
-            <S.Name>{listType === "students" ? `${item.firstName} ${item.lastName}` : item.name}</S.Name>
-            <DeleteStyle.ButtonIcon edge="end" onClick={() => handleClick(item._id)}>
-                {actionButton}
+            <S.Name>{item.text}</S.Name>
+            <DeleteStyle.ButtonIcon projectTheme={theme} edge="end" onClick={() => handleClick(item._id)}>
+                {actionIcon}
             </DeleteStyle.ButtonIcon>
         </ListItem>
         )
@@ -37,9 +38,7 @@ const StudentsModal : React.FC<StudentsModalProps> = ({isOpen, closeModal, items
             <S.StudentModal open={isOpen} onClose={closeModal}>
                 <S.ErrorContent>
                     <S.ErrorModalHeader>
-                        {listType === "students" ?
-                        "אין תלמידים בכיתה הזו" :
-                        "אין כיתות זמינות"}
+                        {errorMessage}
                     </S.ErrorModalHeader>
                 </S.ErrorContent>
             </S.StudentModal>
@@ -50,9 +49,7 @@ const StudentsModal : React.FC<StudentsModalProps> = ({isOpen, closeModal, items
         <S.StudentModal open={isOpen} onClose={closeModal} >
             <S.ModalContent>
                 <S.ModalHeader>{
-                    listType === "students" ?
-                    "Class Students" :
-                    "Available Classes"    
+                    header  
                 }
                 </S.ModalHeader>
                 <List>

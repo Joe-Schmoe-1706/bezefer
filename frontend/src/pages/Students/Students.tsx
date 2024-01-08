@@ -15,7 +15,8 @@ import { Loading, LoadingContainer } from "../Classes/Classes.style";
 import NoConnection from "../../components/NoConnection/NoConnection";
 import { addToClassHandler, deleteStudentHandler, selectStudents } from "../../state/reducers/studentSlice";
 import { selectStatus } from "../../state/reducers/status";
-
+import SchoolIcon from '@mui/icons-material/School';
+import AddIcon from '@mui/icons-material/Add';
 
 const Students : React.FC = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -99,7 +100,7 @@ const Students : React.FC = () => {
         closePopup();
     }
 
-    const deleteSelectedStudent = async (studentId: string) => {
+    const deleteSelectedStudent = async (student: Student) => {
         Swal.fire({
             title: 'האם אתה בטוח?',
             showCancelButton: true,
@@ -121,7 +122,7 @@ const Students : React.FC = () => {
                     //     }))
                     // };
 
-                    await dispatch(deleteStudentHandler(studentId));
+                    await dispatch(deleteStudentHandler(student));
 
                     alertify.success("התלמיד נמחק בהצלחה");
                 } catch (error) {
@@ -136,6 +137,13 @@ const Students : React.FC = () => {
     };
 
     const theme = useTheme();
+
+    const classroomsToModal = availabeClassrooms.map((classroom) => {
+        return {
+            text: classroom.name,
+            _id: classroom._id
+        }
+    });
 
     const renderedStudentValues = (student: Student) : JSX.Element[] => {
         const renderedValues = [];
@@ -155,7 +163,7 @@ const Students : React.FC = () => {
                     <S.DynamicButton variant="outlined" projectTheme={theme} onClick={() => openPopup(student._id)} disabled={student.classroom != ''}>ASSIGN TO CLASS</S.DynamicButton>
                 </S.StyledTableCell>
                 <S.StyledTableCell>
-                    <S.DynamicButton variant="outlined" projectTheme={theme} onClick={() => deleteSelectedStudent(student._id)}>DELETE</S.DynamicButton>
+                    <S.DynamicButton variant="outlined" projectTheme={theme} onClick={() => deleteSelectedStudent(student)}>DELETE</S.DynamicButton>
                 </S.StyledTableCell>
             </TableRow>
         )
@@ -183,8 +191,11 @@ const Students : React.FC = () => {
             <PopupList
                 isOpen={isPopupOpen} 
                 closeModal={closePopup}
-                items={availabeClassrooms}
-                listType="classes"
+                items={classroomsToModal}
+                header="available classroom"
+                errorMessage="אין כיתות זמינות כרגע"
+                avatar={<SchoolIcon/>}
+                actionIcon={<AddIcon/>}
                 handleClick={assignToClass}
                 />
             </div> }
