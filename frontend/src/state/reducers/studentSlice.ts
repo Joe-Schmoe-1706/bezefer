@@ -2,6 +2,13 @@ import { createSlice } from "@reduxjs/toolkit";
 import { StatusOptions, Student } from "../../Types/types";
 import {StudentAdd, StudentDelete, ChangeClassroomStatus, SetStudentsAction, StatusAction} from "../action.types"
 import { RootState } from "../store";
+import { Dispatch } from "react";
+import { addStudents, getAllStudents, deleteStudent, removeStudentFromClass, addStudentToClass } from "../../api/students.api";
+import { changeSeatsLeft } from "./classroomSlice";
+import { enableMapSet } from "immer";
+import { useAppSelector } from "../../hooks";
+
+enableMapSet()
 
 interface StateValue {
     students: Map<string, Student>
@@ -13,6 +20,100 @@ const initialState: StateValue = {
     status: "loading"
 };
 
+export const fetchStudents = () => async (dispatch: Dispatch) => {
+    try {
+        const students = await getAllStudents();
+        const mappedStudents = new Map(Object.entries(students).map(([key, value]) => [value._id, value]));
+        dispatch(setStudents({students: mappedStudents}));
+        dispatch(changeStatus({
+            status: "done"
+        }));
+    } catch (error) {
+        dispatch(changeStatus({
+            status: "failed"
+        }))
+        throw error;
+    }
+};
+
+export const addStudentHandler = (studentToAdd: Student) => async (dispatch: Dispatch) => {
+    try {
+        await addStudents(studentToAdd);
+        dispatch(addStudnet({
+            student: studentToAdd
+        }));
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const deleteStudentHandler = (studentId: string) => async (dispatch: Dispatch, getState: () => RootState) => {
+    try {
+        await deleteStudent(studentId);
+        const students = getState().student.students;
+
+        if (students.get(studentId)?.classroom !== "") {
+            dispatch(changeSeatsLeft({
+                id: studentId,
+                type: "add"
+            }))
+        }
+
+        dispatch(deleteStudentState({
+            studentId: studentId
+        }));
+
+    } catch (error) {
+        throw error;
+    }
+}
+
+export const removeFromClassHandler = (studentId: string, prevClassroomId: string) => async (dispatch: Dispatch) => {
+    try {
+        await removeStudentFromClass(studentId, prevClassroomId);
+        dispatch(changeStudentToClass({
+            studentId: studentId
+        }));
+        dispatch(changeSeatsLeft({
+            id: prevClassroomId,
+            type: "add"
+        }));
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+export const addToClassHandler = (studentId: string, newClassroomId: string) => async (dispatch: Dispatch) => {
+    try {
+        await addStudentToClass(studentId, newClassroomId);
+        dispatch(changeStudentToClass({
+            studentId: studentId,
+            classroomId: newClassroomId
+        }));
+        dispatch(changeSeatsLeft({
+            id: newClassroomId,
+            type: "remove"
+        }));
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const selectStudentsInClass = (classroomId: string) => {
+    const students = useAppSelector(selectStudents);
+
+    let newMap: Map<string, Student> = new Map<string, Student>();
+    
+    for (let student of students.values()) {
+        if (student.classroom === classroomId) {
+            newMap.set(student._id, student);
+        }
+    }  
+
+    return newMap;
+}
+
 export const studentSlice = createSlice({
     name: "students",
     initialState: initialState,
@@ -21,7 +122,7 @@ export const studentSlice = createSlice({
             state.students.set(action.payload.student._id, action.payload.student);
             return state;
         },
-        deleteStudent (state: StateValue, action: StudentDelete) {
+        deleteStudentState (state: StateValue, action: StudentDelete) {
             state.students.delete(action.payload.studentId);
             return state;
         },
@@ -30,9 +131,9 @@ export const studentSlice = createSlice({
 
             if (student) {
                 student.classroom = action.payload.classroomId ? action.payload.classroomId : '';
-            } else {
-                console.error("student does not exist: " + action.payload.studentId);
             }
+            
+            return state;
         },
         setStudents(state: StateValue, action: SetStudentsAction) {
             state.students = action.payload.students;
@@ -46,23 +147,24 @@ export const studentSlice = createSlice({
 
 export const selectStudents = (state: RootState) => state.student.students;
 
-export const selectStudentsInClass = (state: RootState, classroomId: string) => {
-    let newMap: Map<string, Student> = new Map<string, Student>();
+// export const selectStudentsInClass = (state: RootState, classroomId: string) => {
+//     let newMap: Map<string, Student> = new Map<string, Student>();
     
-    for (let student of state.student.students.values()) {
-        if (student.classroom === classroomId) {
-            newMap.set(student._id, student);
-        }
-    }  
+//     for (let student of state.student.students.values()) {
+//         if (student.classroom === classroomId) {
+//             newMap.set(student._id, student);
+//         }
+//     }  
 
-    return newMap;
-}
+//     return newMap;
+// }
 
 export const  {
     addStudnet,
-    deleteStudent,
+    deleteStudentState,
     changeStudentToClass,
-    setStudents
+    setStudents,
+    changeStatus
 } = studentSlice.actions
 
 export default studentSlice.reducer;

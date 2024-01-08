@@ -4,39 +4,23 @@ import { useTheme } from "../../Context/ThemeContext"
 import StudentsModal from "../PopupList/PopupList";
 import * as DeleteStyle from "../../Style/DeleteIcon.style"
 import { Student } from "../../Types/types";
-import { getStudentsInClass, removeStudentFromClass } from "../../api/students.api";
+import { getStudentsInClass } from "../../api/students.api";
 import Swal from "sweetalert2";
 import alertify from "alertifyjs";
 import 'alertifyjs/build/css/alertify.css';
-import { useAppDispatch } from "../../hooks";
-import { increaseSeatsLeft } from "../../state/reducers/classroomSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks";
 import { ClassCardProps } from "./ClassCard.types";
+import { removeFromClassHandler, selectStudentsInClass } from "../../state/reducers/studentSlice";
 
 
 const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
     const theme = useTheme();
 
     const [isOpen, setIsOpen] = useState(false);
-    const [studentsInClass, setStudentsInClass] = useState<Student[]>([]);
 
     const dispatch = useAppDispatch();
 
-    useEffect(() => {
-        const changeStudentsInClass = async () => {
-            try {
-                const students = await getStudentsInClass(classroom._id);
-                setStudentsInClass(students)
-            } catch (error) {
-                Swal.fire({
-                    title: 'תקלה',
-                    text: 'לא ניתן לטעון את התלמידים בכיתה זו',
-                    icon: 'error'
-                });
-            }
-        }
-
-        changeStudentsInClass();
-    },[])
+    const studentsInClass = useAppSelector((state) => selectStudentsInClass(state, classroom._id));
 
     const closeModal = () : void => {
         setIsOpen(false);
@@ -49,14 +33,16 @@ const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
     const deleteStudent = async (id : string) : Promise<void> => {
         try {
             closeModal();
-            await removeStudentFromClass(id, classroom._id);
-            setStudentsInClass((prevStudents) => {
-                return prevStudents.filter((student) => student._id != id)
-            });
-            dispatch(increaseSeatsLeft({
-                id: classroom._id,
-                change: 1
-            }));
+            // await removeStudentFromClass(id, classroom._id);
+            // setStudentsInClass((prevStudents) => {
+            //     return prevStudents.filter((student) => student._id != id)
+            // });
+            // dispatch(increaseSeatsLeft({
+            //     id: classroom._id,
+            //     change: 1
+            // }));
+
+            await dispatch(removeFromClassHandler(id, classroom._id));
             alertify.success("התלמיד הוסר מהכיתה בהצלחה");
         } catch (error) {
             Swal.fire({

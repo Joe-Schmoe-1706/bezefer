@@ -7,3 +7,11 @@ export const tableHeaders = [
     "Assign",
     "Delete"
 ];
+
+export const dataTableHeader = [
+    "_id",
+    "firstName",
+    "lastName",
+    "age",
+    "profession"
+];

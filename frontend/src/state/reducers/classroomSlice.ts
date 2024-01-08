@@ -26,25 +26,12 @@ export const classroomSlice = createSlice({
             state.classrooms = newClassrooms;
             return state;
         },
-        decreaseSeatsLeft: (state: stateValue, action: ChangeSeatsAction) => {
+        changeSeatsLeft: (state: stateValue, action: ChangeSeatsAction) => {
             const updated = state.classrooms.map((classroom) => {
                 return classroom._id === action.payload.id ?
                 {
                     ...classroom,
-                    seatsLeft: classroom.seatsLeft - 1
-                } :
-                classroom
-            });
-
-            state.classrooms = updated;
-            return state;
-        },
-        increaseSeatsLeft: (state: stateValue, action: ChangeSeatsAction) => {
-            const updated = state.classrooms.map((classroom) => {
-                return classroom._id === action.payload.id ?
-                {
-                    ...classroom,
-                    seatsLeft: classroom.seatsLeft + 1
+                    seatsLeft: action.payload.type === "add" ? classroom.seatsLeft + 1 : classroom.seatsLeft - 1
                 } :
                 classroom
             });
@@ -67,9 +54,9 @@ export const classroomSlice = createSlice({
 export const {
     addClass,
     deleteClass,
-    increaseSeatsLeft,
-    decreaseSeatsLeft,
-    initializeState
+    changeSeatsLeft,
+    initializeState,
+    changeStatus
 } = classroomSlice.actions;
 
 export const selectClassroom = (state: RootState) => state.classroom.classrooms

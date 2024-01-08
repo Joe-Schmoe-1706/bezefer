@@ -1,7 +1,7 @@
 import React from "react";
 import * as S from "./Classes.style";
 import ClassCard from "../../components/ClassCard/ClassCard";
-import { Classroom, StatusOptions } from "../../Types/types";
+import { Classroom } from "../../Types/types";
 import { deleteClassroom } from "../../api/classrooms.api";
 import Swal from "sweetalert2";
 import alertify from "alertifyjs";
@@ -11,13 +11,14 @@ import { selectClassroom, deleteClass } from "../../state/reducers/classroomSlic
 import ErrorPage from "../../components/ErrorPage/ErrorPage";
 import NoConnection from "../../components/NoConnection/NoConnection";
 import { useTheme } from "../../Context/ThemeContext";
+import { selectStatus } from "../../state/reducers/status";
 
-const Classes : React.FC<{
-    status: StatusOptions
-}> = ({status}) => {
+const Classes : React.FC = () => {
     const classrooms: Classroom[] = useAppSelector(selectClassroom);
     const dispatch = useAppDispatch();
     const theme = useTheme();
+
+    const status = useAppSelector(selectStatus);
 
 
 

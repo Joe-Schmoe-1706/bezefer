@@ -8,10 +8,10 @@ export interface Student {
     _id: string,
     firstName: string,
     lastName: string,
-    age: number,
+    age?: number | "",
     profession: string,
     classroom: string,
-    [key: string]: string | number
+    [key: string]: string | number | undefined
 }
 
 export interface Class {

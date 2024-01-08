@@ -1,4 +1,4 @@
-import { Classroom, Student } from "../Types/types";
+import { Classroom, StatusOptions, Student } from "../Types/types";
 
 export interface AddAction {
     payload: {
@@ -9,7 +9,7 @@ export interface AddAction {
 export interface ChangeSeatsAction {
     payload: {
         id: string,
-        change: number
+        type: "add" | "remove"
     }
 };
 
@@ -48,4 +48,10 @@ export interface SetStudentsAction {
     payload: {
         students: Map<string, Student>
     }
-}
+};
+
+export interface StatusAction {
+    payload: {
+        status: StatusOptions
+    }
+};
