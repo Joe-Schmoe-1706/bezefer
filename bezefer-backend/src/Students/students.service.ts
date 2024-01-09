@@ -74,17 +74,19 @@ export class StudentsService {
         }
     }
 
-    async changeStudentClassStatus(studentId: string, classroomId: string, action: string): Promise<void> {
-        if (action === "add" && (await this.classroomService.findClassById(classroomId)).seatsLeft === 0) {
+    async changeStudentClassStatus(studentId: string, classroomId?: string): Promise<void> {
+        if (classroomId !== undefined && (await this.classroomService.findClassById(classroomId)).seatsLeft === 0) {
             throw new BadRequestException("there are no available seats in this class");
         } else {
             try {
                 const sutdentToUpdate = await this.getStudentById(studentId);
-                sutdentToUpdate.classroom = action === "add" ? classroomId : "";
+                const classroomToChange = classroomId ?? sutdentToUpdate.classroom;
+                sutdentToUpdate.classroom = classroomId ?? '';
+                console.log(sutdentToUpdate);
                 const promises = [];
                 promises.push(sutdentToUpdate.save());
-                promises.push(this.classroomService.changecapacity(classroomId, action));
-                await Promise.all(promises);   
+                promises.push(this.classroomService.changecapacity(classroomToChange, classroomToChange === classroomId ? "add" : "remove"));
+                await Promise.all(promises);
             } catch (error) {
                 throw error;
             }

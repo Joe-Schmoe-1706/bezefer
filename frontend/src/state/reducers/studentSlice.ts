@@ -46,9 +46,9 @@ export const addStudentHandler = (studentToAdd: Student) => async (dispatch: Dis
     }
 };
 
-export const deleteStudentHandler = (student: Student) => async (dispatch: Dispatch, getState: () => RootState) => {
+export const deleteStudentHandler = (student: Student) => async (dispatch: Dispatch) => {
     try {
-        await deleteStudent(student._id);
+        await deleteStudent(student);
 
         if (student.classroom !== "") {
             dispatch(changeSeatsLeft({
@@ -68,7 +68,7 @@ export const deleteStudentHandler = (student: Student) => async (dispatch: Dispa
 
 export const removeFromClassHandler = (studentId: string, prevClassroomId: string) => async (dispatch: Dispatch) => {
     try {
-        await removeStudentFromClass(studentId, prevClassroomId);
+        await removeStudentFromClass(studentId);
         dispatch(changeStudentToClass({
             studentId: studentId
         }));

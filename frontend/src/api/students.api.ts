@@ -14,13 +14,11 @@ export const getAllStudents = async () => {
     }
 }
 
-export const deleteStudent = async (studentId: string): Promise<void> => {
+export const deleteStudent = async (student: Student): Promise<void> => {
     try {
         await api.delete(``,
         {
-            params: {
-                studentId: studentId
-            }
+            data: student
         })
     } catch(error) {
         throw error;
@@ -52,24 +50,19 @@ export const getStudentsInClass = async (classroomId: string) => {
 
 export const addStudentToClass = async (studentId: string, classroomId: string): Promise<void> => {
     try {
-        await api.patch(`/classroom/add`,null, {
-            params: {
-                studentId: studentId,
-                classroomId: classroomId
-            }
+        await api.patch(`/classroom/add`, {
+            studentId: studentId,
+            classroomId: classroomId
         })
     } catch (error: any) {
         throw error;
     }
 }
 
-export const removeStudentFromClass = async (studentId: string, classroomId: string): Promise<void> => {
+export const removeStudentFromClass = async (studentId: string): Promise<void> => {
     try {
-        await api.patch(`/classroom/remove`,null, {
-            params: {
-                studentId: studentId,
-                classroomId: classroomId   
-            }
+        await api.patch(`/classroom/remove`, {
+            studentId: studentId
         })
     } catch (error: any) {
         throw error;

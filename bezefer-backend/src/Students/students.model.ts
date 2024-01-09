@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import {HydratedDocument} from 'mongoose'
-import { IsNotEmpty, IsNumber, IsNumberString, Length, Matches, Max, Min } from 'class-validator'
+import { IsNotEmpty, IsNumber, IsNumberString, IsOptional, Length, Matches, Max, Min } from 'class-validator'
 
 @Schema()
 export class Student {
@@ -28,11 +28,9 @@ export class Student {
     @Prop({required: true})
     profession: string
 
-    @Prop({type: String, ref: "Classroom", required: true})
-    @IsNumberString({no_symbols: true})
-    @IsNotEmpty()
-    @Length(1,9)
-    classroom: String
+    @Prop({ type: String, ref: "Classroom", required: false })
+    @Matches(/^$|^[\d]{1,9}$/)
+    classroom?: String;
 };
 
 export const StudentSchema = SchemaFactory.createForClass(Student);

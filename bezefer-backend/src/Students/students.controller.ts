@@ -19,9 +19,9 @@ export class StudentsController {
     }
 
     @Delete('')
-    async removeStudent(@Query("studentId") studentId: string) {
+    async removeStudent(@Body("student") student: Student) {
         try {
-            await this.studentsService.deleteStudent(studentId);
+            await this.studentsService.deleteStudent(student);
         } catch (error) {
             throw error;
         }
@@ -44,19 +44,21 @@ export class StudentsController {
     }
 
     @Patch('/classroom/add')
-    async addStudentToClass(@Query("studentId") studentId: string, @Query("classroomId") classroomId: string) {
+    async addStudentToClass(@Body("studentId") studentId: string, @Body("classroomId") classroomId: string) {
         try {
-            await this.studentsService.changeStudentClassStatus(studentId, classroomId, "add");
+            await this.studentsService.changeStudentClassStatus(studentId, classroomId);
         } catch(error) {
             throw error;
         }
     }
 
     @Patch('/classroom/remove')
-    async removeStudentToClass(@Query("studentId") studentId: string, @Query("classroomId") classroomId: string) {
+    async removeStudentToClass(@Body("studentId") studentId: string) {
+        console.log(studentId);
         try {
-            await this.studentsService.changeStudentClassStatus(studentId, classroomId, "remove");
+            await this.studentsService.changeStudentClassStatus(studentId);
         } catch(error) {
+            console.log(error);
             throw error;
         }
     }
