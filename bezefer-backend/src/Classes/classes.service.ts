@@ -43,7 +43,11 @@ export class ClassesService {
 
     async deleteClass(classroom: Classroom): Promise<void> {  
         if (classroom.capacity === classroom.seatsLeft) {
-            await this.classModel.findByIdAndDelete(classroom._id);
+            try {
+                await this.classModel.findByIdAndDelete(classroom._id);
+            } catch (error) {
+                throw error;
+            }
         } else {
             throw new Error("class is not empty");
         }

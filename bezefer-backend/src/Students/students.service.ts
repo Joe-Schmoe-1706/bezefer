@@ -13,18 +13,26 @@ export class StudentsService {
     ) {}
 
     async findAll(): Promise<Student[]> {
-        const students = await this.studentModel.find().lean();
-        return students;
+        try {
+            const students = await this.studentModel.find().lean();
+            return students;
+        } catch (error) {
+            throw error;
+        }
     }
 
     async getStudentById(studentId: string) {
-        const student = this.studentModel.findById(studentId);
+        try {
+            const student = await this.studentModel.findById(studentId);
 
-        if (!student) {
-            throw new NotFoundException("student does not exist");
+            if (!student) {
+                throw new NotFoundException("student does not exist");
+            }
+    
+            return student;
+        } catch (error) {
+            throw error;
         }
-
-        return student;
     }
 
     async addStudent(student: Student) : Promise<string> {
@@ -51,15 +59,18 @@ export class StudentsService {
         } 
     }
 
-    async deleteStudent(studentId: string): Promise<void> {
-        const studentToDelete = await this.getStudentById(studentId);
-        if (studentToDelete.classroom != "") {
-            const promises = [];
-            promises.push(this.studentModel.deleteOne({ _id : studentId}));
-            promises.push(this.classroomService.changecapacity(studentToDelete.classroom, "remove"));
-            await Promise.all(promises);
-        } else {
-            await this.studentModel.deleteOne({ _id : studentId});
+    async deleteStudent(student: Student): Promise<void> {
+        try {
+            if (student.classroom != "") {
+                const promises = [];
+                promises.push(this.studentModel.findByIdAndDelete(student._id));
+                promises.push(this.classroomService.changecapacity(student.classroom, "remove"));
+                await Promise.all(promises);
+            } else {
+                await this.studentModel.findByIdAndDelete(student._id);
+            }
+        } catch (error) {
+            throw error;
         }
     }
 
@@ -67,17 +78,25 @@ export class StudentsService {
         if (action === "add" && (await this.classroomService.findClassById(classroomId)).seatsLeft === 0) {
             throw new BadRequestException("there are no available seats in this class");
         } else {
-            const sutdentToUpdate = await this.getStudentById(studentId);
-            sutdentToUpdate.classroom = action === "add" ? classroomId : "";
-            const promises = [];
-            promises.push(sutdentToUpdate.save());
-            promises.push(this.classroomService.changecapacity(classroomId, action));
-            await Promise.all(promises);
+            try {
+                const sutdentToUpdate = await this.getStudentById(studentId);
+                sutdentToUpdate.classroom = action === "add" ? classroomId : "";
+                const promises = [];
+                promises.push(sutdentToUpdate.save());
+                promises.push(this.classroomService.changecapacity(classroomId, action));
+                await Promise.all(promises);   
+            } catch (error) {
+                throw error;
+            }
         }
     }
 
     async getStudentsInClass(classroomId: string): Promise<Student[]> {
-        return this.studentModel.find({classroom: classroomId}).exec();
+        try {
+            return this.studentModel.find({classroom: classroomId}).exec();
+        } catch (error) {
+            throw error;
+        }
     }
 
 }
