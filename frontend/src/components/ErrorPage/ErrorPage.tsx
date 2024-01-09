@@ -30,7 +30,7 @@ const ErrorPage: React.FC<ErrorProps> = ({errorMessage, redirectMessage}) => {
     return (
         <S.Container projectTheme={theme.hex}>
             <S.ContentContainer>
-                <S.ErrorImage src={`../../assests/not_found_${theme.name}`}>
+                <S.ErrorImage src={`not_found_${theme.name}.jpg`}>
                 </S.ErrorImage>
             </S.ContentContainer>
             <S.ContentContainer>
