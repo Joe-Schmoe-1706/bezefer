@@ -1,9 +1,9 @@
 import mongoose, { Model } from "mongoose";
 import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Student, StudentDocument } from "./students.model";
+import { Student } from "./students.model";
 import { ClassesService } from "../Classes/classes.service";
-import validation from "../validation";
+import { validate } from "class-validator";
 
 @Injectable()
 export class StudentsService {
@@ -17,14 +17,6 @@ export class StudentsService {
         return students;
     }
 
-    validateStudent(student: Student): boolean {
-        return validation.validateStudentId(student._id) &&
-        validation.validateOnlyLetters(student.firstName) &&
-        validation.validateOnlyLetters(student.lastName) &&
-        validation.validateAge(student.age) &&
-        validation.validateOnlyLetters(student.profession); 
-    }
-
     async getStudentById(studentId: string) {
         const student = this.studentModel.findById(studentId);
 
@@ -36,7 +28,9 @@ export class StudentsService {
     }
 
     async addStudent(student: Student) : Promise<string> {
-        if (!this.validateStudent(student)) {
+        const error = await validate(student);
+        
+        if (error.length > 0) {
             throw new BadRequestException("student is not valid");
         }
 

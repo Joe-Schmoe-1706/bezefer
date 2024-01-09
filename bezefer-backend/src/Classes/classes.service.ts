@@ -2,9 +2,7 @@ import { Model } from "mongoose";
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Classroom, ClassroomDocument } from "./classes.model";
-import { StudentsService } from "../Students/students.service";
-import validation from "../validation";
-import { NotFoundError } from "rxjs";
+import { validate } from "class-validator";
 
 @Injectable()
 export class ClassesService {
@@ -22,15 +20,11 @@ export class ClassesService {
     async findClassById(classroomId: string): Promise<ClassroomDocument> {
         return await this.classModel.findById(classroomId).lean();
     }
-
-    validateClass(classroom: Classroom): boolean {
-        return validation.validateClassId(classroom._id) &&
-        validation.validateClassName(classroom.name) &&
-        validation.validatecapacity(classroom.capacity);
-    }
  
     async addClass(classroom: Classroom) : Promise<void> {
-        if (!this.validateClass(classroom)) {
+        const errors = await validate(classroom);
+
+        if (errors.length > 0) {
             throw new BadRequestException("classroom is not valid")
         }
         
