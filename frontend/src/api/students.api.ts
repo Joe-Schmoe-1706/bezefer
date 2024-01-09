@@ -38,9 +38,7 @@ export const addStudents = async(student: Student): Promise<void> => {
 export const getStudentsInClass = async (classroomId: string) => {
     try {
         const {data} = await api.get<Student[]>(`/classroom`, {
-            params: {
-                classroomId: classroomId
-            }
+            data: classroomId
         });
         return data;
     } catch(error) {

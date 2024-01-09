@@ -64,7 +64,7 @@ export class StudentsController {
     }
 
     @Get('/classroom')
-    async getStudentsInClassroom(@Query('classroomId') classroomId: string) {
+    async getStudentsInClassroom(@Body('classroomId') classroomId: string) {
         try {
             return this.studentsService.getStudentsInClass(classroomId);
         } catch (error) {
