@@ -36,18 +36,18 @@ const StudentsModal : React.FC<StudentsModalProps> = ({
 
     if (items.length === 0) {
         return (
-            <S.StudentModal open={isOpen} onClose={closeModal}>
+            <S.GenericModal open={isOpen} onClose={closeModal}>
                 <S.ErrorContent>
                     <S.ErrorModalHeader>
                         {errorMessage}
                     </S.ErrorModalHeader>
                 </S.ErrorContent>
-            </S.StudentModal>
+            </S.GenericModal>
         )
     }
 
     return (
-        <S.StudentModal open={isOpen} onClose={closeModal} >
+        <S.GenericModal open={isOpen} onClose={closeModal} >
             <S.ModalContent>
                 <S.ModalHeader>{
                     header  
@@ -57,7 +57,7 @@ const StudentsModal : React.FC<StudentsModalProps> = ({
                     {listItems}
                 </List>
             </S.ModalContent>
-        </S.StudentModal>
+        </S.GenericModal>
     )
 }
 

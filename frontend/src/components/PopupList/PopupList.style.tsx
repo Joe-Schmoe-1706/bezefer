@@ -4,7 +4,7 @@ import SchoolIcon from '@mui/icons-material/School';
 import { ColorOption } from "../../Types/types";
 import AddIcon from '@mui/icons-material/Add';
 
-export const StudentModal = styled(Modal)(({ theme }) => ({
+export const GenericModal = styled(Modal)(({ theme }) => ({
     fontFamily: "Heebo, sans-serif",
     [theme.breakpoints.only("xl")]: {
         marginLeft: "40vw",
