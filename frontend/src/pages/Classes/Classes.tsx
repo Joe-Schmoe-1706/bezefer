@@ -61,25 +61,30 @@ const Classes : React.FC = () => {
         return <ClassCard classroom={oldClassroom} deleteClass={deleteClassHandler}/>
     })
 
-    return (
-        <div>
-            {status === "done" && classrooms.length !== 0 && <S.classesContainer>
+    switch (status) {
+        case "done":
+            return (
+                classrooms.length !== 0 ?
+                <S.classesContainer>
                 {renderedClassrooms}
-            </S.classesContainer> }
-            {status === "done" && classrooms.length === 0 && 
-                <ErrorPage errorMessage="נראה מאוד בודד כאן, אין כיתות כרגע" redirectMessage="לחץ כדי להוסיף כיתה"></ErrorPage>
-            }
-            {status === "failed" && 
-                <NoConnection></NoConnection>
-            }
-            {status === "loading" && 
-                <S.LoadingContainer>
-                    <S.Loading projectTheme={theme.hex} size={"8rem"}></S.Loading>
-                </S.LoadingContainer>
-            }
-        </div>
-
-    )
+                </S.classesContainer>
+                : 
+                <ErrorPage
+                errorMessage="נראה מאוד בודד כאן, אין כיתות כרגע"
+                redirectMessage="לחץ כדי להוסיף כיתה"
+                />
+            );
+        case "failed":
+          return <NoConnection />;
+        case "loading":
+          return (
+            <S.LoadingContainer>
+              <S.Loading projectTheme={theme.hex} size={"8rem"}></S.Loading>
+            </S.LoadingContainer>
+          );
+        default:
+          return null;
+      }
 }
 
 export default Classes;

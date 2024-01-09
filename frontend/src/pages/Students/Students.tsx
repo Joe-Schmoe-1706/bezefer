@@ -176,44 +176,50 @@ const Students : React.FC = () => {
 
     return (
         <div>
-            {status === "done" && status === "done" && students.size > 0 && <div>
-            <S.StudentTableContainer>
-                <S.StudentTable>
-                    <TableHead>
-                        <TableRow>
-                            {renderedHeaders}
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {renderedRows}
-                    </TableBody>
-                </S.StudentTable>
-            </S.StudentTableContainer>
-            <PopupList
-                isOpen={isPopupOpen} 
-                closeModal={closePopup}
-                items={classroomsToModal}
-                header="available classroom"
-                errorMessage="אין כיתות זמינות כרגע"
-                avatar={<SchoolIcon/>}
-                actionIcon={<AddIcon/>}
-                handleClick={assignToClass}
-                />
-            </div> }
-            {status === "done" && students.size === 0 &&
-                <ErrorPage errorMessage="נראה מאוד בודד כאן, אין תלמידים" redirectMessage="לחץ כדי להוסיף תלמידים"></ErrorPage>
-            }
-            {(status === "loading") &&
-                <LoadingContainer>
+          {(() => {
+            switch (status) {
+              case "done":
+                return students.size > 0 ? (
+                  <div>
+                    <S.StudentTableContainer>
+                      <S.StudentTable>
+                        <TableHead>
+                          <TableRow>{renderedHeaders}</TableRow>
+                        </TableHead>
+                        <TableBody>{renderedRows}</TableBody>
+                      </S.StudentTable>
+                    </S.StudentTableContainer>
+                    <PopupList
+                      isOpen={isPopupOpen}
+                      closeModal={closePopup}
+                      items={classroomsToModal}
+                      header="available classroom"
+                      errorMessage="אין כיתות זמינות כרגע"
+                      avatar={<SchoolIcon />}
+                      actionIcon={<AddIcon />}
+                      handleClick={assignToClass}
+                    />
+                  </div>
+                ) : (
+                  <ErrorPage
+                    errorMessage="נראה מאוד בודד כאן, אין תלמידים"
+                    redirectMessage="לחץ כדי להוסיף תלמידים"
+                  />
+                );
+              case "loading":
+                return (
+                  <LoadingContainer>
                     <Loading projectTheme={theme.hex} size={"8rem"}></Loading>
-                </LoadingContainer>
+                  </LoadingContainer>
+                );
+              case "failed":
+                return <NoConnection />;
+              default:
+                return null;
             }
-            {(status === "failed") &&
-                <NoConnection></NoConnection>
-            }
-            
+          })()}
         </div>
-    )
+      );
 }
 
 export default Students;
