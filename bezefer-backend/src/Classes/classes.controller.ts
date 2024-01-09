@@ -34,10 +34,10 @@ export class ClassesController {
         }
     }
 
-    @Delete(':id')
-    async removeClassroom(@Param('id') classroomId: string) {
+    @Delete('')
+    async removeClassroom(@Body('classroom') classroom: Classroom) {
         try {
-            await this.classesService.deleteClass(classroomId);
+            await this.classesService.deleteClass(classroom);
         } catch (error) {
             throw error;
         }

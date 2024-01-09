@@ -176,7 +176,7 @@ const Students : React.FC = () => {
 
     return (
         <div>
-            {/* {status === "done" && status === "done" && students.size > 0 && <div>
+            {status === "done" && status === "done" && students.size > 0 && <div>
             <S.StudentTableContainer>
                 <S.StudentTable>
                     <TableHead>
@@ -210,8 +210,8 @@ const Students : React.FC = () => {
             }
             {(status === "failed") &&
                 <NoConnection></NoConnection>
-            } */}
-            <ErrorPage errorMessage="נראה מאוד בודד כאן, אין תלמידים" redirectMessage="לחץ כדי להוסיף תלמידים"></ErrorPage>
+            }
+            
         </div>
     )
 }

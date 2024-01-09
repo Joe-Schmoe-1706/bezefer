@@ -14,9 +14,11 @@ import axios from "axios";
         }
     }
 
-    export const deleteClassroom = async (classroomId: string): Promise<void> => {
+    export const deleteClassroom = async (classroom: Classroom): Promise<void> => {
         try {
-            await api.delete(`/${classroomId}`)
+            await api.delete(``, {
+                data: {classroom: classroom}
+            })
         } catch (error) {
             throw error;
         }

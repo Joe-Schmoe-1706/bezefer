@@ -22,7 +22,7 @@ const Classes : React.FC = () => {
 
 
 
-    const deleteClassHandler = async (classroomId: string) => {
+    const deleteClassHandler = async (classroom: Classroom) => {
        Swal.fire({
         title: 'האם אתה בטוח ברצונך למחוק את הכיתה',
         showCancelButton: true,
@@ -30,13 +30,12 @@ const Classes : React.FC = () => {
         cancelButtonText: 'בטל'
        }).then(async (result) => {
             if (result.isConfirmed) {
-                const selectedClass = classrooms?.find(classroom => classroom._id === classroomId);
-                if (selectedClass?.capacity === selectedClass?.seatsLeft) {
+                if (classroom.capacity === classroom.seatsLeft) {
                     try {
-                        await deleteClassroom(classroomId);
+                        await deleteClassroom(classroom);
         
                         dispatch(deleteClass({
-                            id: classroomId
+                            id: classroom._id
                         }));
             
                         alertify.success("הכיתה נמחקה בהצלחה");

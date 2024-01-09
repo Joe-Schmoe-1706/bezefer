@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { ColorOption, ContextProps } from "../Types/types";
+import { ContextProps } from "../Types/types";
 import { ContextData, ThemeType } from "./ThemeContext.types";
 
 const defaultTheme: ThemeType = {

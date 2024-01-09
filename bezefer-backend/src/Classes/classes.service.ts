@@ -47,14 +47,9 @@ export class ClassesService {
         }
     }
 
-    async deleteClass(classroomId: string): Promise<void> {
-        const classroomToDelete = await this.classModel.findById(classroomId).exec();
-        if (!classroomToDelete) {
-            throw new NotFoundException('classroom does not exist');
-        }
-        
-        if (classroomToDelete.capacity === classroomToDelete.seatsLeft) {
-            await this.classModel.deleteOne({_id : classroomId}).exec();
+    async deleteClass(classroom: Classroom): Promise<void> {  
+        if (classroom.capacity === classroom.seatsLeft) {
+            await this.classModel.findByIdAndDelete(classroom._id);
         } else {
             throw new Error("class is not empty");
         }

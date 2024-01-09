@@ -69,7 +69,7 @@ const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
                 <S.TotalSeats>out of <strong>{classroom.capacity}</strong></S.TotalSeats>
                 <S.Footer>
                     <S.OpenStudentList onClick={openModal}>STUDENT LIST</S.OpenStudentList>
-                    <S.DeleteClassButton projectTheme={theme.hex} onClick={() => deleteClass(classroom._id)}>
+                    <S.DeleteClassButton projectTheme={theme.hex} onClick={() => deleteClass(classroom)}>
                         <DeleteStyle.CustomDeleteIcon projectTheme={theme.hex}></DeleteStyle.CustomDeleteIcon>
                     </S.DeleteClassButton>
                 </S.Footer>

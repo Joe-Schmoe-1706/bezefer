@@ -13,20 +13,6 @@ const ErrorPage: React.FC<ErrorProps> = ({errorMessage, redirectMessage}) => {
         navigate('/create');
     }
 
-    // let imageSrc = notFoundBlue;
-
-    // if (theme. === "#F50057") {
-    //     imageSrc = notFoundRed;
-    // } else if (theme === "#2a850e") {
-    //     imageSrc = notFoundGreen;
-    // } else if (theme === "#4d0b0a") {
-    //     imageSrc = notFoundBrown;
-    // } else if (theme === "#5c5248") {
-    //     imageSrc = notFoundGray;
-    // } else if (theme === "#7b2cbf") {
-    //     imageSrc = notFoundPurple;
-    // }
-
     return (
         <S.Container projectTheme={theme.hex}>
             <S.ContentContainer>
