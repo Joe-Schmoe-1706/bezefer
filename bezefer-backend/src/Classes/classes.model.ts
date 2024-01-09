@@ -2,16 +2,16 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose"
 
 @Schema()
 export class Classroom {
-    @Prop()
+    @Prop({required: true})
     _id: string
 
-    @Prop()
+    @Prop({required: true})
     name: string
 
-    @Prop()
+    @Prop({required: true})
     capacity: number
 
-    @Prop()
+    @Prop({required: true})
     seatsLeft: number
 }
 

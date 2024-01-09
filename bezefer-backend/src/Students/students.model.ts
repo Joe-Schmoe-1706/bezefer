@@ -3,22 +3,22 @@ import {HydratedDocument} from 'mongoose'
 
 @Schema()
 export class Student {
-    @Prop()
+    @Prop({required: true})
     _id: string
 
-    @Prop()
+    @Prop({required: true})
     firstName: string
 
-    @Prop()
+    @Prop({required: true})
     lastName: string
 
-    @Prop()
+    @Prop({required: false})
     age: number
 
-    @Prop()
+    @Prop({required: true})
     profession: string
 
-    @Prop({type: String, ref: "Classroom"})
+    @Prop({type: String, ref: "Classroom", required: true})
     classroom: String
 };
 
