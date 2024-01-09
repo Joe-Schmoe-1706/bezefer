@@ -16,27 +16,12 @@ export const Appbar = styled(MuiAppBar, {
 }))
 
 export const ListIcon = styled(IconButton)(({ theme }) => ({
-    [theme.breakpoints.only("xl")]: {
+    [theme.breakpoints.up("sm")]: {
         width: "3vw",
         height: "3vw",
         marginLeft: "1vw"
     },
-    [theme.breakpoints.only("lg")]: {
-        width: "3vw",
-        height: "3vw",
-        marginLeft: "1vw"
-    },
-    [theme.breakpoints.only("md")]: {
-        width: "3vw",
-        height: "3vw",
-        marginLeft: "1vw"
-    },
-    [theme.breakpoints.only("sm")]: {
-        width: "10vw",
-        height: "10vw",
-        marginLeft: "5vw",
-    },
-    [theme.breakpoints.only("xs")]: {
+    [theme.breakpoints.down("md")]: {
         width: "10vw",
         height: "10vw",
         marginLeft: "5vw",
@@ -64,12 +49,7 @@ export const StyledToolBar = styled(Toolbar)({
 })
 
 export const DrawerIcon = styled(MenuIcon)(({ theme }) => ({
-    [theme.breakpoints.only("xl")]: {
-        width: "1.5vw",
-        height: "1.5vw",
-        marginLeft:"1vw"
-    },
-    [theme.breakpoints.only("lg")]: {
+    [theme.breakpoints.up("md")]: {
         width: "1.5vw",
         height: "1.5vw",
         marginLeft:"1vw"
