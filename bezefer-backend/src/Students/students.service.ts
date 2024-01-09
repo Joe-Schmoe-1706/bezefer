@@ -1,9 +1,8 @@
 import mongoose, { Model } from "mongoose";
 import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Student } from "./students.model";
+import { Student, StudentDocument } from "./students.model";
 import { ClassesService } from "../Classes/classes.service";
-import { StudentDTO } from "./StudentDTO";
 import validation from "../validation";
 
 @Injectable()

@@ -1,7 +1,7 @@
 import { Model } from "mongoose";
 import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
-import { Classroom } from "./classes.model";
+import { Classroom, ClassroomDocument } from "./classes.model";
 import { StudentsService } from "../Students/students.service";
 import validation from "../validation";
 import { NotFoundError } from "rxjs";
@@ -15,12 +15,12 @@ export class ClassesService {
     ) {}
 
     async findAll(): Promise<Classroom[]> {
-        const classes = await this.classModel.find().exec();
+        const classes = await this.classModel.find().lean();
         return classes;
     }
 
-    async findClassById(classroomId: string): Promise<Classroom> {
-        return await this.classModel.findById(classroomId).exec();
+    async findClassById(classroomId: string): Promise<ClassroomDocument> {
+        return await this.classModel.findById(classroomId).lean();
     }
 
     validateClass(classroom: Classroom): boolean {
