@@ -25,12 +25,8 @@ const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
         .filter(([,student]) => student.classroom === classroom._id)
     );
 
-    const closeModal = () : void => {
-        setIsOpen(false);
-    }
-
-    const openModal = () : void => {
-        setIsOpen(true);
+    const toggleModal = () : void => {
+        setIsOpen((prevStatus) => !prevStatus);
     }
 
     const studentsToModal = Array.from(studentsInClass.values()).map(student => ({
@@ -40,15 +36,7 @@ const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
 
     const deleteStudent = async (id : string) : Promise<void> => {
         try {
-            closeModal();
-            // await removeStudentFromClass(id, classroom._id);
-            // setStudentsInClass((prevStudents) => {
-            //     return prevStudents.filter((student) => student._id != id)
-            // });
-            // dispatch(increaseSeatsLeft({
-            //     id: classroom._id,
-            //     change: 1
-            // }));
+            toggleModal();
 
             await dispatch(removeFromClassHandler(id, classroom._id));
             alertify.success("התלמיד הוסר מהכיתה בהצלחה");
@@ -68,7 +56,7 @@ const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
                 <S.SeatsLeft>There are <strong>{classroom.seatsLeft}</strong> seats left</S.SeatsLeft>
                 <S.TotalSeats>out of <strong>{classroom.capacity}</strong></S.TotalSeats>
                 <S.Footer>
-                    <S.OpenStudentList onClick={openModal}>STUDENT LIST</S.OpenStudentList>
+                    <S.OpenStudentList onClick={toggleModal}>STUDENT LIST</S.OpenStudentList>
                     <S.DeleteClassButton projectTheme={theme.hex} onClick={() => deleteClass(classroom)}>
                         <DeleteStyle.CustomDeleteIcon projectTheme={theme.hex}></DeleteStyle.CustomDeleteIcon>
                     </S.DeleteClassButton>
@@ -76,7 +64,7 @@ const ClassCard : React.FC<ClassCardProps> = ({classroom, deleteClass}) => {
             </S.ClassCard>
             <StudentsModal
              isOpen={isOpen}
-             closeModal={closeModal}
+             closeModal={toggleModal}
              items={studentsToModal}
              handleClick={deleteStudent}
              avatar={<PersonIcon/>}

@@ -20,62 +20,21 @@ import AddIcon from '@mui/icons-material/Add';
 
 const Students : React.FC = () => {
     const [isPopupOpen, setIsPopupOpen] = useState(false);
-    // const [students, setStudents] = useState<Student[]>([]);
     const [chosenStudentId, setChosenStudentId] = useState<string>('');
-    // const [studentsStatus, setStudentStatus] = useState<StatusOptions>("loading");
 
     const availabeClassrooms = useAppSelector(selectAvailableClassrooms);
     const dispatch = useAppDispatch();
     const students = useAppSelector(selectStudents);
     const status = useAppSelector(selectStatus);
 
-    // useEffect(() => {
-    //     const initializeStudents = async (): Promise<void> => {
-    //         try {
-    //             const allStudents = await getAllStudents();
-    //             setStudents(allStudents);
-    //             setStudentStatus("done");
-    //         } catch (error) {
-    //             Swal.fire({
-    //                 icon: 'error',
-    //                 title: 'תקלה',
-    //                 text: 'לא ניתן לקבל את התלמידים'
-    //             })
-    //             setStudentStatus("failed");
-    //         }
-    //     }
-
-    //     initializeStudents();
-    // }, [])
-
-    const openPopup = (studentId : string) : void => {
+    const togglePopup = (studentId : string) : void => {
         setChosenStudentId(studentId);
-        setIsPopupOpen(true);
-    }
-
-    const closePopup = () : void => {
-        setIsPopupOpen(false);
+        setIsPopupOpen((prevStatus) => !prevStatus);
     }
 
     const assignToClass = async (classroomId: string) : Promise<void> => {
         try {
-            closePopup();
-            // await addStudentToClass(chosenStudentId, classroomId);
-            // setStudents((prevStudents) => {
-            //     return prevStudents.map((student) => {
-            //         return student._id === chosenStudentId ?
-            //         {
-            //             ...student,
-            //             classroom: classroomId
-            //         } :
-            //         student
-            //     })
-            // });
-
-            // dispatch(decreaseSeatsLeft({
-            //     id: classroomId,
-            //     change: 1
-            // }));
+            togglePopup('');
 
             await dispatch(addToClassHandler(chosenStudentId, classroomId));
 
@@ -96,8 +55,6 @@ const Students : React.FC = () => {
                 })
             }
         }
-
-        closePopup();
     }
 
     const deleteSelectedStudent = async (student: Student) => {
@@ -109,19 +66,6 @@ const Students : React.FC = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    // await deleteStudent(studentId);
-                    // const deletedStudent = students.find((student) => student._id === studentId);
-                    // setStudents((prevStudents) => {
-                    //     return prevStudents.filter((student) => student._id !== studentId)
-                    // });
-                    
-                    // if (deletedStudent && deletedStudent.classroom !== '') {
-                    //     dispatch(increaseSeatsLeft({
-                    //         id: deletedStudent.classroom,
-                    //         change: 1
-                    //     }))
-                    // };
-
                     await dispatch(deleteStudentHandler(student));
 
                     alertify.success("התלמיד נמחק בהצלחה");
@@ -161,7 +105,7 @@ const Students : React.FC = () => {
             <TableRow>
                 {renderedStudentValues(student)}
                 <S.StyledTableCell>
-                    <S.DynamicButton variant="outlined" projectTheme={theme.hex} onClick={() => openPopup(student._id)} disabled={student.classroom != ''}>ASSIGN TO CLASS</S.DynamicButton>
+                    <S.DynamicButton variant="outlined" projectTheme={theme.hex} onClick={() => togglePopup(student._id)} disabled={student.classroom != ''}>ASSIGN TO CLASS</S.DynamicButton>
                 </S.StyledTableCell>
                 <S.StyledTableCell>
                     <S.DynamicButton variant="outlined" projectTheme={theme.hex} onClick={() => deleteSelectedStudent(student)}>DELETE</S.DynamicButton>
@@ -191,7 +135,7 @@ const Students : React.FC = () => {
                     </S.StudentTableContainer>
                     <PopupList
                       isOpen={isPopupOpen}
-                      closeModal={closePopup}
+                      closeModal={() => togglePopup('')}
                       items={classroomsToModal}
                       header="available classroom"
                       errorMessage="אין כיתות זמינות כרגע"

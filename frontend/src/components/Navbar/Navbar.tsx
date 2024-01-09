@@ -23,12 +23,8 @@ const Navbar : React.FC = () => {
     const {theme, toggleTheme} = useTheme();
     const navigate = useNavigate();
 
-    const openNav = () : void => {
-        setOpen(true);
-    }
-
-    const closeNav = () : void => {
-        setOpen(false);
+    const toggleNav = () : void => {
+        setOpen((prevStatus) => !prevStatus);
     }
 
     const changeTheme = (theme: ThemeType) => {
@@ -67,7 +63,7 @@ const Navbar : React.FC = () => {
     return (
         <S.Appbar projectTheme={theme.hex}>
             <S.StyledToolBar>
-                <S.DrawerIcon onClick={openNav} />
+                <S.DrawerIcon onClick={toggleNav} />
                 <S.HeaderText>
                     Shob Classes
                 </S.HeaderText>
@@ -75,7 +71,7 @@ const Navbar : React.FC = () => {
                 <Drawer
                 open = {open}
                 anchor="left"
-                onClose={closeNav}
+                onClose={toggleNav}
                 >
                     <List>
                         {renderedNavigationOptions}
